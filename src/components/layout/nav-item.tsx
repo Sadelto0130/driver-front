@@ -9,6 +9,7 @@ interface NavItemProps {
   label: string;
   icon: LucideIcon;
   active?: boolean;
+  dark?: boolean;
 }
 
 export function NavItem({
@@ -16,18 +17,37 @@ export function NavItem({
   label,
   icon: Icon,
   active,
+  dark,
 }: NavItemProps) {
   return (
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3 rounded-xl px-4 py-3 transition-colors",
-        active
-          ? "bg-primary text-primary-foreground"
-          : "hover:bg-muted"
+        "group flex items-center gap-3 rounded-xl px-4 py-3 transition-all",
+        dark 
+          ? active
+            ? `
+              bg-gradient-to-r 
+              front-blue-600
+              to-indigo-600
+              text-white
+              shadow-lg shadow-blue-500/20
+              `
+            : `
+              text-slate-300
+              hover:bg-white/5
+              hover:text-white
+            `
+          : active
+            ? "bg-primary text-primary-foreground"
+            : "hover:bg-muted"
       )}
     >
-      <Icon className="h-5 w-5 shrink-0" />
+      <Icon className="
+        h-5 w-5 shrink-0
+        transition-transform
+        group-hover:scale-110
+      " />
 
       <span className="font-medium">
         {label}

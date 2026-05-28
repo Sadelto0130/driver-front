@@ -10,15 +10,17 @@ export function DashboardShell({
   children,
 }: DashboardShellProps) {
   return (
-    <div className="flex min-h-screen bg-muted/40">
-      <Sidebar />
+    <div className="min-h-screen bg-[#f5f7fb]">
+      <div className="flex">
+        <Sidebar />
 
-      <div className="flex flex-1 flex-col">
-        <Topbar />
+        <div className="flex min-h-screen flex-1 flex-col">
+          <Topbar />
 
-        <main className="flex-1 p-6">
-          {children}
-        </main>
+          <main className="flex-1 p-4 md:p-6 xl:p-8">
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   );

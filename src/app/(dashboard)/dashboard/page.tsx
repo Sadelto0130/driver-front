@@ -1,57 +1,54 @@
+import { DashboardSection } from '@/components/dashboard/dashboard-section'
+import { MetricCard } from '@/components/dashboard/metric-card';
+import { PageHeader } from '@/components/dashboard/page-header'
+import {
+  CarFront,
+  ClipboardList,
+  Users,
+  CheckCircle2
+} from 'lucide-react'
+
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">
-          Panel
-        </h1>
+    <div className="space-y-10">
+      <PageHeader
+        title='Panel General'
+        description='Resumen operativo en tiempo real de la flota'
+      />
 
-        <p className="text-muted-foreground">
-          Resmen operativo de la flota
-        </p>
-      </div>
+      <DashboardSection
+        title='Métricas Operativas'
+        description='Estado actual de la operacion'
+      >
+        <div className='grid gap-6 md:grid-cols-2 2xl:grid-cols-4'>
+          <MetricCard
+            title='Conductores Activos'
+            value='25'
+            icon={Users}
+            trend='+12% esta semana'
+          />
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-2xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">
-            Conductores Activos
-          </p>
+          <MetricCard
+            title='Viajes Activos'
+            value='5'
+            icon={CarFront}
+            trend='+8% hoy'
+          />
 
-          <h3 className="mt-2 text-3xl font-bold">
-            24
-          </h3>
+          <MetricCard
+            title='Asignaciones Pendientes'
+            value='4'
+            icon={ClipboardList}
+          />
+
+          <MetricCard
+            title='Viajes Completados'
+            value='128'
+            icon={CheckCircle2}
+            trend='+18% este mes'
+          />          
         </div>
-
-        <div className="rounded-2xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">
-            Viajes Activos
-          </p>
-
-          <h3 className="mt-2 text-3xl font-bold">
-            12
-          </h3>
-        </div>
-
-        <div className="rounded-2xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">
-            Asignaciones Pendientes
-          </p>
-
-          <h3 className="mt-2 text-3xl font-bold">
-            4
-          </h3>
-        </div>
-
-        <div className="rounded-2xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">
-            Viajes Completados
-          </p>
-
-          <h3 className="mt-2 text-3xl font-bold">
-            128
-          </h3>
-        </div>
-      </div>
+      </DashboardSection>
     </div>
   );
 }
