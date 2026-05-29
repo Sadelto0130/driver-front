@@ -1,6 +1,7 @@
 import { DashboardSection } from '@/components/dashboard/dashboard-section'
 import { MetricCard } from '@/components/dashboard/metric-card';
 import { PageHeader } from '@/components/dashboard/page-header'
+import { WorkQueue } from '@/components/dispatch/work-queue';
 import {
   CarFront,
   ClipboardList,
@@ -10,6 +11,11 @@ import {
 
 export default function DashboardPage() {
   return (
+    <div className='space-y-6'>
+      <WorkQueue />
+    </div>
+  )
+  /*return (
     <div className="space-y-10">
       <PageHeader
         title='Panel General'
@@ -50,5 +56,5 @@ export default function DashboardPage() {
         </div>
       </DashboardSection>
     </div>
-  );
+  );*/
 }
