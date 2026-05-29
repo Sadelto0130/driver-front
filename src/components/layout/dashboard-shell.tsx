@@ -10,14 +10,14 @@ export function DashboardShell({
   children,
 }: DashboardShellProps) {
   return (
-    <div className="min-h-screen bg-[#f5f7fb]">
-      <div className="flex">
+    <div className="h-screen overflow-hidden bg-slate-50">
+      <div className="flex h-full">
         <Sidebar />
 
-        <div className="flex min-h-screen flex-1 flex-col">
+        <div className="flex h-full flex-1 flex-col overflow-hidden">
           <Topbar />
 
-          <main className="flex-1 p-4 md:p-6 xl:p-8">
+          <main className="flex-1 overflow-hidden p-4 md:p-6 xl:p-8">
             {children}
           </main>
         </div>

@@ -10,11 +10,15 @@ export interface Trip {
   serviceNumber: string
 
   passengerName: string
+  passengerPhone: string
+  passengerEmail: string
 
   origin: string
   destination: string
 
   driverName?: string
+
+  observations?: string;
   
   status: TripStatus
 

@@ -1,6 +1,7 @@
 import { DashboardSection } from '@/components/dashboard/dashboard-section'
 import { MetricCard } from '@/components/dashboard/metric-card';
 import { PageHeader } from '@/components/dashboard/page-header'
+import { DispatchOverview } from '@/components/dispatch/dispatch-overview';
 import { WorkQueue } from '@/components/dispatch/work-queue';
 import {
   CarFront,
@@ -11,8 +12,12 @@ import {
 
 export default function DashboardPage() {
   return (
-    <div className='space-y-6'>
-      <WorkQueue />
+    <div className='flex h-full min-h-0 flex-col gap-6'>
+      <DispatchOverview />
+
+      <div className='min-h-0 flex-1'>
+        <WorkQueue />
+      </div>
     </div>
   )
   /*return (

@@ -9,11 +9,11 @@ export function EmptySelection() {
     ">
       <div>
         <h3 className="text-lg font-semibold">
-          Ningún servicio seleccionado
+          Seleccione un servicio
         </h3>
 
-        <p className="mt-2 text-sm text-slate-500">
-          Seleccion un servicio para ver el detalle
+        <p className="mt-2 text-sm text-slate-500">         
+          El detalle del servicio aparecerá aquí.
         </p>
       </div>
     </div>
