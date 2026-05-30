@@ -1,3 +1,10 @@
+import { Trip } from "@/types/trip";
+
+const now = new Date();
+
+const createRequestedAt = (minutesAgo: number) =>
+  new Date(now.getTime() - minutesAgo * 60 * 1000).toISOString();
+
 export const mockTrips: Trip[] = [
   {
     id: "1",
@@ -9,8 +16,7 @@ export const mockTrips: Trip[] = [
     destination: "Aeropuerto",
     observations: "Viaja con mascota",
     status: "PENDING",
-    date: "15/06/2026",
-    time: "09:15",
+    requestedAt: createRequestedAt(2),
   },
   {
     id: "2",
@@ -23,8 +29,7 @@ export const mockTrips: Trip[] = [
     driverName: "Carlos Ruiz",
     observations: "Cliente corporativo",
     status: "ASSIGNED",
-    date: "15/06/2026",
-    time: "09:18",
+    requestedAt: createRequestedAt(4),
   },
   {
     id: "3",
@@ -37,8 +42,7 @@ export const mockTrips: Trip[] = [
     driverName: "Juan López",
     observations: "",
     status: "ACTIVE",
-    date: "15/06/2026",
-    time: "09:21",
+    requestedAt: createRequestedAt(5),
   },
   {
     id: "4",
@@ -50,8 +54,7 @@ export const mockTrips: Trip[] = [
     destination: "Microcentro",
     observations: "",
     status: "MATCHING",
-    date: "15/06/2026",
-    time: "09:24",
+    requestedAt: createRequestedAt(6),
   },
   {
     id: "5",
@@ -63,8 +66,7 @@ export const mockTrips: Trip[] = [
     destination: "Once",
     observations: "",
     status: "COMPLETED",
-    date: "15/06/2026",
-    time: "09:26",
+    requestedAt: createRequestedAt(8),
   },
   {
     id: "6",
@@ -76,8 +78,7 @@ export const mockTrips: Trip[] = [
     destination: "Puerto Madero",
     observations: "Equipaje grande",
     status: "ACTIVE",
-    date: "15/06/2026",
-    time: "09:29",
+    requestedAt: createRequestedAt(9),
   },
   {
     id: "7",
@@ -90,8 +91,7 @@ export const mockTrips: Trip[] = [
     driverName: "Miguel Castro",
     observations: "",
     status: "COMPLETED",
-    date: "15/06/2026",
-    time: "09:31",
+    requestedAt: createRequestedAt(11),
   },
   {
     id: "8",
@@ -103,8 +103,7 @@ export const mockTrips: Trip[] = [
     destination: "Palermo",
     observations: "",
     status: "PENDING",
-    date: "15/06/2026",
-    time: "09:34",
+    requestedAt: createRequestedAt(11),
   },
   {
     id: "9",
@@ -116,8 +115,7 @@ export const mockTrips: Trip[] = [
     destination: "Constitución",
     observations: "Pago con empresa",
     status: "MATCHING",
-    date: "15/06/2026",
-    time: "09:36",
+    requestedAt: createRequestedAt(13),
   },
   {
     id: "10",
@@ -130,8 +128,7 @@ export const mockTrips: Trip[] = [
     driverName: "Fernando Díaz",
     observations: "",
     status: "ASSIGNED",
-    date: "15/06/2026",
-    time: "09:39",
+    requestedAt: createRequestedAt(14),
   },
   {
     id: "11",
@@ -143,8 +140,7 @@ export const mockTrips: Trip[] = [
     destination: "Recoleta",
     observations: "",
     status: "ACTIVE",
-    date: "15/06/2026",
-    time: "09:42",
+    requestedAt: createRequestedAt(16),
   },
   {
     id: "12",
@@ -155,9 +151,8 @@ export const mockTrips: Trip[] = [
     origin: "Palermo",
     destination: "Puerto Madero",
     observations: "Viaje programado",
-    status: "COMPLETED",
-    date: "15/06/2026",
-    time: "09:45",
+    status: "ACTIVE",
+    requestedAt: createRequestedAt(18),
   },
   {
     id: "13",
@@ -169,8 +164,7 @@ export const mockTrips: Trip[] = [
     destination: "Aeropuerto",
     observations: "",
     status: "PENDING",
-    date: "15/06/2026",
-    time: "09:48",
+    requestedAt: createRequestedAt(20),
   },
   {
     id: "14",
@@ -182,9 +176,8 @@ export const mockTrips: Trip[] = [
     destination: "Caballito",
     driverName: "José Pérez",
     observations: "",
-    status: "ASSIGNED",
-    date: "15/06/2026",
-    time: "09:50",
+    status: "MATCHING",
+    requestedAt: createRequestedAt(22),
   },
   {
     id: "15",
@@ -196,8 +189,7 @@ export const mockTrips: Trip[] = [
     destination: "Centro",
     observations: "",
     status: "MATCHING",
-    date: "15/06/2026",
-    time: "09:53",
+    requestedAt: createRequestedAt(24),
   },
   {
     id: "16",
@@ -210,8 +202,7 @@ export const mockTrips: Trip[] = [
     driverName: "Ricardo Gómez",
     observations: "Lleva bicicleta",
     status: "ACTIVE",
-    date: "15/06/2026",
-    time: "09:56",
+    requestedAt: createRequestedAt(25),
   },
   {
     id: "17",
@@ -223,8 +214,7 @@ export const mockTrips: Trip[] = [
     destination: "San Telmo",
     observations: "",
     status: "COMPLETED",
-    date: "15/06/2026",
-    time: "09:58",
+    requestedAt: createRequestedAt(28),
   },
   {
     id: "18",
@@ -236,8 +226,7 @@ export const mockTrips: Trip[] = [
     destination: "Belgrano",
     observations: "",
     status: "PENDING",
-    date: "15/06/2026",
-    time: "10:01",
+    requestedAt: createRequestedAt(29),
   },
   {
     id: "19",
@@ -249,9 +238,8 @@ export const mockTrips: Trip[] = [
     destination: "Retiro",
     driverName: "Sergio Torres",
     observations: "",
-    status: "MATCHING",
-    date: "15/06/2026",
-    time: "10:04",
+    status: "ACTIVE",
+    requestedAt: createRequestedAt(35),
   },
   {
     id: "20",
@@ -264,7 +252,6 @@ export const mockTrips: Trip[] = [
     driverName: "Mario Fernández",
     observations: "Vuelo demorado 20 min",
     status: "ASSIGNED",
-    date: "15/06/2026",
-    time: "10:07",
+    requestedAt: createRequestedAt(36),
   },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import { formatServiceDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { Trip } from "@/types/trip";
 
@@ -58,7 +59,7 @@ export function WorkQueueRow({ trip, selected, onSelect }: Props) {
       </div>
 
       <span className="whitespace-nowrap text-sm">
-        {trip.date} {trip.time}
+        {formatServiceDate(trip.requestedAt)}
       </span>
     </button>
   );

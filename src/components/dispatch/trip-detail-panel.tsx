@@ -1,8 +1,16 @@
 "use client";
 
-import { X } from "lucide-react";
+import { 
+  X,
+  Phone,
+  Mail,
+  Clock3 
+} from "lucide-react";
 
 import { Trip } from "@/types/trip";
+import { formatServiceTime, getWaitingTime } from "@/lib/date";
+import { getStatusDescription } from "@/lib/trip-status";
+import { TripHistorySheet } from "./history/trip-history-sheet";
 
 interface Props {
   trip: Trip;
@@ -21,22 +29,19 @@ export function TripDetailPanel({ trip, onClose }: Props) {
   return (
     <div
       className="
-        sticky top-0
+        flex 
         h-full
-        overflow-y-auto
+        flex-col
         rounded-3xl
         border border-slate-200/70
         bg-white
-        p-6
         shadow-sm
       "
     >
-      <div className="flex items-start justify-between gap-4">
-
-        <div>
+      <div className="border-b border-slate-100 p-6">
+        <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-
-            <h2 className="text-3xl font-bold tracking-tight">
+            <h2 className="text-2xl font-bold tracking-tight">
               Servicio #{trip.serviceNumber}
             </h2>
 
@@ -51,86 +56,124 @@ export function TripDetailPanel({ trip, onClose }: Props) {
               {statusMap[trip.status]}
             </span>
           </div>
-        </div>
 
-        <button
-          onClick={onClose}
-          aria-label="Cerrar detalle"
-          className="
-            rounded-xl
-            p-2
-            hover:bg-slate-100
-          "
-        >
-          <X className="h-5 w-5" />
-        </button>
+          <button
+            onClick={onClose}
+            aria-label="Cerrar detalle"
+            className="
+              rounded-xl
+              p-2
+              hover:bg-slate-100
+            "
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
       </div>
 
+      <div className="min-h-0 flex-1 overflow-y-auto p-6">
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-500">Recorrido</p>
 
-      <div className="mt-8">
-        <p className="text-sm text-slate-500">Recorrido</p>
+          <div className="mt-3">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-slate-400">
+                Origen
+              </p>
+              
+              <p className="text-lg font-semibold">
+                {trip.origin}
+              </p>
+            </div>
 
-        <div className="mt-2">
-          <p className="text-lg font-semibold">{trip.origin}</p>
+            <div className="my-3 text-slate-400">
+              ↓
+            </div>
 
-          <p className="my-1 text-slate-400">↓</p>
+            <div>
+              <p className="text-xs uppercase tracking-wide text-slate-400">
+                Destino
+              </p>
 
-          <p className="text-lg font-semibold">{trip.destination}</p>
+              <p className="mt-1 text-xl font-semibold">
+                {trip.destination}
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-start gap-2">
+            <Clock3 className="mt-0.5 h-4 w-4 text-amber-600"/>
+
+            <div>
+              <p className="text-sm font-medium text-amber-600">
+                {getStatusDescription(trip)} hace{" "} {getWaitingTime(trip.requestedAt)}
+              </p>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Ingresó {formatServiceTime(trip.requestedAt)}
+              </p>
+            </div>
+          </div>
         </div>
         
-        <div className="mt-6">
-          <p className="text-sm font-medium text-amber-600">
-            ⏱ Esperando hace 14 min
+        <div className="mt-4 border-t border-slate-100 pt-6">
+          <p className="text-xs uppercase tracking-wide text-slate-500">
+            Pasajero
           </p>
 
-          <p className="mt-1 text-sm text-slate-500">
-            Ingresó {trip.time}
+          <p className="mt-2 text-lg font-semibold text-slate-900">
+            {trip.passengerName}
           </p>
+
+          <div className="mt-4 flex items-center gap-2 text-sm text-slate-600">
+            <Phone className="h-4 w-4" />
+            <span>{trip.passengerPhone}</span>
+          </div>
+
+          <div className="mt-2 flex items-center gap-2 text-sm text-slate-600">
+            <Mail className="h-4 w-4" />
+            <span>{trip.passengerEmail}</span>
+          </div>
         </div>
-      </div>
-      
-      <div className="mt-8 border-t border-slate-200 pt-6">
-        <p className="text-xs uppercase tracking-wide text-slate-500">
-          Pasajero
-        </p>
 
-        <p className="mt-2 text-base font-semibold text-slate-900">
-          {trip.passengerName}
-        </p>
+        <div className="mt-8 grid gap-6">
+          <Info 
+            label="Chofer" 
+            value={trip.driverName ?? "Sin asignar"} 
+          />
+          
+        </div>
 
-        <p className="mt-3 text-sm text-slate-600">
-          📞 {trip.passengerPhone}
-        </p>
+        <div className="mt-4 border-t border-slate-100 pt-6">
+          <p className="text-xs uppercase tracking-wide text-slate-500">
+            Observaciones
+          </p>
 
-        <p className="mt-1 text-sm text-slate-600">
-          ✉ {trip.passengerEmail}
-        </p>
-      </div>
-
-      <div className="mt-8 grid gap-6">
-        <Info 
-          label="Chofer" 
-          value={trip.driverName ?? "Sin asignar"} 
-        />
-        
+          <p className="mt-2 text-sm leading-relaxed text-slate-700">
+            {trip.observations?.trim()
+              ? trip.observations
+              : "Sin observaciones"
+            }
+          </p>
+        </div>        
       </div>
 
-      <div className="mt-8 border-t border-slate-200 pt-6">
-        <p className="text-xs uppercase tracking-wide text-slate-500">
-          Observaciones
-        </p>
-
-        <p className="mt-2 text-sm leading-relaxed text-slate-700">
-          {trip.observations?.trim()
-            ? trip.observations
-            : "Sin observaciones"
-          }
-        </p>
-
-        <div className="mt-8">
-          <button className="w-full rounded-2xl bg-blue-600 px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700">
+      <div className="border-t border-slate-100 p-6">
+        <div className="space-y-3">
+          <button className="
+            w-full 
+            rounded-2xl 
+            bg-blue-600 
+            px-4 py-3 
+            font-medium 
+            text-white 
+            transition-colors 
+            hover:bg-blue-700
+          ">
             Asignar conductor
           </button>
+
+          <TripHistorySheet trip={trip} />
         </div>
       </div>
     </div>

@@ -9,17 +9,56 @@ import { EmptySelection } from "./empty-selection";
 import { WorkQueueRow } from "./work-queue-row";
 import { TripDetailPanel } from "./trip-detail-panel";
 import { WorkQueueToolbar } from "./work-queue-toolbar";
+import { WorkQueueFilter } from "@/types/work-queue";
  
 export function WorkQueue() {
-  const [selectedTrip, setSelectedTrip] =
-    useState<Trip | null>(null);
+  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
+
+  const [filter, setFilter] = useState<WorkQueueFilter>('ALL')
+
+  const stats = {
+    total: mockTrips.length,
+
+    pending: mockTrips.filter(
+      trip => trip.status === "PENDING"
+    ).length,
+
+    matching: mockTrips.filter(
+      trip => trip.status === "MATCHING"
+    ).length,
+
+    assigned: mockTrips.filter(
+      trip => trip.status === "ASSIGNED"
+    ).length,
+
+    active: mockTrips.filter(
+      trip => trip.status === "ACTIVE"
+    ).length,
+
+    completed: mockTrips.filter(
+      trip => trip.status === "COMPLETED"
+    ).length,
+  };
+
+  const sortedTrips = [...mockTrips].sort(
+    (a, b) => 
+      new Date(b.requestedAt).getTime() -
+      new Date(a.requestedAt).getTime()
+  )
+
+  const filteredTrips = filter === "ALL"
+    ? sortedTrips
+    : sortedTrips.filter(
+      (trip) => trip.status === filter
+    )
 
   return (
     <div
       className="
         grid 
-        min-h-0
         h-full
+        min-h-0
+        overflow-hidden
         gap-6
         xl:grid-cols-[1fr_420px]
       "
@@ -43,12 +82,16 @@ export function WorkQueue() {
             </div>
 
             <div className="rounded-full bg-red-50 px-3 py-1 text-sm font-medium text-red-700">
-              3 pendientes de asignacion
+              {stats.pending} pendientes de asignacion
             </div>
           </div>
         </div>
 
-        <WorkQueueToolbar />
+        <WorkQueueToolbar 
+          filter={filter}
+          onFilterChange={setFilter}
+          stats={stats}
+        />
 
         <div className="
           grid
@@ -72,7 +115,7 @@ export function WorkQueue() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {mockTrips.map((trip) => (
+          {filteredTrips.map((trip) => (
             <WorkQueueRow
               key={trip.id}
               trip={trip}
@@ -85,7 +128,17 @@ export function WorkQueue() {
         </div>
       </div>
 
-      <div>
+      <div className="
+        flex
+        h-full
+        min-h-0
+        flex-col
+        overflow-hidden
+        rounded-3xl
+        border border-slate-200/70
+        bg-white
+        shadow-sm
+      ">
         {selectedTrip ? (
           <TripDetailPanel
             trip={selectedTrip}

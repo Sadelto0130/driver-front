@@ -22,6 +22,5 @@ export interface Trip {
   
   status: TripStatus
 
-  date: string
-  time: string
+  requestedAt: string
 }
