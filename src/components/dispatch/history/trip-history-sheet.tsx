@@ -44,16 +44,16 @@ export function TripHistorySheet({
           Historial del servicio
         </Button>
       </SheetTrigger>
-
+{/*TODO: cambio aqui w-[560px] y sm:max-w-[560px]*/}
       <SheetContent 
         side="right"
         className="
-          w-[560px]
-          border-1
+          w-560
+          border
           border-slate-200
           bg-slate-200
           p-0 
-          sm:max-w-[560px]
+          sm:max-w-560
         "
       >
         <div className="flex h-full flex-col">
