@@ -2,6 +2,7 @@ export function formatServiceDate( value: string) {
   return new Date(value).toLocaleString(
     "es-AR",
     {
+      timeZone: "America/Argentina/Buenos_Aires",
       day: "2-digit",
       month: "2-digit",
       hour: "2-digit",

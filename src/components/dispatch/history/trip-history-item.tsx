@@ -39,72 +39,77 @@ export function TripHistoryItem({
   isCurrent
 }: Props) {
   return (
-    <div className="relative flex gap-4 pb-6">
+    <div className="relative flex gap-2 pb-8">
       <div className="relative flex w-10 justify-center">
+        {/*Punto timeline*/}
         <div className={`
-          z-10 mt-2 h-4 w-4 rounded-full 
+          z-10 
+          mt-2 
+          h-5 
+          w-5 
+          rounded-full
+          ring-4
+          ring-white 
           ${eventColors[event.type]}
-        `}/>
+          `}/>
 
-        <div className="
-          absolute 
-          left-5 
-          top-6 
-          bottom-6
-          w-px 
-          bg-slate-300
-        "/>
-
+        {/*Linea vertical timeline*/}
         {!last && (
           <div className="
-            absolute
-            left-5
-            top-5
-            bottom-0
+          absolute
+          left-5
+          top-5
+          bottom-8
             w-px 
             bg-slate-300"
-          />
-        )}
+            />
+          )}
       </div>
-
+      
+      {/*Card */}
       <div className={`
         flex-1 
         rounded-3xl
         border
         bg-white
-        px-5
-        py-4
-        shadow-sm
+        px-6
+        py-5
+        shadow-[0_2px_12px_rgba(15, 23, 42, 0.05)]
         ${
           isCurrent
-            ? "border-emerald-200 bg-emerald-50 shadow-sm"
+            ? "border-emerald-200 bg-emerald-50 shadow-[0_4px_20px_rgba(16,185,129,0.10)]"
             : "border-slate-200 bg-white"
         }
       `}>
+        {/*Badge */}
         {isCurrent && (
-          <span className="
-            inline-flex
-            rounded-full
-            bg-emerald-100
-            px-2 py-0.5
-            text-[11px]
-            font-medium
-            text-emerald-700
-          ">
-            Actual
-          </span>
+          <div className="mb-0 flex justify-end">
+            <span className="
+              inline-flex
+              rounded-full
+              border-emerald-300
+              bg-emerald-50
+              px-2 py-1
+              text-xs
+              font-medium
+              text-emerald-700
+            ">
+              Actual
+            </span>
+          </div>
         )}
-        <p className="text-base font-semibold text-slate-900">
+        <p className="text-lg font-semibold text-slate-900">
           {event.title}
         </p>
 
-        <p className="mt-2 text-sm font-medium text-slate-500">
+        <p className="mt-1 text-sm text-slate-500">
+          {eventDescriptions[event.type]}
+        </p>
+
+        <p className="mt-2 text-sm text-slate-500">
           {formatServiceTime(event.timestamp)}
         </p>
 
-        <p className="mt-1 text-sm text-slate-400">
-          {eventDescriptions[event.type]}
-        </p>
       </div>
     </div>
   )
