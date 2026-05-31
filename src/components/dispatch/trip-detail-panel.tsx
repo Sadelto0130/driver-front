@@ -11,6 +11,7 @@ import { Trip } from "@/types/trip";
 import { formatServiceTime, getWaitingTime } from "@/lib/date";
 import { getStatusDescription } from "@/lib/trip-status";
 import { TripHistorySheet } from "./history/trip-history-sheet";
+import { AssignDriverSheet } from "./assign-driver-sheet";
 
 interface Props {
   trip: Trip;
@@ -160,18 +161,7 @@ export function TripDetailPanel({ trip, onClose }: Props) {
 
       <div className="border-t border-slate-100 p-6">
         <div className="space-y-3">
-          <button className="
-            w-full 
-            rounded-2xl 
-            bg-blue-600 
-            px-4 py-3 
-            font-medium 
-            text-white 
-            transition-colors 
-            hover:bg-blue-700
-          ">
-            Asignar conductor
-          </button>
+          <AssignDriverSheet trip={trip} />
 
           <TripHistorySheet trip={trip} />
         </div>
