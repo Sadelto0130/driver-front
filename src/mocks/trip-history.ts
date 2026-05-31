@@ -42,19 +42,21 @@ const HISTORY_STEPS = {
 },
 } as const;
 
-const offsets = [
-  0,
-  2,
-  5,
-  11,
-  28,
-];
+const statusOffsets = {
+  PENDING: [0],
+  MATCHING: [0, 3],
+  ASSIGNED: [0, 4, 11],
+  ACTIVE: [0, 4, 11, 20],
+  COMPLETED: [0, 4, 11, 20, 32],
+} as const;
 
 export const buildTripHistory = (
   requestedAt: string,
   status: Trip["status"]
 ): TripHistoryItem[] => {
   const start = new Date(requestedAt).getTime();
+
+  const now = Date.now()
 
   const timeline = [
     HISTORY_STEPS.CREATED,
@@ -63,7 +65,7 @@ export const buildTripHistory = (
     HISTORY_STEPS.ACTIVE,
     HISTORY_STEPS.COMPLETED,
   ];
-
+  
   const statusIndex = {
     PENDING: 0,
     MATCHING: 1,
@@ -72,10 +74,18 @@ export const buildTripHistory = (
     COMPLETED: 4,
   }[status];
 
-  return timeline.slice(0, statusIndex + 1).map((event, index) => ({
-    id: String(index + 1),
-    type: event.type,
-    title: event.title,
-    timestamp: new Date(start + offsets[index] * 60 * 1000).toISOString(),
-  }));
+  const events = timeline.slice(0, statusIndex + 1)
+  
+  const offsets = statusOffsets[status]
+
+  return events.map((event, index) => {
+    const eventTime = start + offsets[index] * 60 * 1000
+
+    return {
+      id: String(index + 1),
+      type: event.type,
+      title: event.title,
+      timestamp: new Date(Math.min(eventTime, now)).toISOString(),
+    }
+  });
 };

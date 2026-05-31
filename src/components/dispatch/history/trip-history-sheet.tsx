@@ -11,6 +11,7 @@ import {
 import { buildTripHistory } from "@/mocks/trip-history"
 import { Trip } from "@/types/trip"
 import { TripHistoryTimeLine } from "./trip-history-timeline"
+import { getWaitingTime } from "@/lib/date"
 
 interface Props {
   trip: Trip
@@ -23,6 +24,8 @@ export function TripHistorySheet({
     trip.requestedAt,
     trip.status
   )
+
+  const lastEvent = history[history.length - 1]
 
   return (
     <Sheet>
@@ -44,31 +47,36 @@ export function TripHistorySheet({
           Historial del servicio
         </Button>
       </SheetTrigger>
-{/*TODO: cambio aqui w-[560px] y sm:max-w-[560px]*/}
+
       <SheetContent 
         side="right"
         className="
-          w-560
+          w-[640px]
           border
           border-slate-200
           bg-slate-200
           p-0 
-          sm:max-w-560
+          sm:max-w-[640px]
         "
       >
         <div className="flex h-full flex-col">
-          <SheetHeader className="border-b border-slate-100 bg-slate-50/50 px-8 p-6">          
+          <SheetHeader className="border-b border-slate-100 bg-white px-8 p-6">          
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.15em] text-slate-400">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-400">
                 Actividad
               </p>
 
-              <SheetTitle className="mt-2 text-2xl font-bold tracking-tight">
-                Servicio #{trip.serviceNumber}
+              <SheetTitle className="mt-2 text-4xl font-bold tracking-tight text-slate-950">
+                #{trip.serviceNumber}
               </SheetTitle>
               
               <p className="mt-1 text-sm text-slate-500">
                 {history.length} eventos registrados
+              </p>
+
+              <p className="mt-2 text-sm text-slate-500">
+                Última actualización hace{" "}
+                {getWaitingTime(lastEvent.timestamp)}
               </p>
             </div>
           </SheetHeader>

@@ -24,15 +24,6 @@ const eventColors: Record<
   CANCELLED: "bg-red-500",
 };
 
-const eventDescriptions = {
-  CREATED: "Solicitud registrada",
-  MATCHING: "Buscando conductor disponible",
-  ASSIGNED: "Conductor asignado",
-  ACTIVE: "Servicio en curso",
-  COMPLETED: "Servicio completado",
-  CANCELLED: "Servicio cancelado",
-};
-
 export function TripHistoryItem({
   event,  
   last,
@@ -94,7 +85,7 @@ export function TripHistoryItem({
               font-medium
               text-emerald-700
             ">
-              Actual
+              Último evento
             </span>
           </div>
         )}
@@ -103,7 +94,7 @@ export function TripHistoryItem({
         </p>
 
         <p className="mt-1 text-sm text-slate-500">
-          {eventDescriptions[event.type]}
+          {getEventDescription(event)}
         </p>
 
         <p className="mt-2 text-sm text-slate-500">
@@ -113,4 +104,29 @@ export function TripHistoryItem({
       </div>
     </div>
   )
+}
+
+function getEventDescription(event: HistoryItem) {
+  switch(event.type) {
+    case "CREATED":
+      return "La solicitud fue registrada en el sistema"
+    
+    case "MATCHING":
+      return "Se inció la búsqueda de un conductor"
+
+    case "ASSIGNED":
+      return "Conductor fue asignado al servicio"
+
+    case "ACTIVE":
+      return "Conductor inicio el servicio"
+
+    case "COMPLETED":
+      return "El servicio fue completado exitosamente"
+
+    case "CANCELLED":
+      return "El servicio fue cancelado"
+    
+    default:
+      return ""
+  }
 }

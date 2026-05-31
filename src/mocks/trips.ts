@@ -5,6 +5,31 @@ const now = new Date();
 const createRequestedAt = (minutesAgo: number) =>
   new Date(now.getTime() - minutesAgo * 60 * 1000).toISOString();
 
+const STATUS_TIME_RANGES = {
+  PENDING: [1, 8],
+  MATCHING: [5, 15],
+  ASSIGNED: [12, 25],
+  ACTIVE: [20, 45],
+  COMPLETED: [35, 90],
+} as const;
+
+const createRequestedAtByStatus = (
+  status: Trip["status"]
+) => {
+  const [min, max] =
+    STATUS_TIME_RANGES[status];
+
+  const minutesAgo =
+    Math.floor(
+      Math.random() *
+        (max - min + 1)
+    ) + min;
+
+  return createRequestedAt(
+    minutesAgo
+  );
+};
+
 export const mockTrips: Trip[] = [
   {
     id: "1",
@@ -16,7 +41,7 @@ export const mockTrips: Trip[] = [
     destination: "Aeropuerto",
     observations: "Viaja con mascota",
     status: "PENDING",
-    requestedAt: createRequestedAt(2),
+    requestedAt: createRequestedAtByStatus("PENDING"),
   },
   {
     id: "2",
@@ -29,7 +54,7 @@ export const mockTrips: Trip[] = [
     driverName: "Carlos Ruiz",
     observations: "Cliente corporativo",
     status: "ASSIGNED",
-    requestedAt: createRequestedAt(4),
+    requestedAt: createRequestedAtByStatus("ASSIGNED"),
   },
   {
     id: "3",
@@ -42,7 +67,7 @@ export const mockTrips: Trip[] = [
     driverName: "Juan López",
     observations: "",
     status: "ACTIVE",
-    requestedAt: createRequestedAt(5),
+    requestedAt: createRequestedAtByStatus("ACTIVE"),
   },
   {
     id: "4",
@@ -54,7 +79,7 @@ export const mockTrips: Trip[] = [
     destination: "Microcentro",
     observations: "",
     status: "MATCHING",
-    requestedAt: createRequestedAt(6),
+    requestedAt: createRequestedAtByStatus("MATCHING"),
   },
   {
     id: "5",
@@ -66,7 +91,7 @@ export const mockTrips: Trip[] = [
     destination: "Once",
     observations: "",
     status: "COMPLETED",
-    requestedAt: createRequestedAt(8),
+    requestedAt: createRequestedAtByStatus("COMPLETED"),
   },
   {
     id: "6",
@@ -78,7 +103,7 @@ export const mockTrips: Trip[] = [
     destination: "Puerto Madero",
     observations: "Equipaje grande",
     status: "ACTIVE",
-    requestedAt: createRequestedAt(9),
+    requestedAt: createRequestedAtByStatus("ACTIVE"),
   },
   {
     id: "7",
@@ -91,7 +116,7 @@ export const mockTrips: Trip[] = [
     driverName: "Miguel Castro",
     observations: "",
     status: "COMPLETED",
-    requestedAt: createRequestedAt(11),
+    requestedAt: createRequestedAtByStatus("COMPLETED"),
   },
   {
     id: "8",
@@ -103,7 +128,7 @@ export const mockTrips: Trip[] = [
     destination: "Palermo",
     observations: "",
     status: "PENDING",
-    requestedAt: createRequestedAt(11),
+    requestedAt: createRequestedAtByStatus("PENDING"),
   },
   {
     id: "9",
@@ -115,7 +140,7 @@ export const mockTrips: Trip[] = [
     destination: "Constitución",
     observations: "Pago con empresa",
     status: "MATCHING",
-    requestedAt: createRequestedAt(13),
+    requestedAt: createRequestedAtByStatus("MATCHING"),
   },
   {
     id: "10",
@@ -128,7 +153,7 @@ export const mockTrips: Trip[] = [
     driverName: "Fernando Díaz",
     observations: "",
     status: "ASSIGNED",
-    requestedAt: createRequestedAt(14),
+    requestedAt: createRequestedAtByStatus("ASSIGNED"),
   },
   {
     id: "11",
@@ -140,7 +165,7 @@ export const mockTrips: Trip[] = [
     destination: "Recoleta",
     observations: "",
     status: "ACTIVE",
-    requestedAt: createRequestedAt(16),
+    requestedAt: createRequestedAtByStatus("ACTIVE"),
   },
   {
     id: "12",
@@ -152,7 +177,7 @@ export const mockTrips: Trip[] = [
     destination: "Puerto Madero",
     observations: "Viaje programado",
     status: "ACTIVE",
-    requestedAt: createRequestedAt(18),
+    requestedAt: createRequestedAtByStatus("ACTIVE"),
   },
   {
     id: "13",
@@ -164,7 +189,7 @@ export const mockTrips: Trip[] = [
     destination: "Aeropuerto",
     observations: "",
     status: "PENDING",
-    requestedAt: createRequestedAt(20),
+    requestedAt: createRequestedAtByStatus("PENDING"),
   },
   {
     id: "14",
@@ -177,7 +202,7 @@ export const mockTrips: Trip[] = [
     driverName: "José Pérez",
     observations: "",
     status: "MATCHING",
-    requestedAt: createRequestedAt(22),
+    requestedAt: createRequestedAtByStatus("MATCHING"),
   },
   {
     id: "15",
@@ -189,7 +214,7 @@ export const mockTrips: Trip[] = [
     destination: "Centro",
     observations: "",
     status: "MATCHING",
-    requestedAt: createRequestedAt(24),
+    requestedAt: createRequestedAtByStatus("MATCHING"),
   },
   {
     id: "16",
@@ -202,7 +227,7 @@ export const mockTrips: Trip[] = [
     driverName: "Ricardo Gómez",
     observations: "Lleva bicicleta",
     status: "ACTIVE",
-    requestedAt: createRequestedAt(25),
+    requestedAt: createRequestedAtByStatus("ACTIVE"),
   },
   {
     id: "17",
@@ -214,7 +239,7 @@ export const mockTrips: Trip[] = [
     destination: "San Telmo",
     observations: "",
     status: "COMPLETED",
-    requestedAt: createRequestedAt(28),
+    requestedAt: createRequestedAtByStatus("COMPLETED"),
   },
   {
     id: "18",
@@ -226,7 +251,7 @@ export const mockTrips: Trip[] = [
     destination: "Belgrano",
     observations: "",
     status: "PENDING",
-    requestedAt: createRequestedAt(29),
+    requestedAt: createRequestedAtByStatus("PENDING"),
   },
   {
     id: "19",
@@ -239,7 +264,7 @@ export const mockTrips: Trip[] = [
     driverName: "Sergio Torres",
     observations: "",
     status: "ACTIVE",
-    requestedAt: createRequestedAt(35),
+    requestedAt: createRequestedAtByStatus("ACTIVE"),
   },
   {
     id: "20",
@@ -252,6 +277,6 @@ export const mockTrips: Trip[] = [
     driverName: "Mario Fernández",
     observations: "Vuelo demorado 20 min",
     status: "ASSIGNED",
-    requestedAt: createRequestedAt(36),
+    requestedAt: createRequestedAtByStatus("ASSIGNED"),
   },
 ];
