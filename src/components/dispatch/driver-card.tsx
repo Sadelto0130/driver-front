@@ -4,6 +4,8 @@ import { Driver } from "@/types/driver"
 
 interface Props {
   driver: Driver
+  assigning?: boolean
+  isAssigning?: boolean
   onAssign?: (driver: Driver) => void
 }
 
@@ -21,97 +23,78 @@ const statusStyles = {
 
 export function DriverCard({
   driver,
+  assigning = false,
+  isAssigning,
   onAssign
 }: Props) {
   const canAssign = driver.status === "AVAILABLE"
 
   return (
-    <div className="
+    <div className={`
       rounded-3xl
-      border border-slate-200
-      bg-white
-      p-5
+      border 
+      px-2 py-1
       shadow-sm
       hover:shadow-md
       transition-shadow
-    ">
+      ${assigning 
+          ? "border-blue-500 bg-blue-50" 
+          : "border-slate-200 bg-white" 
+        }      
+    `}>
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-semibold text-slate-900">
+        <h3 className="text-lg font-semibold text-slate-900">
           {driver.name}
         </h3>
 
         <span className={`
           rounded-full
-          px-3 py-1
-          text-xs font-medium
+          px-3 py-0.5
+          text-[11px] font-medium
           ${statusStyles[driver.status]} 
         `}>
           {statusMap[driver.status]}
         </span>
       </div>
 
-      <div className="py-5">
+      <div className="mt-0">
         <p className="
-          text-4xl
+          text-lg
           font-bold
           tracking-tight
           text-slate-900
         ">
-          {driver.distanceKm} km
-        </p>
-
-        <p className="
-          mt-1
-          text-xs
-          uppercase
-          tracking-[0.15em]
-          text-slate-400
-        ">
-          del origen
+          {driver.distanceKm} km{" "}
+          <span className="text-sm text-slate-500">del origen</span>
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl bg-slate-50 p-3">
-          <p className="text-xl font-blue">
-            {driver.tripsToday}
-          </p>
-
-          <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">
-            Viajes
-          </p>
-        </div>
-
-        <div className="rounded-2xl bg-slate-50 p-3">
-          <p className="text-xl font-bold">
-            ${driver.earningsToday.toLocaleString("es-AR")}
-          </p>
-
-          <p className="mt-1 text-xs uppercase tracking-wide text-slate 500">
-            Generado
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-5 flex justify-end">
+      <div className="mt-0 flex items-center justify-between">
+        <p className="text-sm text-slate-600">
+          {driver.tripsToday} viajes hoy · ${driver.earningsToday.toLocaleString("es-AR")}
+        </p>
+        
         {canAssign ? (
           <button
             onClick={() => onAssign?.(driver)}
-            className="
-              h-11
-              rounded-2xl
-              bg-blue-600
-              px-4 py-2
-              text-sm font-medium
-              text-white
+            disabled={isAssigning}
+            className={`
+              h-8
+              rounded-xl
+              px-3
+              text-xs font-medium
               transition-colors
-              hover:bg-blue-700
-            "
+              ${
+                assigning
+                  ? "bg-blue-600 text-white"
+                  : "bg-blue-600 text-white hover:bg-blue-700"
+              }    
+            `}
           >
-            Asignar
+            {assigning ? "Asignando..." : "Asignar"}
           </button>
         ) : (
-          <span className="text-sm font-medium text-slate-400">
+          <span className="text-xs font-medium text-slate-400">
             No disponible
           </span>
         )}

@@ -9,12 +9,14 @@ import { EmptySelection } from "./empty-selection";
 import { WorkQueueRow } from "./work-queue-row";
 import { TripDetailPanel } from "./trip-detail-panel";
 import { WorkQueueToolbar } from "./work-queue-toolbar";
-import { WorkQueueFilter } from "@/types/work-queue";
+import { WorkQueueFilter, WorkQueueSort } from "@/types/work-queue";
  
 export function WorkQueue() {
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
 
   const [filter, setFilter] = useState<WorkQueueFilter>('ALL')
+
+  const [sortBy, setSortBy] = useState<WorkQueueSort>("REQUESTED_AT_DESC")
 
   const stats = {
     total: mockTrips.length,
@@ -40,17 +42,50 @@ export function WorkQueue() {
     ).length,
   };
 
-  const sortedTrips = [...mockTrips].sort(
+  const sortTrips = [...mockTrips].sort(
     (a, b) => 
       new Date(b.requestedAt).getTime() -
       new Date(a.requestedAt).getTime()
   )
 
   const filteredTrips = filter === "ALL"
-    ? sortedTrips
-    : sortedTrips.filter(
+    ? sortTrips
+    : sortTrips.filter(
       (trip) => trip.status === filter
     )
+
+  const sortedTrips = [...filteredTrips].sort(
+    (a, b) => {
+      switch(sortBy) {
+        case "REQUESTED_AT_DESC":
+          return (
+            new Date(b.requestedAt).getTime() -
+            new Date(a.requestedAt).getTime()
+          )
+        
+        case "REQUESTED_AT_ASC":
+          return (
+            new Date(a.requestedAt).getTime() -
+            new Date(b.requestedAt).getTime()
+          )
+        
+        case "SERVICE_NUMBER_ASC":
+          return (
+            Number(a.serviceNumber) -
+            Number(b.serviceNumber)
+          )
+        
+        case "SERVICE_NUMBER_DESC":
+          return (
+            Number(b.serviceNumber) -
+            Number(a.serviceNumber)
+          )
+        
+        default: 
+          return 0
+      }
+    }
+  )
 
   return (
     <div
@@ -60,7 +95,7 @@ export function WorkQueue() {
         min-h-0
         overflow-hidden
         gap-6
-        xl:grid-cols-[1fr_420px]
+        xl:grid-cols-[1fr_320px]
       "
     >
       <div
@@ -90,6 +125,8 @@ export function WorkQueue() {
         <WorkQueueToolbar 
           filter={filter}
           onFilterChange={setFilter}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
           stats={stats}
         />
 
@@ -115,7 +152,7 @@ export function WorkQueue() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {filteredTrips.map((trip) => (
+          {sortedTrips.map((trip) => (
             <WorkQueueRow
               key={trip.id}
               trip={trip}

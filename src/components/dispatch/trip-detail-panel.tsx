@@ -159,7 +159,7 @@ export function TripDetailPanel({ trip, onClose }: Props) {
         </div>        
       </div>
 
-      <div className="border-t border-slate-100 p-6">
+      <div className="border-slate-100 p-6">
         <div className="space-y-3">
           <AssignDriverSheet trip={trip} />
 

@@ -1,6 +1,18 @@
 "use client";
 
-import { WorkQueueFilter } from "@/types/work-queue";
+import { 
+  WorkQueueFilter, 
+  WorkQueueSort 
+} from "@/types/work-queue";
+import { ArrowUpDown } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
 
 type FilterColor =
   | "slate"
@@ -21,6 +33,10 @@ interface Props {
   onFilterChange: (
     filter: WorkQueueFilter
   ) => void;
+  sortBy: WorkQueueSort;
+  onSortChange: (
+    sort: WorkQueueSort
+  ) => void;
   stats: {
     total: number
     pending: number
@@ -34,6 +50,8 @@ interface Props {
 export function WorkQueueToolbar({
   filter,
   onFilterChange,
+  sortBy,
+  onSortChange,
   stats
 }: Props) {
   const filters: FilterItem[] = [
@@ -160,7 +178,66 @@ export function WorkQueueToolbar({
             </span>
           </button>
         )
-    })}
+      })}
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className={`
+            flex h-9 w-9
+            items-center
+            justify-center
+            rounded-xl
+            border 
+            transition-colors
+            hover:bg-slate-50
+            ${sortBy !== "REQUESTED_AT_DESC" 
+              ? "border-blue-200 bg-blue-50 text-blue-600"
+              : "border-slate-200 bg-white text-slate-500"
+            }
+          `}>
+            <ArrowUpDown className="h-4 w-4"/>
+          </button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end" className="w-56 rounded-2xl">
+          <div className="px-2 py-1.5">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              Ordenar servicios
+            </p>
+          </div>
+
+          <DropdownMenuSeparator />
+
+
+          <DropdownMenuItem
+            onClick={() => onSortChange("REQUESTED_AT_DESC")}
+            className="cursor-pointer"
+          >
+            Más recientes
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onSortChange("REQUESTED_AT_ASC")}
+            className="cursor-pointer"
+          >
+            Más antiguos
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onSortChange("SERVICE_NUMBER_ASC")}
+            className="cursor-pointer"
+          >
+            Servicio ↑
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onSortChange("SERVICE_NUMBER_DESC")}
+            className="cursor-pointer"
+          >
+            Servicio ↓
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
