@@ -43,3 +43,12 @@ export function getWaitingTime( requestedAt: string ) {
 
   return `${hours} h ${minutes} min`
 }
+
+export function getWaitingMinutes(requestedAt: string) {
+  return Math.floor(
+    (Date.now() -
+      new Date(requestedAt).getTime()) /
+      1000 /
+      60,
+  );
+}

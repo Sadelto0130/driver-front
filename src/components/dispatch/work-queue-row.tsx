@@ -1,12 +1,14 @@
 "use client";
 
-import { formatServiceDate } from "@/lib/date";
+import { formatServiceDate, getWaitingMinutes } from "@/lib/date";
 import { cn } from "@/lib/utils";
+import { getWaitingPriority, getWaitingPriorityClasses, shouldShowWaitingPriority } from "@/lib/waiting-priority";
 import { Trip } from "@/types/trip";
 
 interface Props {
   trip: Trip;
   selected: boolean;
+  highlighted: boolean;
   onSelect: (trip: Trip) => void;
 }
 
@@ -26,13 +28,31 @@ const statusColorMap = {
   COMPLETED: "bg-slate-100 text-slate-700",
 };
 
-export function WorkQueueRow({ trip, selected, onSelect }: Props) {
+export function WorkQueueRow({ 
+  trip, 
+  selected,
+  highlighted, 
+  onSelect 
+}: Props) {
+  const showPriority = shouldShowWaitingPriority(trip)
+
+  const priority = showPriority 
+    ? getWaitingPriority(trip.requestedAt)
+    : null
+
+  const priorityStyles = priority
+    ? getWaitingPriorityClasses(priority)
+    : null
+
   return (
     <button
       onClick={() => onSelect(trip)}
       className={cn(
         "grid w-full grid-cols-[100px_120px_200px_160px_2fr_180px] items-center gap-4 border-b border-slate-100 px-4 py-4 text-left transition-all duration-200 hover:bg-slate-50",
-        selected && "border-l-4 border-l-blue-600 bg-blue-50/70 shadow-sm translate-x-1",
+        showPriority && "border-l-4",
+        showPriority && priorityStyles?.border,
+        highlighted && "bg-blue-100/80",
+        selected && "bg-blue-50/70 shadow-sm translate-x-1",
       )}
     >
       <span className="font-semibold text-slate-900">
@@ -58,9 +78,20 @@ export function WorkQueueRow({ trip, selected, onSelect }: Props) {
         <p className="text-sm text-slate-500">→ {trip.destination}</p>
       </div>
 
-      <span className="whitespace-nowrap text-sm">
-        {formatServiceDate(trip.requestedAt)}
-      </span>
+      <div className="flex flex-col items-end gap-1">
+        <span className="whitespace-nowrap text-sm">
+          {formatServiceDate(trip.requestedAt)}
+        </span>
+
+        {showPriority && (
+          <span className={cn(
+            "w-fit rounded-full border px-2 py-0.5 text-xs font-medium",
+            priorityStyles?.badge
+          )}>
+            Esperando {getWaitingMinutes(trip.requestedAt)} min
+          </span>
+        )}
+      </div>
     </button>
   );
 }

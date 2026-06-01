@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { mockTrips } from "@/mocks/trips";
+import { createMockTrips } from "@/mocks/trips";
 import { Trip } from "@/types/trip";
 
 import { EmptySelection } from "./empty-selection";
@@ -10,39 +10,65 @@ import { WorkQueueRow } from "./work-queue-row";
 import { TripDetailPanel } from "./trip-detail-panel";
 import { WorkQueueToolbar } from "./work-queue-toolbar";
 import { WorkQueueFilter, WorkQueueSort } from "@/types/work-queue";
+import { EmptyWorkQueue } from "./empty-work-queue";
+import { useTrips } from "@/hooks/use-trips";
  
 export function WorkQueue() {
-  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
+  const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+
+  const [highlightedTripIds, setHighlightedTripIds] = useState<string[]>([])
 
   const [filter, setFilter] = useState<WorkQueueFilter>('ALL')
 
   const [sortBy, setSortBy] = useState<WorkQueueSort>("REQUESTED_AT_DESC")
 
-  const stats = {
-    total: mockTrips.length,
+  const [trips, setTrips] = useState<Trip[]>([])
 
-    pending: mockTrips.filter(
+  const {data, isLoading, error} = useTrips()
+
+  console.log(data)
+  console.log(error)
+
+  let emptyState = null
+
+  const stats = {
+    total: trips.length,
+
+    pending: trips.filter(
       trip => trip.status === "PENDING"
     ).length,
 
-    matching: mockTrips.filter(
+    matching: trips.filter(
       trip => trip.status === "MATCHING"
     ).length,
 
-    assigned: mockTrips.filter(
+    assigned: trips.filter(
       trip => trip.status === "ASSIGNED"
     ).length,
 
-    active: mockTrips.filter(
+    active: trips.filter(
       trip => trip.status === "ACTIVE"
     ).length,
 
-    completed: mockTrips.filter(
+    completed: trips.filter(
       trip => trip.status === "COMPLETED"
     ).length,
   };
 
-  const sortTrips = [...mockTrips].sort(
+  const highlightTrips = (tripId: string) => {
+    setHighlightedTripIds(prev => [
+      ...prev,
+      tripId
+    ])
+
+    setTimeout(() => {
+      setHighlightedTripIds(prev =>
+        prev.filter(id => id !== tripId)
+      )
+    }, 3000)
+  }
+
+  const sortTrips = [...trips].sort(
     (a, b) => 
       new Date(b.requestedAt).getTime() -
       new Date(a.requestedAt).getTime()
@@ -86,6 +112,29 @@ export function WorkQueue() {
       }
     }
   )
+
+  const selectedTrip = sortedTrips.find(
+    trip => trip.id === selectedTripId
+  ) ?? null
+
+  if(trips.length === 0) {
+    emptyState = {
+      title: "No hay servicios",
+      description: "Todavia no existen servicios para mostrar"
+    }
+  } else if (
+    filter !== "ALL" &&
+    filteredTrips.length === 0
+  ) {
+    emptyState = {
+      title: "Sin coincidencias",
+      description: "Prueba cambiando los filtros"
+    }
+  }
+
+  useEffect(() => {
+    setTrips(createMockTrips())
+  }, [])
 
   return (
     <div
@@ -152,15 +201,21 @@ export function WorkQueue() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {sortedTrips.map((trip) => (
-            <WorkQueueRow
-              key={trip.id}
-              trip={trip}
-              selected={
-                selectedTrip?.id === trip.id
-              }
-              onSelect={setSelectedTrip}
+          {emptyState ? (
+            <EmptyWorkQueue 
+              title={emptyState.title}
+              description={emptyState.description}
             />
+          ) : (
+            sortedTrips.map((trip) => (
+              <WorkQueueRow
+                key={trip.id}
+                trip={trip}
+                selected={selectedTrip?.id === trip.id}
+                highlighted={highlightedTripIds.includes(trip.id)}
+                onSelect={(trip) => setSelectedTripId(trip.id)}
+              />
+          )
           ))}
         </div>
       </div>
@@ -180,11 +235,11 @@ export function WorkQueue() {
           <TripDetailPanel
             trip={selectedTrip}
             onClose={() =>
-              setSelectedTrip(null)
+              setSelectedTripId(null)
             }
           />
         ) : (
-          <EmptySelection />
+          <EmptySelection stats={stats}/>
         )}
       </div>
     </div>
