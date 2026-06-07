@@ -12,6 +12,7 @@ import { WorkQueueToolbar } from "./work-queue-toolbar";
 import { WorkQueueFilter, WorkQueueSort } from "@/types/work-queue";
 import { EmptyWorkQueue } from "./empty-work-queue";
 import { useTrips } from "@/hooks/use-trips";
+import { CreateTripSheet } from "./create-trip-sheet";
  
 export function WorkQueue() {
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
@@ -165,6 +166,7 @@ export function WorkQueue() {
               </h2>
             </div>
 
+            <CreateTripSheet />
             <div className="rounded-full bg-red-50 px-3 py-1 text-sm font-medium text-red-700">
               {stats.pending} pendientes de asignacion
             </div>

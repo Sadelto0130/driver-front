@@ -48,7 +48,7 @@ export function WorkQueueRow({
     <button
       onClick={() => onSelect(trip)}
       className={cn(
-        "grid w-full grid-cols-[100px_120px_200px_160px_2fr_180px] items-center gap-4 border-b border-slate-100 px-4 py-4 text-left transition-all duration-200 hover:bg-slate-50",
+        "grid w-full grid-cols-[100px_120px_200px_160px_2fr_180px] items-center gap-4 border-b border-slate-100 px-4 py-2 text-left transition-all duration-200 hover:bg-slate-50",
         showPriority && "border-l-4",
         showPriority && priorityStyles?.border,
         highlighted && "bg-blue-100/80",
