@@ -4,7 +4,9 @@ import {
   X,
   Phone,
   Mail,
-  Clock3 
+  Clock3, 
+  History,
+  Ban
 } from "lucide-react";
 
 import { Trip } from "@/types/trip";
@@ -12,6 +14,8 @@ import { formatServiceTime, getWaitingTime } from "@/lib/date";
 import { getStatusDescription } from "@/lib/trip-status";
 import { TripHistorySheet } from "./history/trip-history-sheet";
 import { AssignDriverSheet } from "./assign-driver-sheet";
+import { Button } from "../ui/button";
+import { useTripActions } from "@/hooks/use-trip-actions";
 
 interface Props {
   trip: Trip;
@@ -27,6 +31,24 @@ const statusMap = {
 };
 
 export function TripDetailPanel({ trip, onClose }: Props) {
+
+  const{
+    handleContactPassenger,
+    handleCanceltrip,    
+  } = useTripActions()
+
+  const canContact = Boolean(trip.passengerPhone)
+
+  const canAssignDriver =  
+    trip.status === "PENDING" ||
+    trip.status === "ASSIGNED" ||
+    trip.status === "MATCHING"
+
+  const canCancel = 
+    trip.status === "PENDING" ||
+    trip.status === "ASSIGNED" ||
+    trip.status === "MATCHING"
+
   return (
     <div
       className="
@@ -160,12 +182,52 @@ export function TripDetailPanel({ trip, onClose }: Props) {
       </div>
 
       <div className="border-slate-100 p-6">
-        <div className="space-y-3">
-          <AssignDriverSheet trip={trip} />
 
-          <TripHistorySheet trip={trip} />
-        </div>
+        <div className="space-y-3">
+          {canAssignDriver && (
+            <AssignDriverSheet trip={trip} />
+          )}
+
+          <div className="flex items-centner justify-center gap-2">
+            <TripHistorySheet 
+              trip={trip} 
+              trigger={
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="rounded-xl"
+                >
+                  <History className="h-4 w-4" />
+                </Button>
+              }
+            />      
+
+            {/* Contactar*/}
+            <Button
+              size="icon"
+              variant="outline"              
+              className="rounded-xl"
+              onClick={() => handleContactPassenger(trip)}
+              disabled={!canContact}
+            >
+              <Phone className="h-4 w-4" />
+            </Button>             
+
+            {/* Cancelar */}
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={() => handleCanceltrip(trip)}
+              disabled={!canCancel}
+              className="rounded-xl"
+            >
+              <Ban className="h-4 w-4" />
+            </Button>  
+          </div>
+        </div> 
+
       </div>
+
     </div>
   );
 } 

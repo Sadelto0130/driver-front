@@ -19,6 +19,16 @@ interface Props {
   trip: Trip
 }
 
+function getAssignButtonLabel(status: Trip["status"]) {
+  switch(status) {
+    case "ASSIGNED":
+      return "Reasignar conductor"
+    
+    default:
+      return "Asignar conductor"
+  }
+}
+
 export function AssignDriverSheet({
   trip
 }: Props) {
@@ -49,17 +59,28 @@ export function AssignDriverSheet({
       )      
   }, [search])
 
-  const handleAssign = async (driver: Driver) => {
+  const handleDriverSelection = async (driver: Driver) => {
     setAssigningDriverId(driver.id)
 
-    setTimeout(() => {
-      setAssigningDriverId(null)
-    }, 2000)
-    try {
-      //TODO: dispatchApi.assignDriver()
-    } catch (error) {
-      setAssigningDriverId(null)
+    const isReassignment = trip.status === "ASSIGNED";
+
+    if(isReassignment) {
+      setTimeout(() => {
+        setAssigningDriverId(null)
+      }, 2000) 
+
+      // dispatchApi.reassignDriver()
+    } else {
+      setTimeout(() => {
+        setAssigningDriverId(null)
+      }, 2000)
+      try {
+        //TODO: dispatchApi.assignDriver()
+      } catch (error) {
+        setAssigningDriverId(null)
+      }
     }
+
   }
 
   return (
@@ -75,7 +96,7 @@ export function AssignDriverSheet({
           transition-colors
           hover:bg-blue-700
         '>
-          Asignar conductor
+          {getAssignButtonLabel(trip.status)}
         </button>
       </SheetTrigger>
 
@@ -98,7 +119,7 @@ export function AssignDriverSheet({
               tracking-[0.15em]
               text-slate-700
             '>
-              Asignar conductor
+              {getAssignButtonLabel(trip.status)}
             </SheetTitle>
 
             <p className='text-xl font-bold text-slate-900'>
@@ -148,7 +169,7 @@ export function AssignDriverSheet({
                 <DriverCard 
                   key={driver.id}
                   driver={driver}
-                  onAssign={handleAssign}    
+                  onAssign={handleDriverSelection}    
                   assigning={assigningDriverId === driver.id}     
                   isAssigning={assigningDriverId !== null}         
                 />

@@ -15,10 +15,12 @@ import { getWaitingTime } from "@/lib/date"
 
 interface Props {
   trip: Trip
+  trigger?: React.ReactNode
 }
 
 export function TripHistorySheet({
-  trip
+  trip,
+  trigger
 }: Props) {
   const history = buildTripHistory(
     trip.requestedAt,
@@ -30,22 +32,24 @@ export function TripHistorySheet({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          className="
-            h-12
-            w-full
-            rounded-2xl
-            border-slate-200
-            bg-white-
-            font-medium
-            text-slate-700
-            shadow-sm
-            hover:bg-slate-300
-          "
-        >
-          Historial del servicio
-        </Button>
+        {trigger ?? (
+          <Button
+            variant="outline"
+            className="
+              h-12
+              w-full
+              rounded-2xl
+              border-slate-200
+              bg-white-
+              font-medium
+              text-slate-700
+              shadow-sm
+              hover:bg-slate-300
+            "
+          >
+            Historial del servicio
+          </Button>
+        )}
       </SheetTrigger>
 
       <SheetContent 
