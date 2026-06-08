@@ -1,4 +1,4 @@
-import { DriverCard } from "@/components/dispatch/driver-card";
+import { DriverCard } from "@/app/(operations)/components/driver-card";
 import { mockDrivers } from "@/mocks/driver";
 
 export default function DriversPage() {

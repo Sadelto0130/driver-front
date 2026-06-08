@@ -11,7 +11,7 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
   return (
       <DashboardShell>
-        <h1>Hola layout</h1>
+        {children}
       </DashboardShell>
   );
 }

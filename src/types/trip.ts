@@ -9,6 +9,9 @@ export interface Trip {
   id: string
   serviceNumber: string
 
+  companyId: string
+  companyName: string
+
   passengerName: string
   passengerPhone: string
   passengerEmail: string

@@ -11,7 +11,7 @@ import { mockDrivers } from '@/mocks/driver'
 import { Driver } from '@/types/driver'
 import { Trip } from '@/types/trip'
 import { useMemo, useState } from 'react'
-import { Input } from '../ui/input'
+import { Input } from '../../../components/ui/input'
 import { DriverCard } from './driver-card'
 import { Search } from 'lucide-react'
 

@@ -17,6 +17,7 @@ interface Props {
   placeholder: string
   searchPlaceholder?: string
   emptyMessage?: string
+  disabled?: boolean
   options: SearchSelectOption[]
   onChange: (value: string) => void
 }
@@ -26,6 +27,7 @@ export function SearchSelect({
   placeholder,
   searchPlaceholder,
   emptyMessage,
+  disabled,
   options,
   onChange
 }: Props) {
@@ -43,6 +45,7 @@ export function SearchSelect({
           variant="outline"
           role="combobox"
           className="h-11 w-full justify-between rounded-xl border-slate-200 font-normal"
+          disabled={disabled}
         >
           {selectedOption?.label ?? placeholder}
 
@@ -50,8 +53,17 @@ export function SearchSelect({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-        <Command>
+      <PopoverContent 
+        className="
+          w-(--radix-popover-trigger-width)
+          border
+          border-slate-200
+          bg-white
+          p-0
+          shadow-xl
+        "
+      >
+        <Command className="bg-white">
           <CommandInput placeholder={searchPlaceholder ?? "Buscar..."}/>
 
           <CommandEmpty>

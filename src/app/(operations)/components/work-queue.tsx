@@ -13,8 +13,12 @@ import { WorkQueueFilter, WorkQueueSort } from "@/types/work-queue";
 import { EmptyWorkQueue } from "./empty-work-queue";
 import { useTrips } from "@/hooks/use-trips";
 import { CreateTripSheet } from "./create-trip-sheet";
+import { useDispatchContext } from "@/context/dispatch-context";
+import { normalizeSearch } from "@/lib/normalize-search";
  
 export function WorkQueue() {
+  const {search, searchScope} = useDispatchContext()
+ 
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
 
   const [highlightedTripIds, setHighlightedTripIds] = useState<string[]>([])
@@ -26,9 +30,6 @@ export function WorkQueue() {
   const [trips, setTrips] = useState<Trip[]>([])
 
   const {data, isLoading, error} = useTrips()
-
-  console.log(data)
-  console.log(error)
 
   let emptyState = null
 
@@ -81,7 +82,46 @@ export function WorkQueue() {
       (trip) => trip.status === filter
     )
 
-  const sortedTrips = [...filteredTrips].sort(
+  const searchTerm = normalizeSearch(search)
+
+  const searchedTrips = !searchTerm
+    ? filteredTrips
+    : filteredTrips.filter(
+      (trip) => {
+        if(!trip.driverName) {trip.driverName = ""}
+        switch(searchScope) {
+          case "SERVICES":
+            return normalizeSearch(trip.serviceNumber).includes(searchTerm)
+          
+          case "PASSENGERS":
+            return(
+              normalizeSearch(trip.passengerName).includes(searchTerm) ||
+              normalizeSearch(trip.passengerPhone).includes(searchTerm)
+            )
+          
+          case "DRIVERS":            
+            return(
+              normalizeSearch(trip.driverName).includes(searchTerm) ?? false
+            )
+
+          case "COMPANIES":
+            return normalizeSearch(trip.companyName).includes(searchTerm)
+
+          default:
+            return(
+              normalizeSearch(trip.serviceNumber).includes(searchTerm) ||
+              normalizeSearch(trip.companyName).includes(searchTerm) ||
+              normalizeSearch(trip.passengerName).includes(searchTerm) ||
+              normalizeSearch(trip.passengerPhone).includes(searchTerm) ||
+              normalizeSearch(trip.driverName)?.includes(searchTerm) ||
+              normalizeSearch(trip.origin).includes(searchTerm) ||
+              normalizeSearch(trip.destination).includes(searchTerm)
+            )
+        }
+      }
+    )
+
+  const sortedTrips = [...searchedTrips].sort(
     (a, b) => {
       switch(sortBy) {
         case "REQUESTED_AT_DESC":
@@ -136,7 +176,7 @@ export function WorkQueue() {
   useEffect(() => {
     setTrips(createMockTrips())
   }, [])
-
+console.log("WorkQueue mounted");
   return (
     <div
       className="
@@ -145,7 +185,7 @@ export function WorkQueue() {
         min-h-0
         overflow-hidden
         gap-6
-        xl:grid-cols-[1fr_320px]
+        xl:grid-cols-[1fr_300px]
       "
     >
       <div
@@ -183,7 +223,7 @@ export function WorkQueue() {
 
         <div className="
           grid
-          grid-cols-[100px_120px_200px_180px_2fr_180px]
+          grid-cols-[100px_180px_180px_160px_2fr] 
           gap-4
           border-b border-slate-200
           bg-slate-50/50
@@ -195,11 +235,10 @@ export function WorkQueue() {
           text-slate-500
         ">
           <span>Servicio</span>
-          <span>Estado</span>
-          <span>Pasajero</span>
+          <span className="whitespace-nowrap">Fecha/hora</span>
+          <span className="whitespace-nowrap">Pasajero / Cuenta</span>
           <span>Chofer</span>
           <span>Recorrido</span>
-          <span className="whitespace-nowrap">Fecha/hora</span>
         </div>
 
         <div className="flex-1 overflow-y-auto">

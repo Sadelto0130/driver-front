@@ -9,14 +9,14 @@ import {
 
 export const navigationItems = [
   {
-    label: "Panel",
+    label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
-    label: "Conductores",
-    href: "/drivers",
-    icon: Users,
+    label: "Operaciones",
+    href: "/dispatch",
+    icon: ClipboardList,
   },
   {
     label: "Viajes",

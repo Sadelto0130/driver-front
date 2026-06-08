@@ -1,11 +1,6 @@
-type ServiceType = 
-  | "COMPANY"
-  | "PARTICULAR"
-
-export interface CreateTripForm {
-  serviceType: ServiceType
-  
+export interface CreateTripForm {  
   companyId: string
+  passengerId: string
 
   passengerName: string
   passengerPhone: string

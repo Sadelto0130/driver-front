@@ -1,9 +1,57 @@
-import { Bell, Search } from "lucide-react";
+"use client"
+import { Bell, Check, Search, SlidersHorizontal } from "lucide-react";
 
 import { TenantSwitcher } from "./tenant-switcher";
 import { MobileSidebar } from "./mobile-sidebar";
+import { useState } from "react";
+import { SearchScope } from "@/types/search-scope";
+import { cn } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { Command, CommandGroup, CommandItem } from "../ui/command";
+import { useDispatchContext } from "@/context/dispatch-context";
 
 export function Topbar() {
+  const {
+    search,
+    setSearch,
+    searchScope, 
+    setSearchScope
+  } = useDispatchContext()
+   
+  const [searchScopeOpen, setSearchScopeOpen] = useState(false)
+
+  const searchPlaceholder = {
+    ALL: "Buscar servicios, pasajeros o conductores...",
+    SERVICES: "Buscar por número de servicio...",
+    PASSENGERS: "Buscar pasajero o teléfono...",
+    DRIVERS: "Buscar conductor...",
+    COMPANIES: "Buscar empresa...",
+  };
+
+  const optionSearchScopes = [
+    {
+      value: "ALL",
+      label: "Todo",
+    },
+    {
+      value: "SERVICES",
+      label: "Servicios",
+    },
+    {
+      value: "PASSENGERS",
+      label: "Pasajeros",
+    },
+    {
+      value: "DRIVERS",
+      label: "Conductores",
+    },
+    {
+      value: "COMPANIES",
+      label: "Empresas",
+    },
+  ];
+
   return (
     <header className="
       sticky top-0 z-40
@@ -14,7 +62,63 @@ export function Topbar() {
       md:px-6
     ">
       <div className="flex items-center gap-4">
-        <MobileSidebar />
+        <MobileSidebar />   
+
+        <Popover
+          open={searchScopeOpen}
+          onOpenChange={setSearchScopeOpen}
+        >
+          <PopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-lg hover:bg-slate-100"
+            >
+              <SlidersHorizontal
+                className={cn(
+                  "h-4 w-4",
+                  searchScope === "ALL"
+                    ? "text-slate-500"
+                    : "text-blue-600"
+                )}
+              />
+            </Button>
+          </PopoverTrigger>
+ 
+          <PopoverContent
+            align="end"
+            className="w-52 border border-slate-200 bg-white p-1 shadow-xl"
+          >
+            <Command>
+              <CommandGroup>
+                {optionSearchScopes.map(
+                  (scope) => (
+                    <CommandItem
+                      key={scope.value}
+                      onSelect={() => {
+                        setSearchScope(scope.value as SearchScope)
+                        
+                        setSearchScopeOpen(false)
+                      }}
+                      className="cursor-pointer"
+                    >
+                      <Check 
+                        className={cn(
+                          "mr-2 h4 w-4",
+                          searchScope === 
+                            scope.value
+                              ? "opacity-100"
+                              : "opacity-0"
+                        )}
+                      />
+                      {scope.label}
+                    </CommandItem>
+                  )
+                )}
+              </CommandGroup>
+            </Command>
+          </PopoverContent>
+        </Popover>
 
         <div className="
           hidden lg:flex
@@ -27,7 +131,9 @@ export function Topbar() {
           <Search className="h-5 w-5 text-slate-400"/>
           
           <input
-            placeholder="Buscar conductores, viajes..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={searchPlaceholder[searchScope]}
             className="
               w-72
               bg-transparent
