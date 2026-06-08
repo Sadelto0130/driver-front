@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { DispatchProvider } from "@/context/dispatch-context";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -11,7 +10,7 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
   return (
       <DashboardShell>
-        <h1>Hola layout</h1>
+        {children}
       </DashboardShell>
   );
 }

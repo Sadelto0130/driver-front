@@ -1,9 +1,15 @@
-export default function DashboarddPage() {
+import { DashboardHeader } from "../components/dashboard-header";
+
+export default function DashboardPage() {
   return (
-    <div className='flex h-full min-h-0 flex-1 flex-col gap-6'>
-      <div className='min-h-0 flex-1'>
-        <h1>Hola page dashboard</h1>
-      </div>
+    <div className='space-y-6'>
+      <DashboardHeader
+        servicesToday={124}
+        driversOnline={45}
+        revenueToday={187500}
+        showDrivers
+        showRevenue
+      />
     </div>
   )
 }
