@@ -23,7 +23,7 @@ export function EmptySelection({
       </div>
 
       <div className="mt-8 grid gap-4">
-        <div className="rounded-xl border p-4">
+        <div className="rounded-xl border border-slate-500/80 p-4">
           <p className="text-sm text-slate-500">
             Pendientes
           </p>
@@ -33,7 +33,7 @@ export function EmptySelection({
           </p>
         </div>
 
-        <div className="rounded-xl border p-4">
+        <div className="rounded-xl border border-slate-500/80 p-4">
           <p className="text-sm text-slate-500">
             Asignados
           </p>
@@ -43,7 +43,7 @@ export function EmptySelection({
           </p>
         </div>
 
-        <div className="rounded-xl border p-4">
+        <div className="rounded-xl border border-slate-500/80 p-4">
           <p className="text-sm text-slate-500">
             En proceso
           </p>
@@ -53,7 +53,7 @@ export function EmptySelection({
           </p>
         </div>
 
-        <div className="rounded-xl border p-4">
+        <div className="rounded-xl border border-slate-500/80 p-4">
           <p className="text-sm text-slate-500">
             Finalizados
           </p>

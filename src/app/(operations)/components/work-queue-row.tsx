@@ -45,21 +45,93 @@ export function WorkQueueRow({
     : null
 
   return (
-    <button
-      onClick={() => onSelect(trip)}
+  <button
+    onClick={() => onSelect(trip)}
+    className={cn(
+      "w-full text-left transition-all duration-200",
+      highlighted && "bg-blue-100/80",
+      selected && "bg-blue-50/70"
+    )}
+  >
+    {/* MOBILE */}
+    <div
       className={cn(
-        "grid w-full grid-cols-[100px_180px_180px_160px_2fr] items-center gap-4 border-b border-slate-100 px-4 py-2 text-left transition-all duration-200 hover:bg-slate-50",
+        "block border-b border-slate-100 p-4 lg:hidden",
+        showPriority && "border-l-4",
+        showPriority && priorityStyles?.border
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <span
+            className={cn(
+              "rounded-full px-2 py-1 text-xs font-medium",
+              statusColorMap[trip.status]
+            )}
+          >
+            {statusMap[trip.status]}
+          </span>
+
+          <p className="mt-2 font-semibold text-slate-900">
+            #{trip.serviceNumber}
+          </p>
+        </div>
+
+        {showPriority && (
+          <span
+            className={cn(
+              "rounded-full border px-2 py-0.5 text-xs font-medium",
+              priorityStyles?.badge
+            )}
+          >
+            {getWaitingMinutes(trip.requestedAt)} min
+          </span>
+        )}
+      </div>
+
+      <div className="mt-3">
+        <p className="font-semibold">
+          {trip.passengerName}
+        </p>
+
+        <p className="text-sm text-slate-500">
+          {trip.companyName}
+        </p>
+      </div>
+
+      <div className="mt-3 text-sm">
+        <p>{trip.origin}</p>
+
+        <p className="text-slate-500">
+          → {trip.destination}
+        </p>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between text-sm text-slate-500">
+        <span>
+          {formatServiceDate(trip.requestedAt)}
+        </span>
+
+        <span>
+          {trip.driverName ?? "Sin conductor"}
+        </span>
+      </div>
+    </div>
+
+    {/* DESKTOP */}
+    <div
+      className={cn(
+        "hidden lg:grid lg:grid-cols-[100px_180px_180px_160px_2fr] lg:items-center lg:gap-4 lg:border-b lg:border-slate-100 lg:px-4 lg:py-2 hover:bg-slate-50",
         showPriority && "border-l-4",
         showPriority && priorityStyles?.border,
-        highlighted && "bg-blue-100/80",
-        selected && "bg-blue-50/70 shadow-sm translate-x-1",
+        selected && "shadow-sm translate-x-1"
       )}
     >
       <div className="flex flex-col gap-1">
         <span
           className={cn(
             "w-fit rounded-full px-2 py-1 text-xs font-medium",
-            statusColorMap[trip.status],
+            statusColorMap[trip.status]
           )}
         >
           {statusMap[trip.status]}
@@ -76,32 +148,43 @@ export function WorkQueueRow({
         </span>
 
         {showPriority && (
-          <span className={cn(
-            "w-fit rounded-full border px-2 py-0.5 text-xs font-medium",
-            priorityStyles?.badge
-          )}>
-            Retraso {getWaitingMinutes(trip.requestedAt)} min
+          <span
+            className={cn(
+              "w-fit rounded-full border px-2 py-0.5 text-xs font-medium",
+              priorityStyles?.badge
+            )}
+          >
+            Retraso{" "}
+            {getWaitingMinutes(trip.requestedAt)} min
           </span>
         )}
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="whitespace-nowrap font-semibold">{trip.passengerName}</span>
-        
-        <span className="text-sm">{trip.companyName}</span>
+        <span className="whitespace-nowrap font-semibold">
+          {trip.passengerName}
+        </span>
+
+        <span className="text-sm">
+          {trip.companyName}
+        </span>
       </div>
 
-
-
-      <span>{trip.driverName ?? "-"}</span>
+      <span>
+        {trip.driverName ?? "-"}
+      </span>
 
       <div>
-        <p className="font-medium text-slate-900">{trip.origin}</p>
+        <p className="font-medium text-slate-900">
+          {trip.origin}
+        </p>
 
-        <p className="text-sm text-slate-500">→ {trip.destination}</p>
+        <p className="text-sm text-slate-500">
+          → {trip.destination}
+        </p>
       </div>
-
-
-    </button>
-  );
+    </div>
+  </button>
+)
 }
+ 

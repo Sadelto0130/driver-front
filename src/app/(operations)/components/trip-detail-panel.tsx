@@ -84,6 +84,7 @@ export function TripDetailPanel({ trip, onClose }: Props) {
             onClick={onClose}
             aria-label="Cerrar detalle"
             className="
+              hidden xl:block
               rounded-xl
               p-2
               hover:bg-slate-100

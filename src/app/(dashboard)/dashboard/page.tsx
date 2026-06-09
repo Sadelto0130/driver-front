@@ -1,4 +1,6 @@
 import { DashboardHeader } from "../components/dashboard-header";
+import { MetricsGrid } from "../components/metrics-grid";
+import { OperationsSection } from "../components/operations-overview";
 
 export default function DashboardPage() {
   return (
@@ -10,6 +12,10 @@ export default function DashboardPage() {
         showDrivers
         showRevenue
       />
+
+      <MetricsGrid />
+
+      <OperationsSection />
     </div>
   )
 }

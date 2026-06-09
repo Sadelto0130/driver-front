@@ -10,7 +10,6 @@ import { Textarea } from "../../../components/ui/textarea"
 import { mockPassengers } from "@/mocks/passengers"
 import { SearchSelect } from "../../../components/shared/search-select"
 
-
 export function CreateTripSheet() {
   const [form, setForm] = useState<CreateTripForm>({
     companyId: "",
@@ -77,16 +76,22 @@ export function CreateTripSheet() {
     <Sheet>
       <SheetTrigger asChild>
         <Button
-          size="sm"
-          className="rounded-xl bg-blue-300 text-slate-500"
-        >
-          + Nuevo servicio
-        </Button>
+  size="sm"
+  className="
+    w-full
+    sm:w-auto
+    rounded-xl
+    bg-blue-300
+    text-slate-500
+  "
+>
+  + Nuevo servicio
+</Button>
       </SheetTrigger>
 
       <SheetContent
         side="right"
-        className="w-[640px] p-0 sm:max-w-[640px]"
+        className="w-full p-0 sm:max-w-[640px]"
       >
         <div className="flex h-full flex-col bg-white/70">
           <SheetHeader

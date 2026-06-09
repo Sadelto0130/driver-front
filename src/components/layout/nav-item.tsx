@@ -28,7 +28,7 @@ export function NavItem({
           ? active
             ? `
               bg-gradient-to-r 
-              front-blue-600
+              from-blue-600
               to-indigo-600
               text-white
               shadow-lg shadow-blue-500/20

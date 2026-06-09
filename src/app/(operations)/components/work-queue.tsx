@@ -15,7 +15,8 @@ import { useTrips } from "@/hooks/use-trips";
 import { CreateTripSheet } from "./create-trip-sheet";
 import { useDispatchContext } from "@/context/dispatch-context";
 import { normalizeSearch } from "@/lib/normalize-search";
- 
+ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+
 export function WorkQueue() {
   const {search, searchScope} = useDispatchContext()
  
@@ -30,6 +31,8 @@ export function WorkQueue() {
   const [trips, setTrips] = useState<Trip[]>([])
 
   const {data, isLoading, error} = useTrips()
+
+  const [detailOpen, setDetailOpen] = useState(false);
 
   let emptyState = null
 
@@ -176,113 +179,194 @@ export function WorkQueue() {
   useEffect(() => {
     setTrips(createMockTrips())
   }, [])
-console.log("WorkQueue mounted");
   return (
-    <div
-      className="
-        grid 
-        h-full
-        min-h-0
-        overflow-hidden
-        gap-6
-        xl:grid-cols-[1fr_300px]
-      "
-    >
+    <>
       <div
         className="
-          flex h-full flex-col
+          grid
+          h-full
+          min-h-0
           overflow-hidden
-          rounded-3xl
-          border border-slate-200/70
-          bg-white
-          shadow-sm
+          gap-6
+          xl:grid-cols-[1fr_300px]
         "
       >
-        <div className="px-6 py-5">
-          <div className="flex items-center justify-between">
-            <div>
+        <div
+          className="
+            flex h-full flex-col
+            overflow-hidden
+            rounded-3xl
+            border border-slate-200/70
+            bg-white
+            shadow-sm
+          "
+        >
+          <div className="px-4 py-4 md:px-6 md:py-5">
+            <div
+              className="
+                flex flex-col gap-3
+                lg:flex-row
+                lg:items-center
+                lg:justify-between
+              "
+            >
               <h2 className="text-lg font-semibold">
                 Centro de despacho
               </h2>
-            </div>
 
-            <CreateTripSheet />
-            <div className="rounded-full bg-red-50 px-3 py-1 text-sm font-medium text-red-700">
-              {stats.pending} pendientes de asignacion
+              <div
+                className="
+                  flex flex-col gap-2
+                  sm:flex-row
+                  sm:items-center
+                "
+              >
+                <CreateTripSheet />
+
+                <div
+                  className="
+                    w-fit rounded-full
+                    bg-red-50
+                    px-3 py-1
+                    text-sm font-medium
+                    text-red-700
+                  "
+                >
+                  {stats.pending} pendientes de asignación
+                </div>
+              </div>
             </div>
+          </div>
+
+          <WorkQueueToolbar
+            filter={filter}
+            onFilterChange={setFilter}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            stats={stats}
+          />
+
+          <div
+            className="
+              hidden
+              lg:grid
+              lg:grid-cols-[100px_180px_180px_160px_2fr]
+              gap-4
+              border-b border-slate-200
+              bg-slate-50/50
+              px-4 py-3
+              text-xs
+              font-semibold
+              uppercase
+              tracking-wide
+              text-slate-500
+            "
+          >
+            <span>Servicio</span>
+            <span className="whitespace-nowrap">
+              Fecha/hora
+            </span>
+            <span className="whitespace-nowrap">
+              Pasajero / Cuenta
+            </span>
+            <span>Chofer</span>
+            <span>Recorrido</span>
+          </div>
+
+          <div className="flex-1 overflow-y-auto">
+            {emptyState ? (
+              <EmptyWorkQueue
+                title={emptyState.title}
+                description={emptyState.description}
+              />
+            ) : (
+              sortedTrips.map((trip) => (
+                <WorkQueueRow
+                  key={trip.id}
+                  trip={trip}
+                  selected={selectedTrip?.id === trip.id}
+                  highlighted={highlightedTripIds.includes(trip.id)}
+                  onSelect={(trip) =>{
+                    setSelectedTripId(trip.id)
+
+                    if (window.innerWidth < 1280) {
+                      setDetailOpen(true);
+                    }
+                  }}
+                />
+              ))
+            )}
           </div>
         </div>
 
-        <WorkQueueToolbar 
-          filter={filter}
-          onFilterChange={setFilter}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          stats={stats}
-        />
-
-        <div className="
-          grid
-          grid-cols-[100px_180px_180px_160px_2fr] 
-          gap-4
-          border-b border-slate-200
-          bg-slate-50/50
-          px-4 py-3
-          text-xs
-          font-semibold
-          uppercase
-          tracking-wide
-          text-slate-500
-        ">
-          <span>Servicio</span>
-          <span className="whitespace-nowrap">Fecha/hora</span>
-          <span className="whitespace-nowrap">Pasajero / Cuenta</span>
-          <span>Chofer</span>
-          <span>Recorrido</span>
-        </div>
-
-        <div className="flex-1 overflow-y-auto">
-          {emptyState ? (
-            <EmptyWorkQueue 
-              title={emptyState.title}
-              description={emptyState.description}
+        <div
+          className="
+            hidden
+            xl:flex
+            h-full
+            min-h-0
+            flex-col
+            overflow-hidden
+            rounded-3xl
+            border border-slate-200/70
+            bg-white
+            shadow-sm
+          "
+        >
+          {selectedTrip ? (
+            <TripDetailPanel
+              trip={selectedTrip}
+              onClose={() =>
+                setSelectedTripId(null)
+              }
             />
           ) : (
-            sortedTrips.map((trip) => (
-              <WorkQueueRow
-                key={trip.id}
-                trip={trip}
-                selected={selectedTrip?.id === trip.id}
-                highlighted={highlightedTripIds.includes(trip.id)}
-                onSelect={(trip) => setSelectedTripId(trip.id)}
-              />
-          )
-          ))}
+            <EmptySelection stats={stats} />
+          )}
         </div>
       </div>
 
-      <div className="
-        flex
-        h-full
-        min-h-0
-        flex-col
-        overflow-hidden
-        rounded-3xl
-        border border-slate-200/70
-        bg-white
-        shadow-sm
-      ">
-        {selectedTrip ? (
-          <TripDetailPanel
-            trip={selectedTrip}
-            onClose={() =>
-              setSelectedTripId(null)
-            }
-          />
-        ) : (
-          <EmptySelection stats={stats}/>
-        )}
-      </div>
-    </div>
-  );
+      <>
+  <div
+    className="
+      grid
+      h-full
+      min-h-0
+      overflow-hidden
+      gap-6
+      xl:grid-cols-[1fr_300px]
+    "
+  >
+    ...
+  </div>
+
+  <Sheet
+    open={detailOpen}
+    onOpenChange={setDetailOpen}
+  >
+    <SheetContent
+      side="right"
+      className="w-full p-0 xl:hidden"
+    >
+
+      <SheetHeader className="sr-only">
+    <SheetTitle>
+      Detalle del servicio
+    </SheetTitle>
+  </SheetHeader>
+
+      {selectedTrip && (
+        <TripDetailPanel
+          trip={selectedTrip}
+          onClose={() => {
+            setDetailOpen(false);
+            setSelectedTripId(null);
+          }}
+        />
+      )}
+    </SheetContent>
+  </Sheet>
+</>
+    </>
+)
 }

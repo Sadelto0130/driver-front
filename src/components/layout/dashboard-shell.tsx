@@ -22,7 +22,7 @@ export function DashboardShell({
             <main className="
               min-h-0
               flex-1 
-              overflow-hidden 
+              overflow-auto 
               p-4 
               md:p-6 
               xl:p-8

@@ -129,7 +129,7 @@ export function WorkQueueToolbar({
   return (
     <div
       className="
-        flex flex-wrap
+        flex
         items-center
         justify-start
         gap-3
@@ -137,6 +137,7 @@ export function WorkQueueToolbar({
         border-b border-slate-200/70
         bg-slate-50/30
         px-6 py-4
+        scrollbar-none
       "
     >
       {filters.map((item) => {
