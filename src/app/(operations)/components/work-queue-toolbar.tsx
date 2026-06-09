@@ -140,62 +140,26 @@ export function WorkQueueToolbar({
         scrollbar-none
       "
     >
-      {filters.map((item) => {
-        const colors = colorMap[item.color]
-
-        return (
-          <button
-            onClick={() => 
-              onFilterChange(item.value as WorkQueueFilter)
-            }
-            key={item.label}
-            className={`
-              flex items-center gap-2
-              rounded-xl
-              border
-              px-4 py-2
-              text-sm font-medium
-              transition-all duration-200
-              ${
-                item.value === filter
-                  ? "border-slate-900 bg-slate-900 text-white shadow-sm"
-                  : `${colors.bg} ${colors.border} ${colors.text} hover:shadow-sm`
-              }
-            `}
-          >
-            <span>{item.label}</span>
-
-            <span
-              className={`
-                rounded-full px-2 py-0.5 text-xs font-semibold
-                ${
-                  item.value
-                    ? "bg-white/20 text-white"
-                    : colors.badge
-                }
-              `}
-            >
-              {item.count}
-            </span>
-          </button>
-        )
-      })}
-
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className={`
-            flex h-9 w-9
-            items-center
-            justify-center
-            rounded-xl
-            border 
-            transition-colors
-            hover:bg-slate-50
-            ${sortBy !== "REQUESTED_AT_DESC" 
-              ? "border-blue-200 bg-blue-50 text-blue-600"
-              : "border-slate-200 bg-white text-slate-500"
-            }
-          `}>
+          <button
+            className={`
+              flex h-9 w-9
+              items-center
+              justify-center
+              rounded-xl
+              border 
+              transition-colors
+              hover:bg-slate-50
+              ${sortBy !== "REQUESTED_AT_DESC" 
+                ? "border-blue-200 bg-blue-50 text-blue-600"
+                : "border-slate-200 bg-white text-slate-500"
+              }
+            `}
+            name="button"
+            aria-label="Ordenar servicios"
+            title="Ordenar servicios"
+          >
             <ArrowUpDown className="h-4 w-4"/>
           </button>
         </DropdownMenuTrigger>
@@ -239,6 +203,49 @@ export function WorkQueueToolbar({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {filters.map((item) => {
+        const colors = colorMap[item.color]
+
+        return (
+          <button
+            onClick={() => 
+              onFilterChange(item.value as WorkQueueFilter)
+            }
+            key={item.label}
+            className={`
+              flex items-center gap-2
+              rounded-xl
+              border
+              px-4 py-2
+              text-sm font-medium
+              transition-all duration-200
+              ${
+                item.value === filter
+                  ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+                  : `${colors.bg} ${colors.border} ${colors.text} hover:shadow-sm`
+              }
+            `}
+          >
+            <span>{item.label}</span>
+
+            <span
+              className={`
+                rounded-full px-2 py-0.5 text-xs font-semibold
+                ${
+                  item.value
+                    ? "bg-white/20 text-white"
+                    : colors.badge
+                }
+              `}
+            >
+              {item.count}
+            </span>
+          </button>
+        )
+      })}
+
+      
     </div>
   );
 }

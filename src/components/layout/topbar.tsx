@@ -76,7 +76,7 @@ export function Topbar() {
             >
               <SlidersHorizontal
                 className={cn(
-                  "h-4 w-4",
+                  "h-4 w-4 hidden sm:block",
                   searchScope === "ALL"
                     ? "text-slate-500"
                     : "text-blue-600"
@@ -166,6 +166,7 @@ export function Topbar() {
             </p>
           </div>
         </div>
+
         <TenantSwitcher />
 
         <button

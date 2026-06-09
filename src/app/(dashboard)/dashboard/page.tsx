@@ -8,7 +8,7 @@ export default function DashboardPage() {
       <DashboardHeader
         servicesToday={124}
         driversOnline={45}
-        revenueToday={187500}
+        revenueToday={887500}
         showDrivers
         showRevenue
       />

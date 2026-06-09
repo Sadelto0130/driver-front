@@ -337,7 +337,7 @@ export function WorkQueue() {
       xl:grid-cols-[1fr_300px]
     "
   >
-    ...
+
   </div>
 
   <Sheet
