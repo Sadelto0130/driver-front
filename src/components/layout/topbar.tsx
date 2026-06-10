@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Command, CommandGroup, CommandItem } from "../ui/command";
 import { useDispatchContext } from "@/context/dispatch-context";
+import { usePathname } from "next/navigation"
 
 export function Topbar() {
   const {
@@ -18,7 +19,10 @@ export function Topbar() {
     searchScope, 
     setSearchScope
   } = useDispatchContext()
-   
+
+  const pathname = usePathname()
+  const isDispatchPage = pathname.endsWith("/dispatch")
+  
   const [searchScopeOpen, setSearchScopeOpen] = useState(false)
 
   const searchPlaceholder = {
@@ -62,87 +66,93 @@ export function Topbar() {
       md:px-6
     ">
       <div className="flex items-center gap-4">
-        <MobileSidebar />   
+        <MobileSidebar />  
 
-        <Popover
-          open={searchScopeOpen}
-          onOpenChange={setSearchScopeOpen}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 rounded-lg hover:bg-slate-100"
+        {isDispatchPage && (
+          <>
+            <Popover
+              open={searchScopeOpen}
+              onOpenChange={setSearchScopeOpen}
             >
-              <SlidersHorizontal
-                className={cn(
-                  "h-4 w-4 hidden sm:block",
-                  searchScope === "ALL"
-                    ? "text-slate-500"
-                    : "text-blue-600"
-                )}
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 rounded-lg hover:bg-slate-100"
+                >
+                  <SlidersHorizontal
+                    className={cn(
+                      "h-4 w-4 hidden sm:block",
+                      searchScope === "ALL"
+                        ? "text-slate-500"
+                        : "text-blue-600"
+                    )}
+                  />
+                </Button>
+              </PopoverTrigger>
+    
+              <PopoverContent
+                align="end"
+                className="w-52 border border-slate-200 bg-white p-1 shadow-xl"
+              >            
+                <Command>
+                  <CommandGroup>
+                    {optionSearchScopes.map(
+                      (scope) => (
+                        <CommandItem
+                          key={scope.value}
+                          onSelect={() => {
+                            setSearchScope(scope.value as SearchScope)
+                            
+                            setSearchScopeOpen(false)
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <Check 
+                            className={cn(
+                              "mr-2 h4 w-4",
+                              searchScope === 
+                                scope.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                            )}
+                          />
+                          {scope.label}
+                        </CommandItem>
+                      )
+                    )}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
+            
+            <div className="
+              hidden lg:flex
+              items-center gap-3
+              rounded-2xl
+              border border-slate-200
+              bg-slate-50
+              px-4 py-3
+            ">
+              <Search className="h-5 w-5 text-slate-400"/>
+              
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={searchPlaceholder[searchScope]}
+                className="
+                  w-72
+                  bg-transparent
+                  text-sm
+                  outline-none
+                  placeholder:text-slate-400
+                "
               />
-            </Button>
-          </PopoverTrigger>
- 
-          <PopoverContent
-            align="end"
-            className="w-52 border border-slate-200 bg-white p-1 shadow-xl"
-          >
-            <Command>
-              <CommandGroup>
-                {optionSearchScopes.map(
-                  (scope) => (
-                    <CommandItem
-                      key={scope.value}
-                      onSelect={() => {
-                        setSearchScope(scope.value as SearchScope)
-                        
-                        setSearchScopeOpen(false)
-                      }}
-                      className="cursor-pointer"
-                    >
-                      <Check 
-                        className={cn(
-                          "mr-2 h4 w-4",
-                          searchScope === 
-                            scope.value
-                              ? "opacity-100"
-                              : "opacity-0"
-                        )}
-                      />
-                      {scope.label}
-                    </CommandItem>
-                  )
-                )}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
+            </div>
+          </>
+        )} 
 
-        <div className="
-          hidden lg:flex
-          items-center gap-3
-          rounded-2xl
-          border border-slate-200
-          bg-slate-50
-          px-4 py-3
-        ">
-          <Search className="h-5 w-5 text-slate-400"/>
-          
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={searchPlaceholder[searchScope]}
-            className="
-              w-72
-              bg-transparent
-              text-sm
-              outline-none
-              placeholder:text-slate-400
-            "
-          />
-        </div>
+
       </div>
 
       <div className="flex items-center gap-3">

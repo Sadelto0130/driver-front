@@ -59,11 +59,11 @@ export function MetricsGrid({
         secondarMetrics={[
           {
             label: "Disponibles",
-            value: 32,
+            value: 27,
           },
           {
             label: "Ocupados",
-            value: 13,
+            value: 18,
           },
         ]}
       />

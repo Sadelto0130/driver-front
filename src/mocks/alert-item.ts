@@ -1,12 +1,12 @@
 import { AlertItem } from "@/types/alert-item";
 
-const alerts: AlertItem[] = [
+export const alertsMock: AlertItem[] = [
   {
     id: "1",
-    title: "Servicio sin conductor",
-    description: "Servicio #1042",
+    title: "Servicio #1042",
+    description: "Servicio sin conductor",
     severity: "critical",
-    createdAt: "Hace 28 min",
+    createdAt: "Hace 8 min",
   },
   {
     id: "2",
@@ -17,9 +17,9 @@ const alerts: AlertItem[] = [
   },
   {
     id: "3",
-    title: "Servicio retrasado",
-    description: "Servicio #1038",
+    title: "Servicio #1038",
+    description: "Servicio retrasado",
     severity: "critical",
-    createdAt: "Hace 8 min",
+    createdAt: "Hace 28 min",
   },
 ];

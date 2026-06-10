@@ -1,5 +1,6 @@
 import { AlertsPanel } from "./alerts-panel";
 import { OperationsOverview } from "./operation-overview";
+import { RecentActivity } from "./recent-activity";
 
 export function OperationsSection() {
   return (
@@ -8,12 +9,10 @@ export function OperationsSection() {
         <OperationsOverview />
       </div>
 
-      <div className="space-y-4">
+      <div className="flex h-full flex-col gap-4">
         <AlertsPanel />
 
-        <div className="rounded-2xl border border-slate-500/30 bg-card p-4">
-          RecentActivity
-        </div>
+        <RecentActivity />
       </div>
     </div>
   );

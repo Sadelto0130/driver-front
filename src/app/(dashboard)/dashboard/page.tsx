@@ -1,4 +1,5 @@
 import { DashboardHeader } from "../components/dashboard-header";
+import { OperationalMap } from "../components/maps/operational-map";
 import { MetricsGrid } from "../components/metrics-grid";
 import { OperationsSection } from "../components/operations-overview";
 
@@ -16,6 +17,8 @@ export default function DashboardPage() {
       <MetricsGrid />
 
       <OperationsSection />
+
+      <OperationalMap />
     </div>
   )
 }
