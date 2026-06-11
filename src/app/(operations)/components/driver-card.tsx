@@ -33,7 +33,7 @@ export function DriverCard({
     <div className={`
       rounded-3xl
       border 
-      px-2 py-1
+      px-3 py-1
       shadow-sm
       hover:shadow-md
       transition-shadow
@@ -42,14 +42,14 @@ export function DriverCard({
           : "border-slate-200 bg-white" 
         }      
     `}>
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-base font-semibold text-slate-900">
           {driver.name}
         </h3>
 
         <span className={`
           rounded-full
-          px-3 py-0.5
+          px-2 py-0.5
           text-[11px] font-medium
           ${statusStyles[driver.status]} 
         `}>
@@ -57,20 +57,18 @@ export function DriverCard({
         </span>
       </div>
 
-      <div className="mt-0">
+      <div className="mt-1">
         <p className="
-          text-lg
+          text-sm
           font-bold
-          tracking-tight
           text-slate-900
         ">
-          {driver.distanceKm} km{" "}
-          <span className="text-sm text-slate-500">del origen</span>
+          {driver.distanceKm} km del origen
         </p>
       </div>
 
-      <div className="mt-0 flex items-center justify-between">
-        <p className="text-sm text-slate-600">
+      <div className="mt-1 flex items-center justify-between gap-3">
+        <p className="text-xs text-slate-600">
           {driver.tripsToday} viajes hoy · ${driver.earningsToday.toLocaleString("es-AR")}
         </p>
         
@@ -79,9 +77,9 @@ export function DriverCard({
             onClick={() => onAssign?.(driver)}
             disabled={isAssigning}
             className={`
-              h-8
+              h-7
               rounded-xl
-              px-3
+              px-2.5
               text-xs font-medium
               transition-colors
               ${

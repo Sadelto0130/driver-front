@@ -16,7 +16,6 @@ import {
 
 import "leaflet/dist/leaflet.css"
 import { DriverMapItem, ServiceMapItem } from "@/types/driver-map-item";
-import { Badge } from "@/components/ui/badge";
 
 type Props = {
   drivers: DriverMapItem[]

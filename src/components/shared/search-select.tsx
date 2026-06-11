@@ -38,7 +38,9 @@ export function SearchSelect({
   return (
     <Popover
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={(value) => {
+        setOpen(value)
+      }}
     >
       <PopoverTrigger asChild>
         <Button
@@ -54,8 +56,10 @@ export function SearchSelect({
       </PopoverTrigger>
 
       <PopoverContent 
+
         className="
-          w-(--radix-popover-trigger-width)
+          z-[10000]
+          w-[var(--radix-popover-trigger-width)]
           border
           border-slate-200
           bg-white

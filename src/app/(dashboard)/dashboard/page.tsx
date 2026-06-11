@@ -5,7 +5,7 @@ import { OperationsSection } from "../components/operations-overview";
 
 export default function DashboardPage() {
   return (
-    <div className='space-y-6'>
+    <div className="flex flex-col gap-4 md:gap-6">
       <DashboardHeader
         servicesToday={124}
         driversOnline={45}
@@ -14,11 +14,17 @@ export default function DashboardPage() {
         showRevenue
       />
 
-      <MetricsGrid />
+      <div className="order-2 md:order-1">
+        <MetricsGrid />
+      </div>
 
-      <OperationsSection />
+      <div className="order-1 md:order-2">
+        <OperationsSection />
+      </div>
 
-      <OperationalMap />
+      <div className="order-3">
+        <OperationalMap />
+      </div>
     </div>
   )
 }

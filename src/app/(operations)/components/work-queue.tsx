@@ -15,103 +15,92 @@ import { useTrips } from "@/hooks/use-trips";
 import { CreateTripSheet } from "./create-trip-sheet";
 import { useDispatchContext } from "@/context/dispatch-context";
 import { normalizeSearch } from "@/lib/normalize-search";
- import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 export function WorkQueue() {
-  const {search, searchScope} = useDispatchContext()
- 
+  const { search, searchScope } = useDispatchContext();
+
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
 
-  const [highlightedTripIds, setHighlightedTripIds] = useState<string[]>([])
+  const [highlightedTripIds, setHighlightedTripIds] = useState<string[]>([]);
 
-  const [filter, setFilter] = useState<WorkQueueFilter>('ALL')
+  const [filter, setFilter] = useState<WorkQueueFilter>("ALL");
 
-  const [sortBy, setSortBy] = useState<WorkQueueSort>("REQUESTED_AT_DESC")
+  const [sortBy, setSortBy] = useState<WorkQueueSort>("REQUESTED_AT_DESC");
 
-  const [trips, setTrips] = useState<Trip[]>([])
+  const [trips, setTrips] = useState<Trip[]>([]);
 
-  const {data, isLoading, error} = useTrips()
+  const { data, isLoading, error } = useTrips();
 
   const [detailOpen, setDetailOpen] = useState(false);
 
-  let emptyState = null
+  let emptyState = null;
 
   const stats = {
     total: trips.length,
 
-    pending: trips.filter(
-      trip => trip.status === "PENDING"
-    ).length,
+    pending: trips.filter((trip) => trip.status === "PENDING").length,
 
-    matching: trips.filter(
-      trip => trip.status === "MATCHING"
-    ).length,
+    matching: trips.filter((trip) => trip.status === "MATCHING").length,
 
-    assigned: trips.filter(
-      trip => trip.status === "ASSIGNED"
-    ).length,
+    assigned: trips.filter((trip) => trip.status === "ASSIGNED").length,
 
-    active: trips.filter(
-      trip => trip.status === "ACTIVE"
-    ).length,
+    active: trips.filter((trip) => trip.status === "ACTIVE").length,
 
-    completed: trips.filter(
-      trip => trip.status === "COMPLETED"
-    ).length,
+    completed: trips.filter((trip) => trip.status === "COMPLETED").length,
   };
 
   const highlightTrips = (tripId: string) => {
-    setHighlightedTripIds(prev => [
-      ...prev,
-      tripId
-    ])
+    setHighlightedTripIds((prev) => [...prev, tripId]);
 
     setTimeout(() => {
-      setHighlightedTripIds(prev =>
-        prev.filter(id => id !== tripId)
-      )
-    }, 3000)
-  }
+      setHighlightedTripIds((prev) => prev.filter((id) => id !== tripId));
+    }, 3000);
+  };
 
   const sortTrips = [...trips].sort(
-    (a, b) => 
-      new Date(b.requestedAt).getTime() -
-      new Date(a.requestedAt).getTime()
-  )
+    (a, b) =>
+      new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime(),
+  );
 
-  const filteredTrips = filter === "ALL"
-    ? sortTrips
-    : sortTrips.filter(
-      (trip) => trip.status === filter
-    )
+  const filteredTrips =
+    filter === "ALL"
+      ? sortTrips
+      : sortTrips.filter((trip) => trip.status === filter);
 
-  const searchTerm = normalizeSearch(search)
+  const searchTerm = normalizeSearch(search);
 
   const searchedTrips = !searchTerm
     ? filteredTrips
-    : filteredTrips.filter(
-      (trip) => {
-        if(!trip.driverName) {trip.driverName = ""}
-        switch(searchScope) {
+    : filteredTrips.filter((trip) => {
+        if (!trip.driverName) {
+          trip.driverName = "";
+        }
+        switch (searchScope) {
           case "SERVICES":
-            return normalizeSearch(trip.serviceNumber).includes(searchTerm)
-          
+            return normalizeSearch(trip.serviceNumber).includes(searchTerm);
+
           case "PASSENGERS":
-            return(
+            return (
               normalizeSearch(trip.passengerName).includes(searchTerm) ||
               normalizeSearch(trip.passengerPhone).includes(searchTerm)
-            )
-          
-          case "DRIVERS":            
-            return(
+            );
+
+          case "DRIVERS":
+            return (
               normalizeSearch(trip.driverName).includes(searchTerm) ?? false
-            )
+            );
 
           case "COMPANIES":
-            return normalizeSearch(trip.companyName).includes(searchTerm)
+            return normalizeSearch(trip.companyName).includes(searchTerm);
 
           default:
-            return(
+            return (
               normalizeSearch(trip.serviceNumber).includes(searchTerm) ||
               normalizeSearch(trip.companyName).includes(searchTerm) ||
               normalizeSearch(trip.passengerName).includes(searchTerm) ||
@@ -119,66 +108,52 @@ export function WorkQueue() {
               normalizeSearch(trip.driverName)?.includes(searchTerm) ||
               normalizeSearch(trip.origin).includes(searchTerm) ||
               normalizeSearch(trip.destination).includes(searchTerm)
-            )
+            );
         }
-      }
-    )
+      });
 
-  const sortedTrips = [...searchedTrips].sort(
-    (a, b) => {
-      switch(sortBy) {
-        case "REQUESTED_AT_DESC":
-          return (
-            new Date(b.requestedAt).getTime() -
-            new Date(a.requestedAt).getTime()
-          )
-        
-        case "REQUESTED_AT_ASC":
-          return (
-            new Date(a.requestedAt).getTime() -
-            new Date(b.requestedAt).getTime()
-          )
-        
-        case "SERVICE_NUMBER_ASC":
-          return (
-            Number(a.serviceNumber) -
-            Number(b.serviceNumber)
-          )
-        
-        case "SERVICE_NUMBER_DESC":
-          return (
-            Number(b.serviceNumber) -
-            Number(a.serviceNumber)
-          )
-        
-        default: 
-          return 0
-      }
+  const sortedTrips = [...searchedTrips].sort((a, b) => {
+    switch (sortBy) {
+      case "REQUESTED_AT_DESC":
+        return (
+          new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime()
+        );
+
+      case "REQUESTED_AT_ASC":
+        return (
+          new Date(a.requestedAt).getTime() - new Date(b.requestedAt).getTime()
+        );
+
+      case "SERVICE_NUMBER_ASC":
+        return Number(a.serviceNumber) - Number(b.serviceNumber);
+
+      case "SERVICE_NUMBER_DESC":
+        return Number(b.serviceNumber) - Number(a.serviceNumber);
+
+      default:
+        return 0;
     }
-  )
+  });
 
-  const selectedTrip = sortedTrips.find(
-    trip => trip.id === selectedTripId
-  ) ?? null
+  const selectedTrip =
+    sortedTrips.find((trip) => trip.id === selectedTripId) ?? null;
 
-  if(trips.length === 0) {
+  if (trips.length === 0) {
     emptyState = {
       title: "No hay servicios",
-      description: "Todavia no existen servicios para mostrar"
-    }
-  } else if (
-    filter !== "ALL" &&
-    filteredTrips.length === 0
-  ) {
+      description: "Todavia no existen servicios para mostrar",
+    };
+  } else if (filter !== "ALL" && filteredTrips.length === 0) {
     emptyState = {
       title: "Sin coincidencias",
-      description: "Prueba cambiando los filtros"
-    }
+      description: "Prueba cambiando los filtros",
+    };
   }
 
   useEffect(() => {
-    setTrips(createMockTrips())
-  }, [])
+    setTrips(createMockTrips());
+  }, []);
+
   return (
     <>
       <div
@@ -201,6 +176,7 @@ export function WorkQueue() {
             shadow-sm
           "
         >
+
           <div className="px-4 py-4 md:px-6 md:py-5">
             <div
               className="
@@ -210,9 +186,7 @@ export function WorkQueue() {
                 lg:justify-between
               "
             >
-              <h2 className="text-lg font-semibold">
-                Centro de despacho
-              </h2>
+              <h2 className="text-lg font-semibold">Centro de despacho</h2>
 
               <div
                 className="
@@ -222,18 +196,6 @@ export function WorkQueue() {
                 "
               >
                 <CreateTripSheet />
-
-                <div
-                  className="
-                    w-fit rounded-full
-                    bg-red-50
-                    px-3 py-1
-                    text-sm font-medium
-                    text-red-700
-                  "
-                >
-                  {stats.pending} pendientes de asignación
-                </div>
               </div>
             </div>
           </div>
@@ -263,12 +225,8 @@ export function WorkQueue() {
             "
           >
             <span>Servicio</span>
-            <span className="whitespace-nowrap">
-              Fecha/hora
-            </span>
-            <span className="whitespace-nowrap">
-              Pasajero / Cuenta
-            </span>
+            <span className="whitespace-nowrap">Fecha/hora</span>
+            <span className="whitespace-nowrap">Pasajero / Cuenta</span>
             <span>Chofer</span>
             <span>Recorrido</span>
           </div>
@@ -286,8 +244,8 @@ export function WorkQueue() {
                   trip={trip}
                   selected={selectedTrip?.id === trip.id}
                   highlighted={highlightedTripIds.includes(trip.id)}
-                  onSelect={(trip) =>{
-                    setSelectedTripId(trip.id)
+                  onSelect={(trip) => {
+                    setSelectedTripId(trip.id);
 
                     if (window.innerWidth < 1280) {
                       setDetailOpen(true);
@@ -316,9 +274,8 @@ export function WorkQueue() {
           {selectedTrip ? (
             <TripDetailPanel
               trip={selectedTrip}
-              onClose={() =>
-                setSelectedTripId(null)
-              }
+              onClose={() => setSelectedTripId(null)}
+              showCloseButton
             />
           ) : (
             <EmptySelection stats={stats} />
@@ -326,47 +283,28 @@ export function WorkQueue() {
         </div>
       </div>
 
-      <>
-  <div
-    className="
-      grid
-      h-full
-      min-h-0
-      overflow-hidden
-      gap-6
-      xl:grid-cols-[1fr_300px]
-    "
-  >
+      <Sheet open={detailOpen} onOpenChange={setDetailOpen}>
+        <SheetContent
+          showCloseButton
+          side="right"
+          className="w-screen max-w-none p-0 xl:hidden"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Detalle del servicio</SheetTitle>
+          </SheetHeader>
 
-  </div>
-
-  <Sheet
-    open={detailOpen}
-    onOpenChange={setDetailOpen}
-  >
-    <SheetContent
-      side="right"
-      className="w-full p-0 xl:hidden"
-    >
-
-      <SheetHeader className="sr-only">
-    <SheetTitle>
-      Detalle del servicio
-    </SheetTitle>
-  </SheetHeader>
-
-      {selectedTrip && (
-        <TripDetailPanel
-          trip={selectedTrip}
-          onClose={() => {
-            setDetailOpen(false);
-            setSelectedTripId(null);
-          }}
-        />
-      )}
-    </SheetContent>
-  </Sheet>
-</>
+          {selectedTrip && (
+            <TripDetailPanel
+              trip={selectedTrip}
+              onClose={() => {
+                setDetailOpen(false);
+                setSelectedTripId(null);
+              }}
+              showCloseButton={false}
+            />
+          )}
+        </SheetContent>
+      </Sheet>
     </>
-)
+  );
 }

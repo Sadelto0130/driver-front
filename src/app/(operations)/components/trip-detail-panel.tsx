@@ -16,10 +16,12 @@ import { TripHistorySheet } from "./history/trip-history-sheet";
 import { AssignDriverSheet } from "./assign-driver-sheet";
 import { Button } from "../../../components/ui/button";
 import { useTripActions } from "@/hooks/use-trip-actions";
+import { CancelTripDialog } from "@/components/shared/cancel-trip-dialog";
 
 interface Props {
   trip: Trip;
   onClose: () => void;
+  showCloseButton?: boolean
 }
 
 const statusMap = {
@@ -30,11 +32,15 @@ const statusMap = {
   COMPLETED: "Finalizado",
 };
 
-export function TripDetailPanel({ trip, onClose }: Props) {
+export function TripDetailPanel({ 
+  trip, 
+  onClose,
+  showCloseButton = true
+}: Props) {
 
   const{
     handleContactPassenger,
-    handleCanceltrip,    
+    handleCancelTrip,    
   } = useTripActions()
 
   const canContact = Boolean(trip.passengerPhone)
@@ -55,15 +61,15 @@ export function TripDetailPanel({ trip, onClose }: Props) {
         flex 
         h-full
         flex-col
-        rounded-3xl
-        border border-slate-200/70
+        xl:rounded-3xl
+        xl:border xl:border-slate-200/70
         bg-white
-        shadow-sm
+        xl:shadow-sm
       "
     >
-      <div className="border-b border-slate-100 p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <div className="border-b border-slate-100 p-4 md:p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-3">
             <h2 className="text-2xl font-bold tracking-tight">
               Servicio #{trip.serviceNumber}
             </h2>
@@ -80,22 +86,24 @@ export function TripDetailPanel({ trip, onClose }: Props) {
             </span>
           </div>
 
-          <button
-            onClick={onClose}
-            aria-label="Cerrar detalle"
-            className="
-              hidden xl:block
-              rounded-xl
-              p-2
-              hover:bg-slate-100
-            "
-          >
-            <X className="h-5 w-5" />
-          </button>
+          {showCloseButton &&(
+            <button
+              onClick={onClose}
+              aria-label="Cerrar detalle"
+              className="
+                hidden xl:block
+                rounded-xl
+                p-2
+                hover:bg-slate-100
+              "
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto p-6">
+      <div className="min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-500">Recorrido</p>
 
@@ -151,12 +159,12 @@ export function TripDetailPanel({ trip, onClose }: Props) {
 
           <div className="mt-4 flex items-center gap-2 text-sm text-slate-600">
             <Phone className="h-4 w-4" />
-            <span>{trip.passengerPhone}</span>
+            <span className="break-all">{trip.passengerPhone}</span>
           </div>
 
           <div className="mt-2 flex items-center gap-2 text-sm text-slate-600">
             <Mail className="h-4 w-4" />
-            <span>{trip.passengerEmail}</span>
+            <span className="break-all">{trip.passengerEmail}</span>
           </div>
         </div>
 
@@ -173,7 +181,7 @@ export function TripDetailPanel({ trip, onClose }: Props) {
             Observaciones
           </p>
 
-          <p className="mt-2 text-sm leading-relaxed text-slate-700">
+          <p className="mt-2 text-sm leading-relaxed text-slate-700 bg-slate-50 rounded-xl p-4">
             {trip.observations?.trim()
               ? trip.observations
               : "Sin observaciones"
@@ -182,7 +190,7 @@ export function TripDetailPanel({ trip, onClose }: Props) {
         </div>        
       </div>
 
-      <div className="border-slate-100 p-6">
+      <div className="border-slate-100 p-4 md:p-6">
 
         <div className="space-y-3">
           {canAssignDriver && (
@@ -215,15 +223,11 @@ export function TripDetailPanel({ trip, onClose }: Props) {
             </Button>             
 
             {/* Cancelar */}
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={() => handleCanceltrip(trip)}
+            <CancelTripDialog 
+              trip={trip}
               disabled={!canCancel}
-              className="rounded-xl"
-            >
-              <Ban className="h-4 w-4" />
-            </Button>  
+              onConfirm={handleCancelTrip}
+            /> 
           </div>
         </div> 
 

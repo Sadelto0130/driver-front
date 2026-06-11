@@ -27,7 +27,7 @@ const eventColors: Record<
 export function TripHistoryItem({
   event,  
   last,
-  isCurrent
+  isCurrent 
 }: Props) {
   return (
     <div className="relative flex gap-2 pb-8">

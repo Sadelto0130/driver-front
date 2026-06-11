@@ -128,7 +128,15 @@ export function OperationalMap() {
         p-5
         shadow-[0_4px_20px_rgba(0,0,0,0.05)]
       ">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="
+        mb-4 
+        flex 
+        flex-col 
+        gap-3 
+        lg:flex-row
+        lg:items-center 
+        lg:justify-between
+      ">
         <div>
           <h3 className="text-lg font-semibold">
             Mapa operacional
@@ -138,11 +146,18 @@ export function OperationalMap() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          Filtros:
+        <div className="
+          grid
+          grid-cols-3 
+          gap-2 
+
+          lg:flex
+          lg:flex-wrap
+          lg:items-center
+        ">
           <Badge
             variant={filters.available ? "default" : "outline"}
-            className="cursor-pointer gap-2"
+            className="shrink-0 cursor-pointer gap-2"
             onClick={() =>
               setFilters((prev) => ({
                 ...prev,
@@ -157,7 +172,7 @@ export function OperationalMap() {
 
           <Badge
             variant={filters.busy ? "default" : "outline"}
-            className="cursor-pointer gap-2"
+            className="shrink-0 cursor-pointer gap-2"
             onClick={() =>
               setFilters((prev) => ({
                 ...prev,
@@ -171,7 +186,7 @@ export function OperationalMap() {
 
           <Badge
             variant={filters.offline ? "default" : "outline"}
-            className="cursor-pointer gap-2"
+            className="shrink-0 cursor-pointer gap-2"
             onClick={() =>
               setFilters((prev) => ({
                 ...prev,
@@ -180,12 +195,12 @@ export function OperationalMap() {
             }
           >
             <div className="h-3 w-3 rounded-full bg-red-500" />
-            {countTotal.offlineDrives} desconectados
+            {countTotal.offlineDrives} desconecta..
           </Badge>
 
           <Badge
             variant={filters.assigned ? "default" : "outline"}
-            className="cursor-pointer gap-2"
+            className="shrink-0 cursor-pointer gap-2"
             onClick={() =>
               setFilters((prev) => ({
                 ...prev,
@@ -193,12 +208,12 @@ export function OperationalMap() {
               }))
             }
           >
-            📋{countTotal.assignedCount} Asignados
+            📋 {" "} {countTotal.assignedCount} {" "} Asignados
           </Badge>
 
           <Badge
             variant={filters.pickup ? "default" : "outline"}
-            className="cursor-pointer gap-2"
+            className="shrink-0 cursor-pointer gap-2"
             onClick={() =>
               setFilters((prev) => ({
                 ...prev,
@@ -206,12 +221,12 @@ export function OperationalMap() {
               }))
             }
           >
-            🚗{countTotal.pickupCount} En camino
+            🚗 {" "} {countTotal.pickupCount} {" "} En camino
           </Badge>
 
           <Badge
             variant={filters.in_progress ? "default" : "outline"}
-            className="cursor-pointer gap-2"
+            className=" shrink-0 cursor-pointer gap-2"
             onClick={() =>
               setFilters((prev) => ({
                 ...prev,
@@ -219,7 +234,7 @@ export function OperationalMap() {
               }))
             }
           >
-            🛣️{countTotal.inProgressCount} En viaje
+            🛣️ {" "} {countTotal.inProgressCount} {" "} En viaje
           </Badge>
 
           {hasActiveFilters && (
@@ -227,6 +242,7 @@ export function OperationalMap() {
               size="sm"
               variant="outline"
               className="
+                shrink-0
                 h-8
                 w-8
                 cursor-pointer

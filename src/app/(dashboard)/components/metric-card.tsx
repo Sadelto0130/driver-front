@@ -17,7 +17,7 @@ export function MetricCard({
       border 
       border-slate-400/80
       bg-card
-      p-4
+      p-3 md:p-4
       shadow-[0_8px_24px_rgba(0,0,0,0.05)] 
       transition-all 
       hover:-translate-y-0.5 
@@ -29,11 +29,11 @@ export function MetricCard({
           bgStile
         )} />
 
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-3 flex items-center gap-2">
         
         <div className={cn(`
             flex 
-            h-10 w-10 
+            h-9 w-9 md:h-10 md:w-10 
             items-center 
             justify-center 
             rounded-xl 
@@ -48,18 +48,18 @@ export function MetricCard({
         </h3>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
-          <p className="text-3cl font-bold tracking-tight">
+          <p className="text-2xl md:text-3xl font-bold tracking-tight">
             {primaryMetric.value}
           </p>
 
-          <p className="text-xs text-muted-forground">
+          <p className="text-xs text-muted-foreground">
             {primaryMetric.label}
           </p>
         </div>
 
-        <div className="space-y-2 border-t pt-3">
+        <div className="space-y-1.5 border-t 2">
           {secondarMetrics.map((metric) => (
             <div
               key={metric.label}

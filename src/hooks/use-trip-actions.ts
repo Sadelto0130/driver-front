@@ -11,15 +11,7 @@ export function useTripActions() {
     )
   }
 
-  const handleCanceltrip = (trip: Trip) => {
-    const confirmed = window.confirm(
-      `Cancelar servicio #${trip.serviceNumber}?`
-    )
-
-    if(!confirmed) {
-      return
-    }
-
+  const handleCancelTrip = (trip: Trip) => {
     console.log(
       "Cancel trip",
       trip.id
@@ -28,6 +20,6 @@ export function useTripActions() {
 
   return {
     handleContactPassenger,  
-    handleCanceltrip
+    handleCancelTrip
   }
 }

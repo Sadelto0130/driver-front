@@ -4,12 +4,12 @@ import { RecentActivity } from "./recent-activity";
 
 export function OperationsSection() {
   return (
-    <div className="grid gap-4 lg:grid-cols-[60%_40%]">
+    <div className="grid gap-4 lg:grid-cols-[55%_43%]">
       <div >
         <OperationsOverview />
       </div>
 
-      <div className="flex h-full flex-col gap-4">
+      <div className="min-w-0 h-full flex-col gap-4 overflow-hidden">
         <AlertsPanel />
 
         <RecentActivity />

@@ -1,19 +1,26 @@
-"use client"
+"use client";
 
-import { CreateTripForm } from "@/types/create-trip-form"
-import { useEffect, useState } from "react"
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../../../components/ui/sheet"
-import { Button } from "../../../components/ui/button"
-import { mockCompanies } from "@/mocks/companies"
-import { Input } from "../../../components/ui/input"
-import { Textarea } from "../../../components/ui/textarea"
-import { mockPassengers } from "@/mocks/passengers"
-import { SearchSelect } from "../../../components/shared/search-select"
+import { CreateTripForm } from "@/types/create-trip-form";
+import { useEffect, useState } from "react";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../../../components/ui/sheet";
+import { Button } from "../../../components/ui/button";
+import { mockCompanies } from "@/mocks/companies";
+import { Input } from "../../../components/ui/input";
+import { Textarea } from "../../../components/ui/textarea";
+import { mockPassengers } from "@/mocks/passengers";
+import { SearchSelect } from "../../../components/shared/search-select";
 
 export function CreateTripSheet() {
   const [form, setForm] = useState<CreateTripForm>({
     companyId: "",
-    passengerId: "",    
+    passengerId: "",
 
     passengerName: "",
     passengerPhone: "",
@@ -21,93 +28,89 @@ export function CreateTripSheet() {
     origin: "",
     destination: "",
 
-    observation: ""
-  })
+    observation: "",
+  });
 
-  const companyOptions= mockCompanies.map(
-    (company) => ({
-      value: company.id,
-      label: company.name
-    })
-  )
+  const companyOptions = mockCompanies.map((company) => ({
+    value: company.id,
+    label: company.name,
+  }));
 
   const passengerOptions = mockPassengers
     .filter((passenger) => passenger.companyId === form.companyId)
     .map((passenger) => ({
       value: passenger.id,
-      label: passenger.name
-    }))
+      label: passenger.name,
+    }));
 
-  const handleChange = (
-    field: keyof CreateTripForm,
-    value: string,
-  ) => {
+  const handleChange = (field: keyof CreateTripForm, value: string) => {
     setForm((prev) => ({
       ...prev,
-      [field]: value
-    }))
-  }
+      [field]: value,
+    }));
+  };
 
   const handleCreateTrip = () => {
-    console.log(form)
-  }
+    console.log(form);
+  };
 
   const selectedPassenger = mockPassengers.find(
-    passenger => passenger.id === form.passengerId
-  )
+    (passenger) => passenger.id === form.passengerId,
+  );
 
   const selectedCompany = mockCompanies.find(
-    company => company.id === form.companyId
-  )
-  
+    (company) => company.id === form.companyId,
+  );
+
   useEffect(() => {
-    if(!selectedPassenger) {
-      return
+    if (!selectedPassenger) {
+      return;
     }
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       passengerName: selectedPassenger.name,
-      passengerPhone: selectedPassenger.phone
-    }))
-  }, [selectedPassenger])
+      passengerPhone: selectedPassenger.phone,
+    }));
+  }, [selectedPassenger]);
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
-  size="sm"
-  className="
-    w-full
-    sm:w-auto
-    rounded-xl
-    bg-blue-300
-    text-slate-500
-  "
->
-  + Nuevo servicio
-</Button>
+          size="sm"
+          className="
+          w-full
+          sm:w-auto
+          rounded-xl
+          bg-blue-300
+          text-slate-500
+        "
+        >
+          + Nuevo servicio
+        </Button>
       </SheetTrigger>
 
-      <SheetContent
-        side="right"
-        className="w-full p-0 sm:max-w-[640px]"
-      >
-        <div className="flex h-full flex-col bg-white/70">
-          <SheetHeader
-            className="border-b border-slate-200 px-6 py-3"
-          >
-            <SheetTitle
-              className="text-xl font-bold text-slate-900"
-            >
+      <SheetContent 
+        side="right" 
+        className="
+          w-screen 
+          max-w-none 
+          overflow-hidden 
+          p-0 
+          md:w-[640px] 
+          md:max-w-[640px]
+      ">
+        <div className="flex h-full flex-col bg-white">
+          <SheetHeader className="border-b border-slate-200 px-6 py-3">
+            <SheetTitle className="text-xl font-bold text-slate-900">
               Nuevo servicio
             </SheetTitle>
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto p-6">
-            <div className="space-y-4">
-
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4">
+            <div className="space-y-3">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-3 md:p-4 space-y-3">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Cliente
                 </p>
@@ -124,39 +127,39 @@ export function CreateTripSheet() {
                     searchPlaceholder="Buscar empresa..."
                     emptyMessage="No se encontro la empresa"
                     options={companyOptions}
-                    onChange={(value) => setForm((prev) => ({
+                    onChange={(value) =>
+                      setForm((prev) => ({
                         ...prev,
                         companyId: value,
                         passengerId: "",
                         passengerName: "",
-                        passengerPhone: ""
+                        passengerPhone: "",
                       }))
                     }
                   />
+
                 </div>
 
                 {/**PASAJERO */}
                 <div>
                   <SearchSelect
                     value={form.passengerId}
-                    placeholder={form.companyId
-                      ? "Seleccionar pasajero"
-                      : "Seleccione empresa primero"
+                    placeholder={
+                      form.companyId
+                        ? "Seleccionar pasajero"
+                        : "Seleccione empresa primero"
                     }
                     searchPlaceholder="Buscar pasajero..."
                     emptyMessage="No se encontraron pasajeros"
                     disabled={!form.companyId}
                     options={passengerOptions}
-                    onChange={(value) => handleChange(
-                          "passengerId",
-                          value
-                        )}                  
+                    onChange={(value) => handleChange("passengerId", value)}
                   />
                 </div>
 
                 {/**TELEFONO */}
                 <div>
-                  <label 
+                  <label
                     htmlFor="telefono"
                     className="mb-2 blco text-sm font-medium text-slate-700"
                   >
@@ -164,25 +167,25 @@ export function CreateTripSheet() {
                   </label>
                   <Input
                     value={form.passengerPhone}
-                    onChange={(e) => handleChange("passengerPhone", e.target.value)}
+                    onChange={(e) =>
+                      handleChange("passengerPhone", e.target.value)
+                    }
                     placeholder="Ej: 1133447788"
                   />
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-3 md:p-4">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Recorrido
                 </p>
 
                 {/**ORIGEN */}
                 <div>
-                  <label
-                    className="mb-2 block text-sm font-medium text-slate-700"
-                  >
+                  <label className="mb-2 block text-sm font-medium text-slate-700">
                     Origen
                   </label>
-                  
+
                   <Input
                     value={form.origin}
                     onChange={(e) => handleChange("origin", e.target.value)}
@@ -192,22 +195,22 @@ export function CreateTripSheet() {
 
                 {/**DESTINO */}
                 <div>
-                  <label
-                    className="mb-2 block text-sm font-medium text-slate-700"
-                  >
+                  <label className="mb-2 block text-sm font-medium text-slate-700">
                     Destino
                   </label>
-                  
+
                   <Input
                     value={form.destination}
-                    onChange={(e) => handleChange("destination", e.target.value)}
+                    onChange={(e) =>
+                      handleChange("destination", e.target.value)
+                    }
                     placeholder="Dirección de destino "
                   />
                 </div>
               </div>
 
               {/**OBSERVACIONES */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-3 md:p-4">
                 <label className="mb-2 block text-sm font-medium text-slate-700">
                   Observaciones
                 </label>
@@ -221,12 +224,20 @@ export function CreateTripSheet() {
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 border-t border-slate-200 bg-white px-6 py-4">
+          <div className="
+            flex flex-col-reverse gap-2
+            border-t border-slate-200
+            bg-white 
+            py-4
+            
+            sm:flex-row 
+            sm:justify-end 
+          ">
             <SheetClose asChild>
-              <Button 
+              <Button
                 type="button"
                 variant="outline"
-                className="h-11 rounded-xl px-5 bg-red-600 text-white shadow-sm hover:bg-red-700"
+                className="h-11 w-full sm:w-auto rounded-xl px-5 bg-red-600 text-white shadow-sm hover:bg-red-700"
               >
                 Cancelar
               </Button>
@@ -235,7 +246,7 @@ export function CreateTripSheet() {
             <Button
               type="button"
               onClick={handleCreateTrip}
-              className="h-11 rounded-xl bg-blue-600 px-5 font-medium text-white shadow-sm hover:bg-blue-700"
+              className="h-11 w-full sm:w-auto rounded-xl bg-blue-600 px-5 font-medium text-white shadow-sm hover:bg-blue-700"
             >
               Crear servicio
             </Button>
@@ -243,5 +254,5 @@ export function CreateTripSheet() {
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

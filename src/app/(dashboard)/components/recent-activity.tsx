@@ -13,6 +13,7 @@ export function RecentActivity() {
   return (
     <div className="
       h-[295px] 
+      min-w-0
       flex 
       flex-col
       rounded-2xl

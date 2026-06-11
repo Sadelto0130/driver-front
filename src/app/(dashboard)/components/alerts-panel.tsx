@@ -5,11 +5,11 @@ import { alertsMock } from "@/mocks/alert-item"
 import { AlertTriangle, Clock3 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-export function AlertsPanel() {
+export function AlertsPanel() { 
   const router = useRouter()
 
   return (
-    <div className="rounded-2xl border border-slate-500/30 bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.o5)]">
+    <div className="min-w-0 rounded-2xl border border-slate-500/30 bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.o5)]">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">
           Alertas
@@ -39,8 +39,8 @@ export function AlertsPanel() {
                 }
               />
 
-              <div className="flex flex-1 items-center justify-between gap-2">
-                <p className="truncate text-sm">
+              <div className="flex flex-1 items-center justify-between gap-2 min-w-0">
+                <p className="min-w-0 truncate text-sm">
                   <span className="font-medium">
                     {alert.title}
                   </span>
@@ -51,7 +51,7 @@ export function AlertsPanel() {
                   </span>
                 </p>
 
-                <div className="mt-2 gap-1 text-xs text-muted-foreground">
+                <div className="shrink-0 text-xs text-muted-foreground">
                   {alert.createdAt}
                 </div>
               </div>

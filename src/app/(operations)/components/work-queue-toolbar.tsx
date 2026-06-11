@@ -80,7 +80,7 @@ export function WorkQueueToolbar({
       color: "blue",
     },
     {
-      label: "En proceso",
+      label: "Activos",
       value: "ACTIVE",
       count: stats.active,
       color: "emerald",
@@ -91,7 +91,7 @@ export function WorkQueueToolbar({
       count: stats.completed,
       color: "slate",
     },
-  ] as const;
+  ] as const; 
 
   const colorMap = {
     slate: {
@@ -129,123 +129,223 @@ export function WorkQueueToolbar({
   return (
     <div
       className="
-        flex
-        items-center
-        justify-start
-        gap-3
-        overflow-x-auto
         border-b border-slate-200/70
         bg-slate-50/30
-        px-6 py-4
-        scrollbar-none
+        px-4 py-2
+        md:px-6 
+        md:py-4
       "
     >
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            className={`
-              flex h-9 w-9
-              items-center
-              justify-center
-              rounded-xl
-              border 
-              transition-colors
-              hover:bg-slate-50
-              ${sortBy !== "REQUESTED_AT_DESC" 
-                ? "border-blue-200 bg-blue-50 text-blue-600"
-                : "border-slate-200 bg-white text-slate-500"
-              }
-            `}
-            name="button"
-            aria-label="Ordenar servicios"
-            title="Ordenar servicios"
-          >
-            <ArrowUpDown className="h-4 w-4"/>
-          </button>
-        </DropdownMenuTrigger>
+      {/* MOBILE */}
+      <div className="flex flex-col gap-2 md:hidden">
+        <div className="grid grid-cols-3 gap-2 md:hidden">
+          {filters.map((item) => { const colors = colorMap[item.color]
+            return (
+              <button
+                key={item.label}
+                onClick={() =>
+                  onFilterChange(item.value as WorkQueueFilter)
+                }
+                className={`
+                  flex items-center justify-center gap-1
+                  rounded-lg border
+                  px-2 py-1.5
+                  text-[11px] font-medium
 
-        <DropdownMenuContent align="end" className="w-56 rounded-2xl">
-          <div className="px-2 py-1.5">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              Ordenar servicios
-            </p>
-          </div>
+                  ${
+                    item.value === filter
+                      ? "border-slate-900 bg-slate-900 text-white"
+                      : `${colors.bg} ${colors.border} ${colors.text}`
+                  }
+                `}
+              >
+                <span>{item.label}</span>
 
-          <DropdownMenuSeparator />
+                <span
+                  className={`
+                    rounded-full px-1.5 py-0.5 text-[10px]
+                    ${
+                      item.value === filter
+                        ? "bg-white/20 text-white"
+                        : colors.badge
+                    }
+                  `}
+                >
+                  {item.count}
+                </span>
+              </button>
+            )
+          })}
+
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="
+                mt-2
+                col-span-3
+                flex h-10 w-full
+                items-center justify-center gap-2
+                rounded-xl border
+                border-slate-200
+                bg-white
+                text-sm font-medium
+              "
+            >
+              <ArrowUpDown className="h-4 w-4" />
+              Ordenar
+            </button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end" className="w-56 rounded-2xl">
+            <div className="px-2 py-1.5">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Ordenar servicios
+              </p>
+            </div>
+
+            <DropdownMenuSeparator />
 
 
-          <DropdownMenuItem
-            onClick={() => onSortChange("REQUESTED_AT_DESC")}
-            className="cursor-pointer"
-          >
-            Más recientes
-          </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => onSortChange("REQUESTED_AT_DESC")}
+              className="cursor-pointer"
+            >
+              Más recientes
+            </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => onSortChange("REQUESTED_AT_ASC")}
-            className="cursor-pointer"
-          >
-            Más antiguos
-          </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => onSortChange("REQUESTED_AT_ASC")}
+              className="cursor-pointer"
+            >
+              Más antiguos
+            </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => onSortChange("SERVICE_NUMBER_ASC")}
-            className="cursor-pointer"
-          >
-            Servicio ↑
-          </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => onSortChange("SERVICE_NUMBER_ASC")}
+              className="cursor-pointer"
+            >
+              Servicio ↑
+            </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => onSortChange("SERVICE_NUMBER_DESC")}
-            className="cursor-pointer"
-          >
-            Servicio ↓
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+            <DropdownMenuItem
+              onClick={() => onSortChange("SERVICE_NUMBER_DESC")}
+              className="cursor-pointer"
+            >
+              Servicio ↓
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
-      {filters.map((item) => {
-        const colors = colorMap[item.color]
-
-        return (
-          <button
-            onClick={() => 
-              onFilterChange(item.value as WorkQueueFilter)
-            }
-            key={item.label}
-            className={`
-              flex items-center gap-2
-              rounded-xl
-              border
-              px-4 py-2
-              text-sm font-medium
-              transition-all duration-200
-              ${
-                item.value === filter
-                  ? "border-slate-900 bg-slate-900 text-white shadow-sm"
-                  : `${colors.bg} ${colors.border} ${colors.text} hover:shadow-sm`
-              }
-            `}
-          >
-            <span>{item.label}</span>
-
-            <span
+      {/* DESKTOP */}
+      <div className="hidden md:flex md:items-center md:gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
               className={`
-                rounded-full px-2 py-0.5 text-xs font-semibold
-                ${
-                  item.value
-                    ? "bg-white/20 text-white"
-                    : colors.badge
+                flex h-10 md:w-10 w-full
+                items-center
+                justify-center
+                rounded-xl
+                border 
+                transition-colors
+                hover:bg-slate-50
+                ${sortBy !== "REQUESTED_AT_DESC" 
+                  ? "border-blue-200 bg-blue-50 text-blue-600"
+                  : "border-slate-200 bg-white text-slate-500"
                 }
               `}
+              name="button"
+              aria-label="Ordenar servicios"
+              title="Ordenar servicios"
             >
-              {item.count}
-            </span>
-          </button>
-        )
-      })}
+              <ArrowUpDown className="h-4 w-4"/>
+            </button>
+          </DropdownMenuTrigger>
 
-      
+          <DropdownMenuContent align="end" className="w-56 rounded-2xl">
+            <div className="px-2 py-1.5">
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Ordenar servicios
+              </p>
+            </div>
+
+            <DropdownMenuSeparator />
+
+
+            <DropdownMenuItem
+              onClick={() => onSortChange("REQUESTED_AT_DESC")}
+              className="cursor-pointer"
+            >
+              Más recientes
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => onSortChange("REQUESTED_AT_ASC")}
+              className="cursor-pointer"
+            >
+              Más antiguos
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => onSortChange("SERVICE_NUMBER_ASC")}
+              className="cursor-pointer"
+            >
+              Servicio ↑
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => onSortChange("SERVICE_NUMBER_DESC")}
+              className="cursor-pointer"
+            >
+              Servicio ↓
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {filters.map((item) => {
+    const colors = colorMap[item.color]
+
+    return (
+      <button
+        key={item.label}
+        onClick={() =>
+          onFilterChange(item.value as WorkQueueFilter)
+        }
+        className={`
+          shrink-0
+          flex items-center gap-2
+          rounded-lg
+          border
+          px-3 py-1.5
+          text-sm font-medium
+          transition-all duration-200
+          ${
+            item.value === filter
+              ? "border-slate-900 bg-slate-900 text-white shadow-sm"
+              : `${colors.bg} ${colors.border} ${colors.text} hover:shadow-sm`
+          }
+        `}
+      >
+        <span>{item.label}</span>
+
+        <span
+          className={`
+            rounded-full px-2 py-0.5 text-xs font-semibold
+            ${
+              item.value === filter
+                ? "bg-white/20 text-white"
+                : colors.badge
+            }
+          `}
+        >
+          {item.count}
+        </span>
+      </button>
+    )
+  })}
+      </div>   
     </div>
   );
 }

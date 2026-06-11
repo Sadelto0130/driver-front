@@ -25,7 +25,11 @@ export function Sidebar() {
             relative flex h-14 w-14 
             items-center justify-center
             overflow-hidden rounded-2xl
-            bg-white/5
+            bg-gradient-to-br
+              from-blue-600
+              to-indigo-600
+              text-white
+              shadow-lg
           ">
             {tenantTheme.logo ? (
               <Image

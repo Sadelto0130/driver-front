@@ -26,8 +26,8 @@ export function Topbar() {
   const [searchScopeOpen, setSearchScopeOpen] = useState(false)
 
   const searchPlaceholder = {
-    ALL: "Buscar servicios, pasajeros o conductores...",
-    SERVICES: "Buscar por número de servicio...",
+    ALL: "Buscar...",
+    SERVICES: "Buscar servicio...",
     PASSENGERS: "Buscar pasajero o teléfono...",
     DRIVERS: "Buscar conductor...",
     COMPANIES: "Buscar empresa...",
@@ -55,21 +55,22 @@ export function Topbar() {
       label: "Empresas",
     },
   ];
+  
 
   return (
     <header className="
       sticky top-0 z-40
-      flex h-20 items-center justify-between 
+      flex min-w-0 h-20 items-center justify-between 
       border-b border-slate-200/80 
       bg-white/80 
-      px-4 backdrop-blur-xl 
+      px-3 backdrop-blur-xl 
       md:px-6
     ">
-      <div className="flex items-center gap-4">
+      <div className="flex min-w-0 items-center gap-2 md:gap-4">
         <MobileSidebar />  
 
         {isDispatchPage && (
-          <>
+          <div className="flex items-center gap-2 p-2">
             <Popover
               open={searchScopeOpen}
               onOpenChange={setSearchScopeOpen}
@@ -78,11 +79,11 @@ export function Topbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 rounded-lg hover:bg-slate-100"
+                  className="h-10 w-10 rounded-xl border border-slate-200 hover:bg-slate-100"
                 >
                   <SlidersHorizontal
                     className={cn(
-                      "h-4 w-4 hidden sm:block",
+                      "h-4 w-4",
                       searchScope === "ALL"
                         ? "text-slate-500"
                         : "text-blue-600"
@@ -127,21 +128,30 @@ export function Topbar() {
             </Popover>
             
             <div className="
-              hidden lg:flex
-              items-center gap-3
-              rounded-2xl
-              border border-slate-200
+              flex
+              h-10
+              min-w-0
+              items-center 
+              gap-2
+              rounded-xl
+              border 
+              border-slate-200
               bg-slate-50
-              px-4 py-3
+              px-3
+
+              sm:w-[180px]
+              md:w-[240px]
+              lg:w-[320px]
             ">
-              <Search className="h-5 w-5 text-slate-400"/>
+              <Search className="h-4 w-4 text-slate-400"/>
               
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={searchPlaceholder[searchScope]}
                 className="
-                  w-72
+                  min-w-0
+                  w-full
                   bg-transparent
                   text-sm
                   outline-none
@@ -149,9 +159,8 @@ export function Topbar() {
                 "
               />
             </div>
-          </>
+          </div>
         )} 
-
 
       </div>
 
@@ -177,7 +186,9 @@ export function Topbar() {
           </div>
         </div>
 
-        <TenantSwitcher />
+        <div className="hidden md:block">
+          <TenantSwitcher />
+        </div>
 
         <button
           aria-label="Notificaciones"
@@ -195,7 +206,7 @@ export function Topbar() {
         </button>
 
         <div className="
-          flex h-11 w-11 items-center
+          flex h-10 w-10 md:h-11 md:w-11 items-center
           justify-center rounded-full 
           bg-gradient-to-br
           from-blue-600

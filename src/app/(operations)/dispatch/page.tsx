@@ -7,5 +7,5 @@ export default function DispatchPage() {
         <WorkQueue />
       </div>
     </div>
-  )
+  ) 
 }
