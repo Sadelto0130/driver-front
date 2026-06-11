@@ -8,8 +8,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Fleet Platform",
-  description: "Mobility Fleet Dashboard",
+  title: "Ockta Platform",
+  description: "Plataforma para remiserias",
 };
 
 export const viewport: Viewport = {
