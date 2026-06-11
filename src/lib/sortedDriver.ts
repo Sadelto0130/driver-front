@@ -1,4 +1,4 @@
-import { mockDrivers } from "@/mocks/driver";
+import { mockDrivers } from "@/mocks/drivers-assigned"
 
 export const sortedDrivers = [...mockDrivers]
   .sort((a, b) => {
