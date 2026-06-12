@@ -20,7 +20,7 @@ export const navigationItems = [
   },
   {
     label: "Viajes",
-    href: "/trips",
+    href: "/services",
     icon: CarFront,
   },
   {

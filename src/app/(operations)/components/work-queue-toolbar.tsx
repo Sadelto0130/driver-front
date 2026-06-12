@@ -5,6 +5,7 @@ import {
   WorkQueueSort 
 } from "@/types/work-queue";
 import { ArrowUpDown } from "lucide-react";
+import { StatusToolbar, StatusToolbarFilter } from "@/components/shared/toolbar";
 
 import {
   DropdownMenu,
@@ -13,20 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-
-type FilterColor =
-  | "slate"
-  | "red"
-  | "amber"
-  | "blue"
-  | "emerald";
-
-interface FilterItem {
-  value: string
-  label: string;
-  count: number;
-  color: FilterColor;
-}
 
 interface Props {
   filter: WorkQueueFilter;
@@ -54,7 +41,7 @@ export function WorkQueueToolbar({
   onSortChange,
   stats
 }: Props) {
-  const filters: FilterItem[] = [
+  const filters: StatusToolbarFilter[] = [
     {
       label: "Todos",
       value: "ALL",
@@ -93,39 +80,6 @@ export function WorkQueueToolbar({
     },
   ] as const; 
 
-  const colorMap = {
-    slate: {
-      bg: "bg-slate-50",
-      border: "border-slate-200",
-      text: "text-slate-700",
-      badge: "bg-slate-100 text-slate-700",
-    },
-    red: {
-      bg: "bg-red-50",
-      border: "border-red-200",
-      text: "text-red-700",
-      badge: "bg-red-100 text-red-700",
-    },
-    amber: {
-      bg: "bg-amber-50",
-      border: "border-amber-200",
-      text: "text-amber-700",
-      badge: "bg-amber-100 text-amber-700",
-    },
-    blue: {
-      bg: "bg-blue-50",
-      border: "border-blue-200",
-      text: "text-blue-700",
-      badge: "bg-blue-100 text-blue-700",
-    },
-    emerald: {
-      bg: "bg-emerald-50",
-      border: "border-emerald-200",
-      text: "text-emerald-700",
-      badge: "bg-emerald-100 text-emerald-700",
-    },
-  };
-
   return (
     <div
       className="
@@ -136,216 +90,14 @@ export function WorkQueueToolbar({
         md:py-4
       "
     >
-      {/* MOBILE */}
-      <div className="flex flex-col gap-2 md:hidden">
-        <div className="grid grid-cols-3 gap-2 md:hidden">
-          {filters.map((item) => { const colors = colorMap[item.color]
-            return (
-              <button
-                key={item.label}
-                onClick={() =>
-                  onFilterChange(item.value as WorkQueueFilter)
-                }
-                className={`
-                  flex items-center justify-center gap-1
-                  rounded-lg border
-                  px-2 py-1.5
-                  text-[11px] font-medium
+      <StatusToolbar
+        value={filter}
+        filters={filters}
+        onValueChange={(value) => onFilterChange(value as WorkQueueFilter)}
 
-                  ${
-                    item.value === filter
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : `${colors.bg} ${colors.border} ${colors.text}`
-                  }
-                `}
-              >
-                <span>{item.label}</span>
-
-                <span
-                  className={`
-                    rounded-full px-1.5 py-0.5 text-[10px]
-                    ${
-                      item.value === filter
-                        ? "bg-white/20 text-white"
-                        : colors.badge
-                    }
-                  `}
-                >
-                  {item.count}
-                </span>
-              </button>
-            )
-          })}
-
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="
-                mt-2
-                col-span-3
-                flex h-10 w-full
-                items-center justify-center gap-2
-                rounded-xl border
-                border-slate-200
-                bg-white
-                text-sm font-medium
-              "
-            >
-              <ArrowUpDown className="h-4 w-4" />
-              Ordenar
-            </button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className="w-56 rounded-2xl">
-            <div className="px-2 py-1.5">
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                Ordenar servicios
-              </p>
-            </div>
-
-            <DropdownMenuSeparator />
-
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("REQUESTED_AT_DESC")}
-              className="cursor-pointer"
-            >
-              Más recientes
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("REQUESTED_AT_ASC")}
-              className="cursor-pointer"
-            >
-              Más antiguos
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("SERVICE_NUMBER_ASC")}
-              className="cursor-pointer"
-            >
-              Servicio ↑
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("SERVICE_NUMBER_DESC")}
-              className="cursor-pointer"
-            >
-              Servicio ↓
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {/* DESKTOP */}
-      <div className="hidden md:flex md:items-center md:gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className={`
-                flex h-10 md:w-10 w-full
-                items-center
-                justify-center
-                rounded-xl
-                border 
-                transition-colors
-                hover:bg-slate-50
-                ${sortBy !== "REQUESTED_AT_DESC" 
-                  ? "border-blue-200 bg-blue-50 text-blue-600"
-                  : "border-slate-200 bg-white text-slate-500"
-                }
-              `}
-              name="button"
-              aria-label="Ordenar servicios"
-              title="Ordenar servicios"
-            >
-              <ArrowUpDown className="h-4 w-4"/>
-            </button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className="w-56 rounded-2xl">
-            <div className="px-2 py-1.5">
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                Ordenar servicios
-              </p>
-            </div>
-
-            <DropdownMenuSeparator />
-
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("REQUESTED_AT_DESC")}
-              className="cursor-pointer"
-            >
-              Más recientes
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("REQUESTED_AT_ASC")}
-              className="cursor-pointer"
-            >
-              Más antiguos
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("SERVICE_NUMBER_ASC")}
-              className="cursor-pointer"
-            >
-              Servicio ↑
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => onSortChange("SERVICE_NUMBER_DESC")}
-              className="cursor-pointer"
-            >
-              Servicio ↓
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {filters.map((item) => {
-    const colors = colorMap[item.color]
-
-    return (
-      <button
-        key={item.label}
-        onClick={() =>
-          onFilterChange(item.value as WorkQueueFilter)
-        }
-        className={`
-          shrink-0
-          flex items-center gap-2
-          rounded-lg
-          border
-          px-3 py-1.5
-          text-sm font-medium
-          transition-all duration-200
-          ${
-            item.value === filter
-              ? "border-slate-900 bg-slate-900 text-white shadow-sm"
-              : `${colors.bg} ${colors.border} ${colors.text} hover:shadow-sm`
-          }
-        `}
-      >
-        <span>{item.label}</span>
-
-        <span
-          className={`
-            rounded-full px-2 py-0.5 text-xs font-semibold
-            ${
-              item.value === filter
-                ? "bg-white/20 text-white"
-                : colors.badge
-            }
-          `}
-        >
-          {item.count}
-        </span>
-      </button>
-    )
-  })}
-      </div>   
+        sortValue={sortBy}
+        onSortChange={(value) => onSortChange(value as WorkQueueSort)}
+      />      
     </div>
   );
 }

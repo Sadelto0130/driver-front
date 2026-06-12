@@ -9,7 +9,7 @@ export function formatServiceDate( value: string) {
       minute: "2-digit"
     }
   )
-}
+} 
 
 export function formatServiceTime(value: string) {
   return new Date(value).toLocaleTimeString(
