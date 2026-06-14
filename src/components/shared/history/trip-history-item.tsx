@@ -22,6 +22,7 @@ const eventColors: Record<
   ACTIVE: "bg-emerald-500",
   COMPLETED: "bg-green-700",
   CANCELLED: "bg-red-500",
+  PROGRAMMED: "bg-purple-500"
 };
 
 export function TripHistoryItem({
@@ -30,7 +31,7 @@ export function TripHistoryItem({
   isCurrent 
 }: Props) {
   return (
-    <div className="relative flex gap-2 pb-8">
+    <div className="relative flex gap-2 pb-4">
       <div className="relative flex w-10 justify-center">
         {/*Punto timeline*/}
         <div className={`
@@ -60,11 +61,11 @@ export function TripHistoryItem({
       {/*Card */}
       <div className={`
         flex-1 
-        rounded-3xl
+        rounded-2xl
         border
         bg-white
-        px-6
-        py-5
+        px-4
+        py-3
         shadow-[0_2px_12px_rgba(15, 23, 42, 0.05)]
         ${
           isCurrent
@@ -72,26 +73,29 @@ export function TripHistoryItem({
             : "border-slate-200 bg-white"
         }
       `}>
-        {/*Badge */}
-        {isCurrent && (
-          <div className="mb-0 flex justify-end">
-            <span className="
-              inline-flex
-              rounded-full
-              border-emerald-300
-              bg-emerald-50
-              px-2 py-1
-              text-xs
-              font-medium
-              text-emerald-700
-            ">
-              Último evento
-            </span>
-          </div>
-        )}
-        <p className="text-lg font-semibold text-slate-900">
-          {event.title}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-sm font-semibold text-slate-900">
+            {event.title}
+          </p>
+
+          {/*Badge */}
+          {isCurrent && (
+            <div className="mb-0 flex justify-end">
+              <span className="
+                inline-flex
+                rounded-full
+                border-emerald-300
+                bg-emerald-50
+                px-2 py-1
+                text-xs
+                font-medium
+                text-emerald-700
+              ">
+                Último evento
+              </span>
+            </div>
+          )}
+        </div>
 
         <p className="mt-1 text-sm text-slate-500">
           {getEventDescription(event)}

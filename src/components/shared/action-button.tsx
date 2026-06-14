@@ -18,55 +18,61 @@ export function ActionButton({
       onClick={onClick}
       className={cn(
         `
+        pt-2
         group
         flex
         flex-col
         items-center
         justify-center
-        gap-2
 
-        transition-all
-        duration-200
+        bg-transparent
+        border-none
+        shadow-none
 
-        hover:-translate-y-1
-        hover:shadow-lg
-
-        active:translate-y-0
-        active:scale-95
-      `,
-        danger
-          ? `
-            border-red-200
-            text-red-600
-            hover:border-red-300
-          `
-          : `
-            border-slate-200
-            bg-slate-50
-            hover:border-blue-200
-            hover:bg-blue-50
-            hover:text-blue-600
-          `
+        `,
       )}
-    >
+      >
       <div
-        className="
+        className={cn(` 
           flex
           h-10
           w-10
           items-center
           justify-center
-
+          
           rounded-xl
           bg-white
-
+          
           shadow-sm
-
+          
           transition-transform
           duration-200
-
+          
           group-hover:scale-110
-        "
+
+    
+          hover:-translate-y-1
+          hover:shadow-lg
+    
+          active:translate-y-0
+          active:scale-95
+          
+          cursor-pointer
+          `,
+          danger
+            ? `
+              border-red-200
+              text-red-600
+              hover:bg-red-50
+              hover:border-red-300
+            `
+            : `
+              border-slate-200
+              hover:border-blue-200
+              hover:bg-blue-50
+              hover:text-blue-600
+            `
+      )}
       >
         {icon}
       </div>

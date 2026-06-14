@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { EntityListHeader } from "@/components/shared/entity-list-header";
 import { Service } from "@/types/service";
+import { getServiceFilters, ServiceStats } from "@/types/service-filters";
 
 export function WorkQueue() {
   const { search, searchScope } = useDispatchContext();
@@ -42,20 +43,17 @@ export function WorkQueue() {
 
   let emptyState = null;
 
-  const stats = {
+  const stats: ServiceStats = {
     total: trips.length,
-
-    pending: trips.filter((trip) => trip.status === "PENDING").length,
-
-    matching: trips.filter((trip) => trip.status === "MATCHING").length,
-
-    assigned: trips.filter((trip) => trip.status === "ASSIGNED").length,
-
-    active: trips.filter((trip) => trip.status === "ACTIVE").length,
-
-    completed: trips.filter((trip) => trip.status === "COMPLETED").length,
-  };
-
+    pending: trips.filter(t => t.status === "PENDING").length,
+    programmed: trips.filter(t => t.status === "PROGRAMMED").length,
+    matching: trips.filter(t => t.status === "MATCHING").length,
+    assigned: trips.filter(t => t.status === "ASSIGNED").length,
+    active: trips.filter(t => t.status === "ACTIVE").length,
+    completed: trips.filter(t => t.status === "COMPLETED").length,
+    cancelled: trips.filter(t => t.status === "CANCELLED").length,
+  }
+  
   const highlightTrips = (tripId: string) => {
     setHighlightedTripIds((prev) => [...prev, tripId]);
 
@@ -64,18 +62,13 @@ export function WorkQueue() {
     }, 3000);
   };
 
-  const sortTrips = [...trips].sort(
-    (a, b) =>
-      new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime(),
-  );
-
   const filteredTrips =
     filter === "ALL"
-      ? sortTrips
-      : sortTrips.filter((trip) => trip.status === filter);
-
+    ? trips
+    : trips.filter((trip) => trip.status === filter);
+  
   const searchTerm = normalizeSearch(search);
-
+  
   const searchedTrips = !searchTerm
     ? filteredTrips
     : filteredTrips.filter((trip) => {

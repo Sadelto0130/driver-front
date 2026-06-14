@@ -1,7 +1,7 @@
 import { ServiceFilter, ServiceStatus } from "./service";
 
 export interface ServiceStats {
-  total: number;
+  total: number; 
   pending: number;
   programmed: number;
   matching: number;

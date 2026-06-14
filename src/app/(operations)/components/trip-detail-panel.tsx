@@ -11,7 +11,7 @@ import {
 
 import { formatServiceTime, getWaitingTime } from "@/lib/date";
 import { getStatusDescription } from "@/lib/trip-status";
-import { TripHistorySheet } from "./history/trip-history-sheet";
+import { TripHistorySheet } from "../../../components/shared/history/trip-history-sheet";
 import { AssignDriverSheet } from "./assign-driver-sheet";
 import { Button } from "../../../components/ui/button";
 import { useTripActions } from "@/hooks/use-trip-actions";

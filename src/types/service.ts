@@ -2,7 +2,7 @@ export type ServiceStatus =
   | "PENDING"
   | "PROGRAMMED"
   | "MATCHING"
-  | "ASSIGNED"
+  | "ASSIGNED" 
   | "ACTIVE"
   | "COMPLETED"
   | "CANCELLED"

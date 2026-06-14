@@ -1,5 +1,4 @@
 import { Service } from "@/types/service";
-import { CANCELLED } from "dns";
 
 export type TripHistoryEventType =
   | "CREATED"
@@ -7,7 +6,8 @@ export type TripHistoryEventType =
   | "ASSIGNED"
   | "ACTIVE"
   | "COMPLETED"
-  | "CANCELLED";
+  | "CANCELLED"
+  | "PROGRAMMED";
 
 export interface TripHistoryItem {
   id: string;
@@ -57,6 +57,48 @@ const statusOffsets = {
   CANCELLED:[0, 6]
 } as const;
 
+const TIMELINE_BY_STATUS = {
+  PENDING: [
+    HISTORY_STEPS.CREATED,
+  ],
+
+  PROGRAMMED: [
+    HISTORY_STEPS.CREATED,
+    HISTORY_STEPS.PROGRAMMED,
+  ],
+
+  MATCHING: [
+    HISTORY_STEPS.CREATED,
+    HISTORY_STEPS.MATCHING,
+  ],
+
+  ASSIGNED: [
+    HISTORY_STEPS.CREATED,
+    HISTORY_STEPS.MATCHING,
+    HISTORY_STEPS.ASSIGNED,
+  ],
+
+  ACTIVE: [
+    HISTORY_STEPS.CREATED,
+    HISTORY_STEPS.MATCHING,
+    HISTORY_STEPS.ASSIGNED,
+    HISTORY_STEPS.ACTIVE,
+  ],
+
+  COMPLETED: [
+    HISTORY_STEPS.CREATED,
+    HISTORY_STEPS.MATCHING,
+    HISTORY_STEPS.ASSIGNED,
+    HISTORY_STEPS.ACTIVE,
+    HISTORY_STEPS.COMPLETED,
+  ],
+
+  CANCELLED: [
+    HISTORY_STEPS.CREATED,
+    HISTORY_STEPS.CANCELLED,
+  ],
+} as const;
+
 export const buildTripHistory = (
   requestedAt: string,
   status: Service["status"]
@@ -65,25 +107,7 @@ export const buildTripHistory = (
 
   const now = Date.now()
 
-  const timeline = [
-    HISTORY_STEPS.CREATED,
-    HISTORY_STEPS.MATCHING,
-    HISTORY_STEPS.ASSIGNED,
-    HISTORY_STEPS.ACTIVE,
-    HISTORY_STEPS.COMPLETED,
-  ];
-  
-  const statusIndex = {
-    PENDING: 0,
-    MATCHING: 1,
-    ASSIGNED: 2,
-    ACTIVE: 3,
-    COMPLETED: 4,
-    CANCELLED: 5,
-    PROGRAMMED: 6,
-  }[status];
-
-  const events = timeline.slice(0, statusIndex + 1)
+  const events = TIMELINE_BY_STATUS[status]
   
   const offsets = statusOffsets[status]
 
@@ -91,7 +115,7 @@ export const buildTripHistory = (
     const eventTime = start + offsets[index] * 60 * 1000
 
     return {
-      id: String(index + 1),
+      id: `${event.type}-${index}`,
       type: event.type,
       title: event.title,
       timestamp: new Date(Math.min(eventTime, now)).toISOString(),

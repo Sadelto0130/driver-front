@@ -1,14 +1,105 @@
 import { Service } from "@/types/service";
 
 const STATUS_TIME_RANGES = {
-  PENDING: [1, 8],
-  MATCHING: [5, 15],
-  ASSIGNED: [12, 25],
-  ACTIVE: [20, 45],
-  COMPLETED: [35, 90],
-  PROGRAMMED: null,
-  CANCELLED: null
+  PENDING: [1, 5],
+  MATCHING: [6, 12],
+  ASSIGNED: [13, 25],
+  ACTIVE: [26, 60],
+  COMPLETED: [61, 720],
+  CANCELLED: [30, 720],
+  PROGRAMMED: [-1080, -60],
 } as const;
+
+const statuses: Service["status"][] = [
+  "PENDING",
+  "MATCHING",
+  "ASSIGNED",
+  "ACTIVE",
+  "COMPLETED",
+  "CANCELLED",
+  "PROGRAMMED",
+];
+
+const passengers = [
+  "Juan Pérez",
+  "María Gómez",
+  "Pedro Díaz",
+  "Ana Torres",
+  "Luis Gómez",
+  "Sofía Martínez",
+  "Diego Fernández",
+  "Valentina Ruiz",
+  "Javier Morales",
+  "Lucía Herrera",
+  "Martín Silva",
+  "Camila Rojas",
+  "Federico Vega",
+  "Natalia Romero",
+  "Andrés López",
+  "Paula Medina",
+  "Gabriel Acosta",
+  "Julieta Navarro",
+  "Tomás Cabrera",
+  "Carolina Benítez",
+];
+
+const companies = [
+  { id: "particulars", name: "Particulares" },
+  { id: "1", name: "Tech Solutions SA" },
+  { id: "2", name: "Banco Federal" },
+  { id: "3", name: "Logística Express" },
+  { id: "4", name: "Grupo Andino" },
+  { id: "5", name: "Constructora Atlas" },
+  { id: "6", name: "Seguros Horizonte" },
+  { id: "7", name: "Farmacias Central" },
+  { id: "8", name: "Hotel Grand Plaza" },
+  { id: "9", name: "Consultora Nexus" },
+  { id: "10", name: "Industrias Delta" },
+  { id: "11", name: "Servicios Integrales SRL" },
+  { id: "12", name: "Petro Sur" },
+  { id: "13", name: "Distribuidora Norte" },
+  { id: "14", name: "Universidad Metropolitana" },
+];
+
+const origins = [
+  "Palermo",
+  "Recoleta",
+  "Belgrano",
+  "Retiro",
+  "Caballito",
+  "Flores",
+  "San Telmo",
+  "Puerto Madero",
+  "Boedo",
+  "Villa Crespo",
+];
+
+const destinations = [
+  "Aeropuerto",
+  "Aeroparque",
+  "Centro",
+  "Microcentro",
+  "Belgrano",
+  "Palermo",
+  "Caballito",
+  "Puerto Madero",
+  "Recoleta",
+  "Flores",
+];
+
+const drivers = [
+  "Carlos Ruiz",
+  "Juan López",
+  "Miguel Castro",
+  "Fernando Díaz",
+  "José Pérez",
+  "Ricardo Gómez",
+  "Sergio Torres",
+  "Mario Fernández",
+  "Gabriel Ruiz",
+  "Diego Acosta",
+];
+
 
 export function createMockServices(): Service[] {
   const now = new Date();
@@ -36,294 +127,56 @@ export function createMockServices(): Service[] {
     return createRequestedAt(minutesAgo);
   };
   
-  return [
-  {
-    id: "1",
-    serviceNumber: "2451",
-    companyId: "particulars",
-    companyName: "Particulares",
-    passengerName: "Juan Pérez",
-    passengerPhone: "+54 11 1234-5678",
-    passengerEmail: "juan@email.com",
-    origin: "Palermo",
-    destination: "Aeropuerto",
-    observations: "Viaja con mascota",
-    status: "PENDING",
-    requestedAt: createRequestedAtByStatus("PENDING"),
-  },
-  {
-    id: "2",
-    serviceNumber: "2452",
-    companyId: "2",
-    companyName: "Banco Federal",
-    passengerName: "María Gómez",
-    passengerPhone: "+54 11 2234-5678",
-    passengerEmail: "maria@email.com",
-    origin: "Centro",
-    destination: "Recoleta",
-    driverName: "Carlos Ruiz",
-    observations: "Cliente corporativo",
-    status: "ASSIGNED",
-    requestedAt: createRequestedAtByStatus("ASSIGNED"),
-  },
-  {
-    id: "3",
-    serviceNumber: "2453",
-    companyId: "1",
-    companyName: "Tech Solutions SA",
-    passengerName: "Pedro Díaz",
-    passengerPhone: "+54 11 3234-5678",
-    passengerEmail: "pedro@email.com",
-    origin: "Belgrano",
-    destination: "Aeroparque",
-    driverName: "Juan López",
-    observations: "",
-    status: "ACTIVE",
-    requestedAt: createRequestedAtByStatus("ACTIVE"),
-  },
-  {
-    id: "4",
-    serviceNumber: "2454",
-    companyId: "10",
-    companyName: "Industrias Delta",
-    passengerName: "Ana Torres",
-    passengerPhone: "+54 11 4234-5678",
-    passengerEmail: "ana@email.com",
-    origin: "Caballito",
-    destination: "Microcentro",
-    observations: "",
-    status: "MATCHING",
-    requestedAt: createRequestedAtByStatus("MATCHING"),
-  },
-  {
-    id: "5",
-    serviceNumber: "2455",
-    companyId: "particulars",
-    companyName: "Particulares",
-    passengerName: "Luis Gómez",
-    passengerPhone: "+54 11 5234-5678",
-    passengerEmail: "luis@email.com",
-    origin: "Flores",
-    destination: "Once",
-    observations: "",
-    status: "COMPLETED",
-    requestedAt: createRequestedAtByStatus("COMPLETED"),
-  },
-  {
-    id: "6",
-    serviceNumber: "2456",
-    companyId: "14",
-    companyName: "Universidad Metropolitana",
-    passengerName: "Sofía Martínez",
-    passengerPhone: "+54 11 6234-5678",
-    passengerEmail: "sofia@email.com",
-    origin: "Villa Crespo",
-    destination: "Puerto Madero",
-    observations: "Equipaje grande",
-    status: "ACTIVE",
-    requestedAt: createRequestedAtByStatus("ACTIVE"),
-  },
-  {
-    id: "7",
-    serviceNumber: "2457",
-    companyId: "11",
-    companyName: "Servicios Integrales SRL",
-    passengerName: "Diego Fernández",
-    passengerPhone: "+54 11 7234-5678",
-    passengerEmail: "diego@email.com",
-    origin: "San Telmo",
-    destination: "Retiro",
-    driverName: "Miguel Castro",
-    observations: "",
-    status: "COMPLETED",
-    requestedAt: createRequestedAtByStatus("COMPLETED"),
-  },
-  {
-    id: "8",
-    serviceNumber: "2458",
-    companyId: "particulars",
-    companyName: "Particulares",
-    passengerName: "Valentina Ruiz",
-    passengerPhone: "+54 11 8234-5678",
-    passengerEmail: "vale@email.com",
-    origin: "Núñez",
-    destination: "Palermo",
-    observations: "",
-    status: "PENDING",
-    requestedAt: createRequestedAtByStatus("PENDING"),
-  },
-  {
-    id: "9",
-    serviceNumber: "2459",
-    companyId: "3",
-    companyName: "Logística Express",
-    passengerName: "Javier Morales",
-    passengerPhone: "+54 11 9234-5678",
-    passengerEmail: "javier@email.com",
-    origin: "Barracas",
-    destination: "Constitución",
-    observations: "Pago con empresa",
-    status: "MATCHING",
-    requestedAt: createRequestedAtByStatus("MATCHING"),
-  },
-  {
-    id: "10",
-    serviceNumber: "2460",
-    companyId: "9",
-    companyName: "Consultora Nexus",
-    passengerName: "Lucía Herrera",
-    passengerPhone: "+54 11 1334-5678",
-    passengerEmail: "lucia@email.com",
-    origin: "Villa Urquiza",
-    destination: "Belgrano",
-    driverName: "Fernando Díaz",
-    observations: "",
-    status: "ASSIGNED",
-    requestedAt: createRequestedAtByStatus("ASSIGNED"),
-  },
-  {
-    id: "11",
-    serviceNumber: "2461",
-    companyId: "particulars",
-    companyName: "Particulares",
-    passengerName: "Martín Silva",
-    passengerPhone: "+54 11 2334-5678",
-    passengerEmail: "martin@email.com",
-    origin: "Almagro",
-    destination: "Recoleta",
-    observations: "",
-    status: "ACTIVE",
-    requestedAt: createRequestedAtByStatus("ACTIVE"),
-  },
-  {
-    id: "12",
-    serviceNumber: "2462",
-    companyId:"12" ,
-    companyName: "Petro Sur",
-    passengerName: "Camila Rojas",
-    passengerPhone: "+54 11 3334-5678",
-    passengerEmail: "camila@email.com",
-    origin: "Palermo",
-    destination: "Puerto Madero",
-    observations: "Viaje programado",
-    status: "ACTIVE",
-    requestedAt: createRequestedAtByStatus("ACTIVE"),
-  },
-  {
-    id: "13",
-    serviceNumber: "2463",
-    companyId: "13",
-    companyName: "Distribuidora Norte",
-    passengerName: "Federico Vega",
-    passengerPhone: "+54 11 4334-5678",
-    passengerEmail: "fede@email.com",
-    origin: "Retiro",
-    destination: "Aeropuerto",
-    observations: "",
-    status: "PENDING",
-    requestedAt: createRequestedAtByStatus("PENDING"),
-  },
-  {
-    id: "14",
-    serviceNumber: "2464",
-    companyId: "4",
-    companyName: "Grupo Andino",
-    passengerName: "Natalia Romero",
-    passengerPhone: "+54 11 5334-5678",
-    passengerEmail: "natalia@email.com",
-    origin: "Boedo",
-    destination: "Caballito",
-    driverName: "José Pérez",
-    observations: "",
-    status: "MATCHING",
-    requestedAt: createRequestedAtByStatus("MATCHING"),
-  },
-  {
-    id: "15",
-    serviceNumber: "2465",
-    companyId: "12",
-    companyName: "Petro Sur",
-    passengerName: "Andrés López",
-    passengerPhone: "+54 11 6334-5678",
-    passengerEmail: "andres@email.com",
-    origin: "Villa Devoto",
-    destination: "Centro",
-    observations: "",
-    status: "MATCHING",
-    requestedAt: createRequestedAtByStatus("MATCHING"),
-  },
-  {
-    id: "16",
-    serviceNumber: "2466",
-    companyId: "12",
-    companyName: "Petro Sur",
-    passengerName: "Paula Medina",
-    passengerPhone: "+54 11 7334-5678",
-    passengerEmail: "paula@email.com",
-    origin: "Flores",
-    destination: "Palermo",
-    driverName: "Ricardo Gómez",
-    observations: "Lleva bicicleta",
-    status: "ACTIVE",
-    requestedAt: createRequestedAtByStatus("ACTIVE"),
-  },
-  {
-    id: "17",
-    serviceNumber: "2467",
-    companyId: "5",
-    companyName: "Constructora Atlas",
-    passengerName: "Gabriel Acosta",
-    passengerPhone: "+54 11 8334-5678",
-    passengerEmail: "gabriel@email.com",
-    origin: "Constitución",
-    destination: "San Telmo",
-    observations: "",
-    status: "COMPLETED",
-    requestedAt: createRequestedAtByStatus("COMPLETED"),
-  },
-  {
-    id: "18",
-    serviceNumber: "2468",
-    companyId: "13",
-    companyName: "Distribuidora Norte",
-    passengerName: "Julieta Navarro",
-    passengerPhone: "+54 11 9334-5678",
-    passengerEmail: "julieta@email.com",
-    origin: "Recoleta",
-    destination: "Belgrano",
-    observations: "",
-    status: "PENDING",
-    requestedAt: createRequestedAtByStatus("PENDING"),
-  },
-  {
-    id: "19",
-    serviceNumber: "2469",
-    companyId: "13",
-    companyName: "Distribuidora Norte",
-    passengerName: "Tomás Cabrera",
-    passengerPhone: "+54 11 1434-5678",
-    passengerEmail: "tomas@email.com",
-    origin: "Puerto Madero",
-    destination: "Retiro",
-    driverName: "Sergio Torres",
-    observations: "",
-    status: "ACTIVE",
-    requestedAt: createRequestedAtByStatus("ACTIVE"),
-  },
-  {
-    id: "20",
-    serviceNumber: "2470",
-    companyId: "6",
-    companyName: "Seguros Horizonte",
-    passengerName: "Carolina Benítez",
-    passengerPhone: "+54 11 2434-5678",
-    passengerEmail: "carolina@email.com",
-    origin: "Aeroparque",
-    destination: "Palermo",
-    driverName: "Mario Fernández",
-    observations: "Vuelo demorado 20 min",
-    status: "ASSIGNED",
-    requestedAt: createRequestedAtByStatus("ASSIGNED"),
-  },
-];
+  return Array.from({ length: 50 }, (_, index) => {
+    const status =
+      statuses[index % statuses.length];
+
+    const company =
+      companies[index % companies.length];
+
+    return {
+      id: String(index + 1),
+
+      serviceNumber: String(2451 + index),
+
+      companyId: company.id,
+      companyName: company.name,
+
+      passengerName:
+        passengers[index % passengers.length],
+
+      passengerPhone: `+54 11 ${1000 + index}-${5000 + index}`,
+
+      passengerEmail: `passenger${index + 1}@email.com`,
+
+      origin: origins[index % origins.length],
+
+      destination:
+        destinations[
+          (index + 3) %
+            destinations.length
+        ],
+
+      observations:
+        index % 5 === 0
+          ? "Cliente corporativo"
+          : "",
+
+      status,
+
+      ...(status === "ASSIGNED" ||
+      status === "ACTIVE" ||
+      status === "COMPLETED"
+        ? {
+            driverName:
+              drivers[
+                index % drivers.length
+              ],
+          }
+        : {}),
+
+      requestedAt:
+        createRequestedAtByStatus(status),
+    };
+  });
 }

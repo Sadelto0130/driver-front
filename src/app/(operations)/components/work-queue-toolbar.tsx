@@ -5,10 +5,11 @@ import {
   WorkQueueSort 
 } from "@/types/work-queue";
 import { StatusToolbar } from "@/components/shared/toolbar";
-import { StatusToolbarFilter } from "@/types/service-filters";
+import { getServiceFilters, ServiceStats, StatusToolbarFilter } from "@/types/service-filters";
+import { sortOptionsValues } from "@/types/sortOptionsValues";
 
 interface Props {
-  filter: WorkQueueFilter;
+  filter: string;
   onFilterChange: (
     filter: WorkQueueFilter
   ) => void;
@@ -16,14 +17,7 @@ interface Props {
   onSortChange: (
     sort: WorkQueueSort
   ) => void;
-  stats: {
-    total: number
-    pending: number
-    matching: number
-    assigned: number
-    active: number
-    completed: number
-  }
+  stats: ServiceStats
 }
 
 export function WorkQueueToolbar({
@@ -84,10 +78,10 @@ export function WorkQueueToolbar({
     >
       <StatusToolbar
         value={filter}
-        filters={filters}
+        filters={getServiceFilters(stats)}
         onValueChange={(value) => onFilterChange(value as WorkQueueFilter)}
-
         sortValue={sortBy}
+        sortOptions={sortOptionsValues}
         onSortChange={(value) => onSortChange(value as WorkQueueSort)}
       />      
     </div>

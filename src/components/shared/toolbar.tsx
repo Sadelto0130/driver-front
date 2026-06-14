@@ -24,6 +24,7 @@ export function StatusToolbar ({
   sortOptions,
   onSortChange
 }: Props) {
+  
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scrollLeft = () => {
@@ -79,7 +80,7 @@ export function StatusToolbar ({
               className="cursor-pointer"
             >
               {option.label}
-            </DropdownMenuItem>
+            </DropdownMenuItem> 
           ))}
 
         </DropdownMenuContent>

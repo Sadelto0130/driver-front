@@ -3,8 +3,9 @@
 import { cn } from "@/lib/utils"
 import { Service } from "@/types/service"
 import { statusColorMap } from "@/types/status-color-map"
-import { Car, Eye, Flag, MapPin, MapPinned, Route } from "lucide-react"
+import { Car, Eye, Flag, MapPin, MapPinned } from "lucide-react"
 import { ServiceDetailActions } from "./service-detail-actions"
+import { statusMap } from "@/types/status-map"
 
 interface Props{
   service: Service | null
@@ -47,7 +48,7 @@ export function ServiceDetailPanel({service}: Props) {
 
           <h3 className="text-base font-semibold text-slate-900">
             Ningún servicio seleccionado
-          </h3>
+          </h3> 
 
           <p className="mt-2 text-sm leading-relaxed text-slate-500">
             Seleccione un servicio de la lista para visualizar pasajeros, recorrido, observaciones y detalles operativos
@@ -78,7 +79,7 @@ export function ServiceDetailPanel({service}: Props) {
             statusColorMap[service.status].badge
           )}
           >
-            {service.status}
+            {statusMap[service.status]}
           </span>
         </div>
         <ServiceDetailActions service={service} />
