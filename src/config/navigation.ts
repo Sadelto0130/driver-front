@@ -18,7 +18,7 @@ export const navigationItems = [
     href: "/dispatch",
     icon: ClipboardList,
   },
-  {/*
+ /*
   {
     label: "Viajes",
     href: "/services",
@@ -38,5 +38,5 @@ export const navigationItems = [
     label: "Configuracion",
     href: "/settings",
     icon: Settings,
-  },*/}
+  },*/
 ];
