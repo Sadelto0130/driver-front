@@ -1,4 +1,4 @@
-import { Trip } from "@/types/trip";
+import { Service } from "@/types/service";
 
 const STATUS_TIME_RANGES = {
   PENDING: [1, 8],
@@ -6,29 +6,34 @@ const STATUS_TIME_RANGES = {
   ASSIGNED: [12, 25],
   ACTIVE: [20, 45],
   COMPLETED: [35, 90],
+  PROGRAMMED: null,
+  CANCELLED: null
 } as const;
 
-export function createMockTrips(): Trip[] {
+export function createMockServices(): Service[] {
   const now = new Date();
 
   const createRequestedAt = (minutesAgo: number) =>
     new Date(now.getTime() - minutesAgo * 60 * 1000).toISOString();
   
-  const createRequestedAtByStatus = (
-    status: Trip["status"]
+ const createRequestedAtByStatus = (
+    status: Service["status"]
   ) => {
-    const [min, max] =
+    const range =
       STATUS_TIME_RANGES[status];
-  
+
+    if (!range) {
+      return createRequestedAt(0);
+    }
+
+    const [min, max] = range;
+
     const minutesAgo =
       Math.floor(
-        Math.random() *
-          (max - min + 1)
+        Math.random() * (max - min + 1)
       ) + min;
-  
-    return createRequestedAt(
-      minutesAgo
-    );
+
+    return createRequestedAt(minutesAgo);
   };
   
   return [

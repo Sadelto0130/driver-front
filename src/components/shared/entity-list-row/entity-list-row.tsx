@@ -29,7 +29,7 @@ export function EntityListRow({
       className={cn(
         "w-full text-left transition-all duration-200",
         highlighted && "bg-blue-100/80",
-        selected && "bg-blue-50/70"
+        selected && `bg-blue-100/80 ring-1 ring-blue-300/70`
       )}
     >
       {/**MOBILE */}
@@ -46,7 +46,7 @@ export function EntityListRow({
         "hidden border-b border-slate-100 hover:bg-slate-50 lg:block",
         priorityBorderClass && "border-l-4",
         priorityBorderClass,
-        selected && "translate-x-1 shadow-sm"
+        selected && `border-l-4 border-l-blue-500 bg-blue-50 shadow-ms translate-x-1`
       )}>
         {desktopContent}
       </div>

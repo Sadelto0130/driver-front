@@ -1,9 +1,11 @@
 export type TripStatus =
   | "PENDING"
+  | "PROGRAMMED"
   | "MATCHING"
   | "ASSIGNED"
   | "ACTIVE"
-  | "COMPLETED"
+  | "COMPLETED" 
+  | "CANCELLED"
 
 export interface Trip {
   id: string

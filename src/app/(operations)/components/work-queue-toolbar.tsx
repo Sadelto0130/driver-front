@@ -4,16 +4,8 @@ import {
   WorkQueueFilter, 
   WorkQueueSort 
 } from "@/types/work-queue";
-import { ArrowUpDown } from "lucide-react";
-import { StatusToolbar, StatusToolbarFilter } from "@/components/shared/toolbar";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
+import { StatusToolbar } from "@/components/shared/toolbar";
+import { StatusToolbarFilter } from "@/types/service-filters";
 
 interface Props {
   filter: WorkQueueFilter;
@@ -85,9 +77,9 @@ export function WorkQueueToolbar({
       className="
         border-b border-slate-200/70
         bg-slate-50/30
-        px-4 py-2
+        px-4 py-1
         md:px-6 
-        md:py-4
+        md:py-1
       "
     >
       <StatusToolbar

@@ -1,7 +1,7 @@
-import { Trip } from "@/types/trip";
+import { Service } from "@/types/service";
 
 export function useTripActions() {
-  const handleContactPassenger = (trip: Trip) => {
+  const handleContactPassenger = (trip: Service) => {
     window.open(
       `https://wa.me/${trip.passengerPhone.replace(
         /\D/g,
@@ -11,7 +11,7 @@ export function useTripActions() {
     )
   }
 
-  const handleCancelTrip = (trip: Trip) => {
+  const handleCancelTrip = (trip: Service) => {
     console.log(
       "Cancel trip",
       trip.id

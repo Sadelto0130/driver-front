@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { createMockTrips } from "@/mocks/trips";
-import { Trip } from "@/types/trip";
+import { createMockServices } from "@/mocks/trips";
 
 import { EmptySelection } from "./empty-selection";
 import { WorkQueueRow } from "./work-queue-row";
@@ -21,6 +20,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { EntityListHeader } from "@/components/shared/entity-list-header";
+import { Service } from "@/types/service";
 
 export function WorkQueue() {
   const { search, searchScope } = useDispatchContext();
@@ -33,7 +34,7 @@ export function WorkQueue() {
 
   const [sortBy, setSortBy] = useState<WorkQueueSort>("REQUESTED_AT_DESC");
 
-  const [trips, setTrips] = useState<Trip[]>([]);
+  const [trips, setTrips] = useState<Service[]>([]);
 
   const { data, isLoading, error } = useTrips();
 
@@ -151,7 +152,7 @@ export function WorkQueue() {
   }
 
   useEffect(() => {
-    setTrips(createMockTrips());
+    setTrips(createMockServices());
   }, []);
 
   return (
@@ -177,7 +178,7 @@ export function WorkQueue() {
           "
         >
 
-          <div className="px-4 py-4 md:px-6 md:py-5">
+          <div className="px-4 py-0 md:px-6 md:py-2">
             <div
               className="
                 flex flex-col gap-3
@@ -208,29 +209,18 @@ export function WorkQueue() {
             stats={stats}
           />
 
-          <div
-            className="
-              hidden
-              lg:grid
-              lg:grid-cols-[100px_180px_180px_160px_2fr]
-              gap-4
-              border-b border-slate-200
-              bg-slate-50/50
-              px-4 py-3
-              text-xs
-              font-semibold
-              uppercase
-              tracking-wide
-              text-slate-500
-            "
-          >
-            <span>Servicio</span>
-            <span className="whitespace-nowrap">Fecha/hora</span>
-            <span className="whitespace-nowrap">Pasajero / Cuenta</span>
-            <span>Chofer</span>
-            <span>Recorrido</span>
-          </div>
-
+          <EntityListHeader 
+            gridClassName="lg:grid-cols-[100px_180px_180px_160px_2fr]"
+            columns={
+              <>
+                <span>Servicio</span>
+                <span>Fecha/hora</span>
+                <span>Pasajero / Cuenta</span>
+                <span>Chofer</span>
+                <span>Recorrido</span>
+              </>
+            }
+          />
           <div className="flex-1 overflow-y-auto">
             {emptyState ? (
               <EmptyWorkQueue

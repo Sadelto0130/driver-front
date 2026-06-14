@@ -3,34 +3,17 @@
 import { EntityListRow } from "@/components/shared/entity-list-row/entity-list-row"
 import { formatServiceDate } from "@/lib/date"
 import { cn } from "@/lib/utils"
+import { Service, ServiceStatus } from "@/types/service"
 import { statusColorMap } from "@/types/status-color-map"
 import { statusMap } from "@/types/status-map"
 
-interface ServiceRowData {
-  id: string
-  serviceNumber: number
-  status: string
-
-  requestedAt: string
-  
-  passengerName: string
-  companyName?: string
-
-  phone?: string
-
-  paymentMethod?: string
-
-  origin: string
-  destination: string
-}
-
 interface Props {
-  service: ServiceRowData
+  service: Service
 
   selected?: boolean
   highlighted?: boolean
 
-  onSelect: (service: ServiceRowData) => void
+  onSelect: (service: Service) => void
 }
 
 export function ServiceRow({
@@ -51,7 +34,7 @@ export function ServiceRow({
             <span
               className={cn(
                 "rounded-full px-2 py-0 text-[11px] font-medium",
-                statusColorMap[service.status]
+                statusColorMap[service.status].badge
               )}
             >
               {statusMap[service.status]}
@@ -109,7 +92,7 @@ export function ServiceRow({
         <div
           className="
             grid
-            grid-cols-[100px_180px_180px_140px_120px_2fr]
+            grid-cols-[90px_140px_180px_120px_100px_minmax(120px,1fr)]
             items-center
             gap-4
             px-4
@@ -121,7 +104,7 @@ export function ServiceRow({
             <span
               className={cn(
                 "w-fit rounded-full px-2 py-1 text-xs font-medium",
-                statusColorMap[service.status]
+                statusColorMap[service.status].badge
               )}
             >
               {statusMap[service.status]}

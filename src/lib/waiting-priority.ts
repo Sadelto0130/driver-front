@@ -1,4 +1,4 @@
-import { Trip } from "@/types/trip"
+import { Service } from "@/types/service"
 
 export type WaitingPriority =
   | "NORMAL"
@@ -23,7 +23,7 @@ export function getWaitingPriority(
 }
 
 export function shouldShowWaitingPriority(
-  trip: Trip
+  trip: Service
 ) {
   const hasAssignedDriver = Boolean(trip.driverName)
 

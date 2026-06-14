@@ -9,18 +9,18 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Driver } from "@/types/driver";
-import { Trip } from "@/types/trip";
 import { useMemo, useState } from "react";
 import { Input } from "../../../components/ui/input";
 import { DriverCard } from "./driver-card";
 import { Search, X } from "lucide-react";
 import { mockDrivers } from "@/mocks/drivers-assigned";
+import { Service } from "@/types/service";
 
 interface Props {
-  trip: Trip;
+  trip: Service;
 }
 
-function getAssignButtonLabel(status: Trip["status"]) {
+function getAssignButtonLabel(status: Service["status"]) {
   switch (status) {
     case "ASSIGNED":
       return "Reasignar conductor";

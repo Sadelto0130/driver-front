@@ -1,6 +1,6 @@
-import { Trip } from "@/types/trip";
+import { Service } from "@/types/service";
 
-export function getStatusDescription(trip: Trip) {
+export function getStatusDescription(trip: Service) {
   switch (trip.status) {
     case "PENDING":
       return "Esperando";

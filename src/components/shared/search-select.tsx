@@ -6,11 +6,7 @@ import { Button } from "../ui/button"
 import { ChevronsUpDown, Check } from "lucide-react"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command"
 import { cn } from "@/lib/utils"
-
-interface SearchSelectOption {
-  value: string
-  label: string
-}
+import { SortOption } from "@/types/sortOptionsValues"
 
 interface Props {
   value?: string
@@ -18,7 +14,7 @@ interface Props {
   searchPlaceholder?: string
   emptyMessage?: string
   disabled?: boolean
-  options: SearchSelectOption[]
+  options: SortOption[]
   onChange: (value: string) => void
 }
 

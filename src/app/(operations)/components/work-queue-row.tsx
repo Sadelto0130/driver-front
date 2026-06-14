@@ -4,18 +4,16 @@ import { EntityListRow } from "@/components/shared/entity-list-row/entity-list-r
 import { formatServiceDate, getWaitingMinutes } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { getWaitingPriority, getWaitingPriorityClasses, shouldShowWaitingPriority } from "@/lib/waiting-priority";
+import { Service } from "@/types/service";
 import { statusColorMap } from "@/types/status-color-map";
 import { statusMap } from "@/types/status-map";
-import { Trip } from "@/types/trip";
 
 interface Props {
-  trip: Trip;
+  trip: Service;
   selected: boolean;
   highlighted: boolean;
-  onSelect: (trip: Trip) => void;
+  onSelect: (trip: Service) => void;
 }
-
-const statusColorMaps = statusColorMap
 
 export function WorkQueueRow({
   trip,
@@ -47,7 +45,7 @@ export function WorkQueueRow({
             <span
               className={cn(
                 "rounded-full px-2 py-0 text-[11px] font-medium",
-                statusColorMap[trip.status]
+                statusColorMap[trip.status].badge
               )}
             >
               {statusMaps[trip.status]}
@@ -115,7 +113,7 @@ export function WorkQueueRow({
             <span
               className={cn(
                 "w-fit rounded-full px-2 py-1 text-xs font-medium",
-                statusColorMap[trip.status]
+                statusColorMap[trip.status].badge
               )}
             >
               {statusMaps[trip.status]}

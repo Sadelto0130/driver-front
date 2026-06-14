@@ -9,7 +9,6 @@ import {
   Ban
 } from "lucide-react";
 
-import { Trip } from "@/types/trip";
 import { formatServiceTime, getWaitingTime } from "@/lib/date";
 import { getStatusDescription } from "@/lib/trip-status";
 import { TripHistorySheet } from "./history/trip-history-sheet";
@@ -17,9 +16,10 @@ import { AssignDriverSheet } from "./assign-driver-sheet";
 import { Button } from "../../../components/ui/button";
 import { useTripActions } from "@/hooks/use-trip-actions";
 import { CancelTripDialog } from "@/components/shared/cancel-trip-dialog";
+import { Service } from "@/types/service";
 
 interface Props {
-  trip: Trip;
+  trip: Service;
   onClose: () => void;
   showCloseButton?: boolean
 }
@@ -30,6 +30,9 @@ const statusMap = {
   ASSIGNED: "Asignado",
   ACTIVE: "En proceso",
   COMPLETED: "Finalizado",
+  PROGRAMMED: "Programado",
+  CANCELLED: "Cancelado"
+  
 };
 
 export function TripDetailPanel({ 
@@ -262,4 +265,10 @@ const statusStyles = {
 
   COMPLETED:
     "bg-slate-100 text-slate-700",
+
+  ALL: "",
+
+  PROGRAMMED: "",
+
+  CANCELLED: ""
 };

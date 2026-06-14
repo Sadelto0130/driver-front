@@ -21,7 +21,7 @@ export function MasterDetailWorkspace({
   detailOpen,
   onDetailOpenChange,
   detailTitle = "Detalle",
-  detailWidth = "480px"
+  detailWidth = "360px"
 }: Props) {
   return (
     <>
@@ -31,7 +31,7 @@ export function MasterDetailWorkspace({
         </div>
 
         <aside 
-          className="hidden xl:flex shrink-0 border-l border-slate-200/70 bg-white"
+          className="hidden xl:flex xl:flex-col shrink-0 overflow-y-auto border-l rounded-xl border-slate-200 bg-white ml-3 shadow-sm"
           style={{width: detailWidth}}
         >
           {detail}

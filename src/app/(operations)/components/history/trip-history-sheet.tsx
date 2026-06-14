@@ -10,13 +10,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { buildTripHistory } from "@/mocks/trip-history";
-import { Trip } from "@/types/trip";
 import { TripHistoryTimeLine } from "./trip-history-timeline";
 import { getWaitingTime } from "@/lib/date";
 import { X } from "lucide-react";
+import { Service } from "@/types/service";
 
 interface Props {
-  trip: Trip;
+  trip: Service;
   trigger?: React.ReactNode;
 }
 

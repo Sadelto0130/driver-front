@@ -3,98 +3,25 @@
 import { useRef } from "react";
 import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-
-export type FilterColor =
-  | "slate"
-  | "red"
-  | "amber"
-  | "blue"
-  | "emerald"
-  | "purple"
-
-export interface StatusToolbarFilter {
-  value: string;
-  label: string;
-  count: number;
-  color: FilterColor;
-}
-
-interface SortOption {
-  value: string
-  label: string
-}
+import { StatusToolbarFilter } from "@/types/service-filters";
+import { statusColorMap } from "@/types/status-color-map";
+import { SortOption } from "@/types/sortOptionsValues";
 
 interface Props {
   value: string
   filters: StatusToolbarFilter[]
   onValueChange:(value: string) => void
   sortValue?: string
+  sortOptions?: SortOption[]
   onSortChange?: (value: string) => void
 }
-
-const colorMap = {
-  slate: {
-    bg: "bg-slate-50",
-    border: "border-slate-200",
-    text: "text-slate-700",
-    badge: "bg-slate-100 text-slate-700",
-  },
-  red: {
-    bg: "bg-red-50",
-    border: "border-red-200",
-    text: "text-red-700",
-    badge: "bg-red-100 text-red-700",
-  },
-  amber: {
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-    text: "text-amber-700",
-    badge: "bg-amber-100 text-amber-700",
-  },
-  blue: {
-    bg: "bg-blue-50",
-    border: "border-blue-200",
-    text: "text-blue-700",
-    badge: "bg-blue-100 text-blue-700",
-  },
-  emerald: {
-    bg: "bg-emerald-50",
-    border: "border-emerald-200",
-    text: "text-emerald-700",
-    badge: "bg-emerald-100 text-emerald-700",
-  },
-  purple: {
-    bg: "bg-purple-50",
-    border: "border-purple-200",
-    text: "text-purple-700",
-    badge: "bg-purple-100 text-purple-700",
-  },
-} as const
-
-const sortOptionsValues: SortOption[] = [
-  {
-    value: "REQUESTED_AT_DESC",
-    label: "Más recientes",
-  },
-  {
-    value: "REQUESTED_AT_ASC",
-    label: "Más antiguos",
-  },
-  {
-    value: "SERVICE_NUMBER_ASC",
-    label: "Servicio ↑",
-  },
-  {
-    value: "SERVICE_NUMBER_DESC",
-    label: "Servicio ↓",
-  },
-]
 
 export function StatusToolbar ({
   value,
   filters,
   onValueChange,
   sortValue,
+  sortOptions,
   onSortChange
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -146,7 +73,7 @@ export function StatusToolbar ({
 
           <DropdownMenuSeparator />
 
-          {sortOptionsValues?.map((option) => (
+          {sortOptions?.map((option) => (
             <DropdownMenuItem
               onClick={() => onSortChange?.(option.value)}
               className="cursor-pointer"
@@ -199,7 +126,7 @@ export function StatusToolbar ({
         >
           <div className="flex w-max min-w-full gap-2">
             {filters.map((item) => {
-              const colors = colorMap[item.color]
+              const colors = statusColorMap[item.value]
 
               return (
                 <button

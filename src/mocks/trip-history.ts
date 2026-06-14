@@ -1,4 +1,5 @@
-import { Trip } from "@/types/trip";
+import { Service } from "@/types/service";
+import { CANCELLED } from "dns";
 
 export type TripHistoryEventType =
   | "CREATED"
@@ -20,6 +21,10 @@ const HISTORY_STEPS = {
     type: "CREATED",
     title: "Servicio creado",
   },
+  PROGRAMMED: {
+    type: "PROGRAMMED",
+    title: "Servicio programado",
+  },
   MATCHING: {
     type: "MATCHING",
     title: "Buscando conductor",
@@ -37,22 +42,24 @@ const HISTORY_STEPS = {
     title: "Viaje finalizado",
   },
   CANCELLED: {
-  type: "CANCELLED",
-  title: "Servicio cancelado",
-},
+    type: "CANCELLED",
+    title: "Servicio cancelado",
+  },
 } as const;
 
 const statusOffsets = {
   PENDING: [0],
+  PROGRAMMED: [0, 5],
   MATCHING: [0, 3],
   ASSIGNED: [0, 4, 11],
   ACTIVE: [0, 4, 11, 20],
   COMPLETED: [0, 4, 11, 20, 32],
+  CANCELLED:[0, 6]
 } as const;
 
 export const buildTripHistory = (
   requestedAt: string,
-  status: Trip["status"]
+  status: Service["status"]
 ): TripHistoryItem[] => {
   const start = new Date(requestedAt).getTime();
 
@@ -72,6 +79,8 @@ export const buildTripHistory = (
     ASSIGNED: 2,
     ACTIVE: 3,
     COMPLETED: 4,
+    CANCELLED: 5,
+    PROGRAMMED: 6,
   }[status];
 
   const events = timeline.slice(0, statusIndex + 1)

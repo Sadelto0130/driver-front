@@ -21,7 +21,9 @@ export function Topbar() {
   } = useDispatchContext()
 
   const pathname = usePathname()
-  const isDispatchPage = pathname.endsWith("/dispatch")
+  const isDispatchPage = 
+    pathname.endsWith("/dispatch") ||
+    pathname.endsWith("/services")
   
   const [searchScopeOpen, setSearchScopeOpen] = useState(false)
 

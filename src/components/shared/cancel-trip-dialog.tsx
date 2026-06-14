@@ -14,11 +14,11 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Ban } from "lucide-react";
-import { Trip } from "@/types/trip";
+import { Service } from "@/types/service";
 
 interface Props {
-  trip: Trip;
-  onConfirm: (trip: Trip) => void;
+  trip: Service;
+  onConfirm: (trip: Service) => void;
   disabled?: boolean;
 }
 
