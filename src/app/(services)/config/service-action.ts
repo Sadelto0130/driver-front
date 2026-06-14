@@ -4,7 +4,7 @@ export type ServiceAction =
   | "EDIT"
   | "DUPLICATE"
   | "CANCEL"
-  | "VIEW_HISTORY";
+  | "VIEW_HISTORY"
 
 export const serviceActionsByStatus = {
   PENDING: [

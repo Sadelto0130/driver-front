@@ -11,16 +11,6 @@ export const serviceActionConfig: Record<
   ServiceAction,
   ServiceActionConfig
 > = {
-  ASSIGN_DRIVER: {
-    label: "Asignar",
-    icon: UserRound
-  },
-
-  CHANGE_DRIVER: {
-    label: "Cambiar",
-    icon: UserRound
-  },
-
   EDIT: {
     label: "Editar",
     icon: Pencil
@@ -35,16 +25,6 @@ export const serviceActionConfig: Record<
     label: "Cancelar",
     icon: Trash2,
     danger: true
-  },
-
-  START_SERVICE: {
-    label: "Iniciar",
-    icon: Play
-  },
-
-  FINISH_SERVICE: {
-    label: "Finalizar",
-    icon: Square
   },
 
   VIEW_HISTORY: {
