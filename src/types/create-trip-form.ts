@@ -9,4 +9,11 @@ export interface CreateTripForm {
   destination: string
 
   observation: string
+
+  paymentMethod: string
+
+  isProgrammed: boolean
+
+  date: string
+  time: string  
 }

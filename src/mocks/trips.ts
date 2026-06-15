@@ -10,6 +10,24 @@ const STATUS_TIME_RANGES = {
   PROGRAMMED: [-1080, -60],
 } as const;
 
+const LOCATIONS = {
+  Palermo: { lat: -34.5889, lng: -58.4300 },
+  Recoleta: { lat: -34.5882, lng: -58.3977 },
+  Belgrano: { lat: -34.5621, lng: -58.4563 },
+  Retiro: { lat: -34.5917, lng: -58.3748 },
+  Caballito: { lat: -34.6186, lng: -58.4424 },
+  Flores: { lat: -34.6295, lng: -58.4635 },
+  "San Telmo": { lat: -34.6217, lng: -58.3732 },
+  "Puerto Madero": { lat: -34.6118, lng: -58.3637 },
+  Boedo: { lat: -34.6330, lng: -58.4135 },
+  "Villa Crespo": { lat: -34.5983, lng: -58.4428 },
+
+  Aeropuerto: { lat: -34.8222, lng: -58.5358 },
+  Aeroparque: { lat: -34.5592, lng: -58.4156 },
+  Centro: { lat: -34.6037, lng: -58.3816 },
+  Microcentro: { lat: -34.6031, lng: -58.3784 },
+} as const;
+
 const statuses: Service["status"][] = [
   "PENDING",
   "MATCHING",
@@ -128,55 +146,86 @@ export function createMockServices(): Service[] {
   };
   
   return Array.from({ length: 50 }, (_, index) => {
-    const status =
-      statuses[index % statuses.length];
+  const status =
+    statuses[index % statuses.length];
 
-    const company =
-      companies[index % companies.length];
+  const company =
+    companies[index % companies.length];
 
-    return {
-      id: String(index + 1),
+  const origin =
+    origins[index % origins.length];
 
-      serviceNumber: String(2451 + index),
+  const destination =
+    destinations[
+      (index + 3) %
+        destinations.length
+    ];
 
-      companyId: company.id,
-      companyName: company.name,
+  const originLocation =
+    LOCATIONS[
+      origin as keyof typeof LOCATIONS
+    ];
 
-      passengerName:
-        passengers[index % passengers.length],
+  const destinationLocation =
+    LOCATIONS[
+      destination as keyof typeof LOCATIONS
+    ];
 
-      passengerPhone: `+54 11 ${1000 + index}-${5000 + index}`,
+  return {
+    id: String(index + 1),
 
-      passengerEmail: `passenger${index + 1}@email.com`,
+    serviceNumber: String(
+      2451 + index
+    ),
 
-      origin: origins[index % origins.length],
+    companyId: company.id,
 
-      destination:
-        destinations[
-          (index + 3) %
-            destinations.length
-        ],
+    companyName: company.name,
 
-      observations:
-        index % 5 === 0
-          ? "Cliente corporativo"
-          : "",
+    passengerName:
+      passengers[
+        index % passengers.length
+      ],
 
-      status,
+    passengerPhone: `+54 11 ${
+      1000 + index
+    }-${5000 + index}`,
 
-      ...(status === "ASSIGNED" ||
-      status === "ACTIVE" ||
-      status === "COMPLETED"
-        ? {
-            driverName:
-              drivers[
-                index % drivers.length
-              ],
-          }
-        : {}),
+    passengerEmail: `passenger${
+      index + 1
+    }@email.com`,
 
-      requestedAt:
-        createRequestedAtByStatus(status),
-    };
-  });
+    origin,
+
+    destination,
+
+    originLocation,
+
+    destinationLocation,
+
+    observations:
+      index % 5 === 0
+        ? "Cliente corporativo"
+        : "",
+
+    status,
+
+    ...(status === "ASSIGNED" ||
+    status === "ACTIVE" ||
+    status === "COMPLETED"
+      ? {
+          driverName:
+            drivers[
+              index %
+                drivers.length
+            ],
+        }
+      : {}),
+
+    requestedAt:
+      createRequestedAtByStatus(
+        status
+      ),
+  };
+});
 }

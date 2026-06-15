@@ -11,7 +11,7 @@ import { WorkQueueToolbar } from "./work-queue-toolbar";
 import { WorkQueueFilter, WorkQueueSort } from "@/types/work-queue";
 import { EmptyWorkQueue } from "./empty-work-queue";
 import { useTrips } from "@/hooks/use-trips";
-import { CreateTripSheet } from "./create-trip-sheet";
+import { ServiceFormSheet } from "../../../components/shared/service-form-sheet";
 import { useDispatchContext } from "@/context/dispatch-context";
 import { normalizeSearch } from "@/lib/normalize-search";
 import {
@@ -189,7 +189,7 @@ export function WorkQueue() {
                   sm:items-center
                 "
               >
-                <CreateTripSheet />
+                <ServiceFormSheet />
               </div>
             </div>
           </div>

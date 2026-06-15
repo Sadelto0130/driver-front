@@ -65,8 +65,8 @@ export function ServiceDetailPanel({service}: Props) {
   }
 
   return (
-    <div className="h-full bg-white">
-      <div className="border-b border-slate-200 px-5 py-4">
+    <div className="flex h-full min-h-0 flex-col bg-white">
+      <div className="shrink-0 border-b border-slate-200 px-5 py-4">
 
         <div className="flex items-start justify-between mt-8 lg:mt-0">
           <h2 className="mt-1 text-2xl font-bold text-slate-900">
@@ -85,14 +85,16 @@ export function ServiceDetailPanel({service}: Props) {
         <ServiceDetailActions service={service} />
       </div>
 
-      <div className="space-y-6 p-5">
-        <PassengerCard service={service} />
-        <RouteCard service={service} />
-        <OperationCard service={service} /> 
-        {service.observations && (
-          <ObservationsCard observations={service.observations}/>
-        )}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="space-y-6 p-5">
+            <PassengerCard service={service} />
+            <RouteCard service={service} />
+            <OperationCard service={service} /> 
+            {service.observations && (
+              <ObservationsCard observations={service.observations}/>
+            )}
 
+          </div>
       </div>
     </div>
   )
@@ -175,16 +177,16 @@ function RouteCard({
           </div>
         </div>
 
-        <button className="group relative h-36 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition-all hover:border-blue-300 cursor-pointer">
+        <button className="group relative h-36 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.98]">
           <div className="flex h-full items-center justify-center text-xs font-medium text-slate-400">
             MAPA
           </div>
 
-          <div className="absolute inset-0 flex items-center justify-center bg-slate-900/30 opacity-0 transition-opacity group-hover:opacity-100">
-            <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-slate-900">
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-slate-900/30 py-2 lg:opacity-0 lg:transition-opacity lg:group-hover:opacity-100">
               <Eye className="h-3.5 w-3.5" />
-              Ver
-            </div>
+              <span className="text-xs font-medium">
+                Ver mapa
+              </span>
           </div>
         </button>
       </div>

@@ -4,10 +4,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { ReactNode } from "react"
 
 interface Props {
+  header?: React.ReactNode
+
   list: ReactNode
   detail: ReactNode
 
   detailOpen: boolean
+
   onDetailOpenChange: (open: boolean) => void
 
   detailTitle?: string
@@ -16,6 +19,7 @@ interface Props {
 }
 
 export function MasterDetailWorkspace({
+  header,
   list,
   detail,
   detailOpen,
@@ -26,12 +30,16 @@ export function MasterDetailWorkspace({
   return (
     <>
       <div className="flex h-full min-h-0 overflow-hidden">
-        <div className="min-w-0 flex-1">
-          {list}
+        <div className="flex min-w-0 flex-1 flex-col">
+          {header}
+          
+          <div className="min-h-0 min-w-0 flex-1">
+            {list}
+          </div>
         </div>
 
         <aside 
-          className="hidden xl:flex xl:flex-col shrink-0 overflow-y-auto border-l rounded-xl border-slate-200 bg-white ml-3 shadow-sm"
+          className="hidden xl:flex xl:flex-col min-h-0 shrink-0 overflow-hidden border-l rounded-xl border-slate-200 bg-white ml-3 shadow-sm"
           style={{width: detailWidth}}
         >
           {detail}

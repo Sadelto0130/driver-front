@@ -49,5 +49,15 @@ export interface Service {
 
   origin: string
 
+  originLocation?: {
+    lat: number;
+    lng: number;
+  };
+
   destination: string
+
+  destinationLocation?: {
+    lat: number;
+    lng: number;
+  };
 }

@@ -11,6 +11,7 @@ import { getServiceFilters, ServiceStats } from "@/types/service-filters"
 import { useEffect, useState } from "react"
 import { ServiceList } from "./service-list"
 import { ServiceDetailPanel } from "./service-detail-panel"
+import { ServiceFormSheet } from "@/components/shared/service-form-sheet"
 
 export function ServicesWorkspace() {
   const [selectedServiceId, setSelectedServicedId] = useState<string | null>(null)
@@ -122,6 +123,12 @@ export function ServicesWorkspace() {
       detailOpen={detailOpen}
       onDetailOpenChange={setDetailOpen}
       detailTitle="Detalle del servicio"
+      header={
+        <div className="mb-3 flex justify-between">
+          <h1>Servicios</h1>
+          <ServiceFormSheet />
+        </div>
+      }
       detail={
         <ServiceDetailPanel service={selectedService} />
       }

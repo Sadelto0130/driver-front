@@ -4,7 +4,7 @@ interface ActionButtonProps {
   icon: React.ReactNode
   label?: string
   danger?: boolean
-  onClick: () => void
+  onClick?: () => void
 }
 
 export function ActionButton({
@@ -65,6 +65,7 @@ export function ActionButton({
               text-red-600
               hover:bg-red-50
               hover:border-red-300
+              cursor-pointer
             `
             : `
               border-slate-200
@@ -77,9 +78,11 @@ export function ActionButton({
         {icon}
       </div>
 
-      {label ?? <span className="text-xs font-medium">
-        {label}
-      </span>}
+      {label && (
+        <span className="text-xs font-medium">
+          {label}
+        </span>
+      )}
     </button>
   )
 }

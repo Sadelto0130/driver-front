@@ -76,6 +76,7 @@ export function StatusToolbar ({
 
           {sortOptions?.map((option) => (
             <DropdownMenuItem
+              key={option.value}
               onClick={() => onSortChange?.(option.value)}
               className="cursor-pointer"
             >

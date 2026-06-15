@@ -18,12 +18,12 @@ export const navigationItems = [
     href: "/dispatch",
     icon: ClipboardList,
   },
- /*
   {
     label: "Viajes",
     href: "/services",
     icon: CarFront,
   },
+  /*
   {
     label: "Asignaciones",
     href: "/assignments",
@@ -38,5 +38,6 @@ export const navigationItems = [
     label: "Configuracion",
     href: "/settings",
     icon: Settings,
-  },*/
+  },
+  */
 ];
