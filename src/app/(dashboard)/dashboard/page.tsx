@@ -1,5 +1,5 @@
 import { DashboardHeader } from "../components/dashboard-header";
-import { OperationalMap } from "../components/maps/operational-map";
+import { OperationalMap } from "../../../components/shared/maps/operational-map";
 import { MetricsGrid } from "../components/metrics-grid";
 import { OperationsSection } from "../components/operations-overview";
 
