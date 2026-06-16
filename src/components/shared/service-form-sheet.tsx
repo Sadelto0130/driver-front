@@ -29,6 +29,8 @@ export function ServiceFormSheet({
   serviceId
 }: Props) {
 
+  const today = new Date()
+
   const defaultForm: CreateTripForm ={
     companyId: "",
     passengerId: "",
@@ -45,7 +47,7 @@ export function ServiceFormSheet({
 
     isProgrammed: false,
 
-    date: "",
+    date: today.toISOString().split("T")[0],
     time: "",
   };
 
@@ -65,6 +67,14 @@ export function ServiceFormSheet({
   };
 
   const handleCreateTrip = () => {
+      if (!isValidDate(form.date)) {
+      return;
+    }
+
+    if (!isValidTime(form.time)) {
+      return;
+    }
+
     if(mode=== "edit") {
       console.log("UPDATE", serviceId, form)
     }
@@ -170,5 +180,39 @@ export function ServiceFormSheet({
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function isValidTime(
+  value: string
+) {
+  const regex =
+    /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+  return regex.test(value);
+}
+
+function isValidDate(
+  value: string
+) {
+  const regex =
+    /^\d{2}\/\d{2}\/\d{4}$/;
+
+  if (!regex.test(value))
+    return false;
+
+  const [day, month, year] =
+    value.split("/").map(Number);
+
+  const date = new Date(
+    year,
+    month - 1,
+    day
+  );
+
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
   );
 }

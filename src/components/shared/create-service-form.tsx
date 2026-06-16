@@ -26,6 +26,39 @@ export function CreateServiceForm({
     })
   )
 
+  const handleTimeChange = ( value: string) => {
+    const numbers = value.replace(/\D/g, "")
+
+    let formatted = numbers
+
+    if(numbers.length >= 3) {
+      formatted = numbers.slice(0, 2) + ":" + numbers.slice(2, 4)
+    }
+
+    onChange("time", formatted)
+  }
+
+  const handleDateChange = (value: string) => {
+    const numbers = value.replace(/\D/g, "")
+
+    let formatted = numbers
+
+    if(numbers.length> 2) {
+      formatted = numbers.slice(0, 2) + "/" + numbers.slice(2)
+    }
+
+    if(numbers.length > 4) {
+      formatted = 
+        numbers.slice(0, 2) + 
+        "/" + 
+        numbers.slice(2, 4) + 
+        "/" +
+        numbers.slice(4, 8)
+    }
+
+    onChange("date", formatted)
+  }
+
   const passengerOptions = mockPassengers
     .filter(
       (passenger) => passenger.companyId === form.companyId
@@ -163,15 +196,16 @@ export function CreateServiceForm({
         </div>
       </div>
 
+      {/* PROGRAMACIÓN */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-medium text-slate-900">
+            <p className="font-medium text-slate-500">
               Programar servicio
             </p>
 
             <p className="text-sm text-slate-500">
-              Definir fecha y hora para una reserva futura
+              El servicio se creará para la fecha y hora seleccionada
             </p>
           </div>
 
@@ -182,59 +216,37 @@ export function CreateServiceForm({
             }
           />
         </div>
-      </div>
-      
-      {/* PROGRAMACIÓN */}
-      {form.isProgrammed && (
-        <div className="rounded-2xl border border-purple-400 bg-purple-200/50 p-4">
-          <p className="
-            mb-4
-            text-xs
-            font-semibold
-            uppercase
-            tracking-wider
-            text-purple-600
-          ">
-            Programación
-          </p>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Fecha
-              </label>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-700">
+              Fecha
+            </label>
 
-              <Input
-                type="date"
-                value={form.date ?? ""}
-                onChange={(e) =>
-                  onChange(
-                    "date",
-                    e.target.value
-                  )
-                }
-              />
-            </div>
+            <Input
+              value={form.date}
+              placeholder="DD/MM/AAAA"
+              onChange={(e) =>
+                handleDateChange(e.target.value)
+              }
+            />
+          </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Hora
-              </label>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-700">
+              Hora
+            </label>
 
-              <Input
-                type="time"
-                value={form.time ?? ""}
-                onChange={(e) =>
-                  onChange(
-                    "time",
-                    e.target.value
-                  )
-                }
-              />
-            </div>
+            <Input
+              value={form.time}
+              placeholder="HH:mm"
+              onChange={(e) => 
+                handleTimeChange(e.target.value)
+              }
+            />
           </div>
         </div>
-      )}
+      </div>
 
       {/* PAGO */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4">

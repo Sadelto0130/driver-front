@@ -75,6 +75,16 @@ export const serviceIcon = createIcon(
   "#3b82f6",
 );
 
+export const originIcon = createIcon(
+  pinSvg,
+  "#10b981"
+)
+
+export const destinationIcon = createIcon(
+  pinSvg,
+  "#ef4444"
+)
+
 export function getDriverIcon(
   status: "available" | "busy" | "offline",
 ) {

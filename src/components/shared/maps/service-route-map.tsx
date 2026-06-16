@@ -10,6 +10,7 @@ import "@/lib/leaflet"
 import { defaultIcon } from "@/lib/leaflet-icon"
 import { useMap } from "react-leaflet"
 import { useEffect } from "react"
+import { destinationIcon, originIcon } from "@/lib/map-icons"
 
 interface Props {
   origin: {
@@ -56,7 +57,7 @@ export function ServiceRouteMap({
           origin.lat,
           origin.lng
         ]}
-        icon={defaultIcon}
+        icon={originIcon}
       />
 
       <Marker
@@ -64,12 +65,16 @@ export function ServiceRouteMap({
           destination.lat,
           destination.lng
         ]}
-        icon={defaultIcon}
+        icon={destinationIcon}
       />
 
       <Polyline
         positions={positions}
-        pathOptions={{ weight: 5 }}
+        pathOptions={{ 
+          color: "#2536eb",
+          weight: 5,
+          opacity: 0.85
+        }}
       />
     </MapContainer>
   )

@@ -181,7 +181,9 @@ function RouteCard({
         <RouteMapDialog 
           service={service}
           trigger={
-            <button className="group relative h-36 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.98] lg:cursor-pointer">
+            <button className="group relative h-36 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.98] lg:cursor-pointer"
+            onClick={() => console.log("MAP CLICK")}
+            >
               <div className="flex h-full items-center justify-center text-xs font-medium text-slate-400">
               </div>
 

@@ -125,7 +125,9 @@ export function ServicesWorkspace() {
       detailTitle="Detalle del servicio"
       header={
         <div className="mb-3 flex justify-between">
-          <h1>Servicios</h1>
+          <h3 className="text-lg font-semibold">
+            Servicios
+          </h3>
           <ServiceFormSheet />
         </div>
       }

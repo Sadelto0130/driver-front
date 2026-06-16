@@ -5,6 +5,7 @@ import {
   ClipboardList,
   Settings,
   BarChart3,
+  IdCard,
 } from "lucide-react";
 
 export const navigationItems = [
@@ -19,15 +20,15 @@ export const navigationItems = [
     icon: ClipboardList,
   },
   {
-    label: "Viajes",
+    label: "Servicios",
     href: "/services",
     icon: CarFront,
   },
   /*
   {
-    label: "Asignaciones",
-    href: "/assignments",
-    icon: ClipboardList,
+    label: "Flota",
+    href: "/fleet",
+    icon: IdCard,
   },
   {
     label: "Estadisticas",
