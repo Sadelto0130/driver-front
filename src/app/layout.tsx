@@ -8,7 +8,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Ockta Platform",
+  title: "Ockta Movilidad",
   description: "Plataforma para remiserias",
 };
 

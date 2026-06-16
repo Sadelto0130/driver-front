@@ -132,7 +132,7 @@ export function MobileSidebar() {
             uppercase trackin-[0.2em]
             text-slate-500
           ">
-            Okta Plataforma
+            Ockta Movilidad
           </p>
 
           <p className="mt-1 text-xs text-slate-400">
