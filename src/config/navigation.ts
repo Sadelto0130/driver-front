@@ -24,12 +24,12 @@ export const navigationItems = [
     href: "/services",
     icon: CarFront,
   },
-  /*
   {
     label: "Flota",
     href: "/fleet",
     icon: IdCard,
   },
+  /*
   {
     label: "Estadisticas",
     href: "/analytics",

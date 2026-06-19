@@ -21,9 +21,11 @@ export function Topbar() {
   } = useDispatchContext()
 
   const pathname = usePathname()
-  const isDispatchPage = 
+
+  const isSearchPage = 
     pathname.endsWith("/dispatch") ||
-    pathname.endsWith("/services")
+    pathname.endsWith("/services") ||
+    pathname.endsWith("/fleet")
   
   const [searchScopeOpen, setSearchScopeOpen] = useState(false)
 
@@ -56,8 +58,7 @@ export function Topbar() {
       value: "COMPANIES",
       label: "Empresas",
     },
-  ];
-  
+  ]; 
 
   return (
     <header className="
@@ -71,7 +72,7 @@ export function Topbar() {
       <div className="flex min-w-0 items-center gap-2 md:gap-4">
         <MobileSidebar />  
 
-        {isDispatchPage && (
+        {isSearchPage ? (
           <div className="flex items-center gap-2 p-2">
             <Popover
               open={searchScopeOpen}
@@ -162,7 +163,10 @@ export function Topbar() {
               />
             </div>
           </div>
-        )} 
+        ) : <h1 className="text-lg font-semibold text-slate-900">
+              OCKTA MOVILIDAD
+            </h1>            
+        } 
 
       </div>
 

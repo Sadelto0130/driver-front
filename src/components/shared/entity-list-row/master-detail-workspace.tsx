@@ -15,7 +15,7 @@ interface Props {
 
   detailTitle?: string
 
-  detailWidth?: string
+  desktopLayout?: string
 }
 
 export function MasterDetailWorkspace({
@@ -25,25 +25,41 @@ export function MasterDetailWorkspace({
   detailOpen,
   onDetailOpenChange,
   detailTitle = "Detalle",
-  detailWidth = "360px"
+  desktopLayout = "1fr 360px"
 }: Props) {
   return (
     <>
-      <div className="flex h-full min-h-0 overflow-hidden">
-        <div className="flex min-w-0 flex-1 flex-col">
-          {header}
+      <div className="flex h-full min-h-0 flex-col overflow-hidden">
+        {header}
+        
+        <div 
+          className="hidden min-h-0 flex-1 gap-3 xl:grid"
+          style={{gridTemplateColumns: desktopLayout}}
+        >
           
-          <div className="min-h-0 min-w-0 flex-1">
+          <div className="min-h-0 overflow-hidden">
             {list}
           </div>
+
+          <aside 
+            className="
+              min-h-0 
+              overflow-hidden 
+              rounded-xl
+              border 
+              border-slate-200
+              bg-white 
+              shadow-sm
+            "
+          >
+            {detail}
+          </aside>
+        </div>
+        
+        <div className="min-h-0 flex-1 xl:hidden">
+          {list}
         </div>
 
-        <aside 
-          className="hidden xl:flex xl:flex-col min-h-0 shrink-0 overflow-hidden border-l rounded-xl border-slate-200 bg-white ml-3 shadow-sm"
-          style={{width: detailWidth}}
-        >
-          {detail}
-        </aside>
       </div>
 
       <Sheet

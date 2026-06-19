@@ -1,8 +1,6 @@
 "use client"
 
-import { EntityListHeader } from "@/components/shared/entity-list-header"
 import { MasterDetailWorkspace } from "@/components/shared/entity-list-row/master-detail-workspace"
-import { StatusToolbar } from "@/components/shared/toolbar"
 import { useDispatchContext } from "@/context/dispatch-context"
 import { normalizeSearch } from "@/lib/normalize-search"
 import { createMockServices } from "@/mocks/trips"
