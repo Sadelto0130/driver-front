@@ -7,6 +7,7 @@ import { Car, Eye, Flag, MapPin, MapPinned } from "lucide-react"
 import { ServiceDetailActions } from "./service-detail-actions"
 import { statusMap } from "@/types/status-map"
 import { RouteMapDialog } from "@/components/shared/maps/route-map-dialog"
+import { RouteMapThumbnail } from "@/components/shared/maps/route-map-thumbnail"
 
 interface Props{
   service: Service | null
@@ -184,8 +185,10 @@ function RouteCard({
             <button className="group relative h-36 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition-all hover:border-blue-300 hover:shadow-md active:scale-[0.98] lg:cursor-pointer"
             onClick={() => console.log("MAP CLICK")}
             >
-              <div className="flex h-full items-center justify-center text-xs font-medium text-slate-400">
-              </div>
+              <RouteMapThumbnail
+                origin={service.origin}
+                destination={service.destination}
+              />
 
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-slate-900/30 py-2 lg:opacity-0 lg:transition-opacity lg:group-hover:opacity-100">
                   <Eye className="h-3.5 w-3.5" />

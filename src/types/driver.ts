@@ -26,7 +26,7 @@ export interface Driver {
   earningsMonth: number;
 
   serviceCancel: number;
-  calificacion: number;
+  calificacion: number; 
 
   status: DriverStatus    
 
