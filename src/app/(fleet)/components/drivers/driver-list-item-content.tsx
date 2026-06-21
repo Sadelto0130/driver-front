@@ -1,5 +1,5 @@
 import { Driver } from "@/types/driver"
-import { DriverStatusBadge } from "./driver-status-badge"
+import { StatusBadge } from "./status-badge"
 
 interface Props {
   driver: Driver
@@ -15,7 +15,7 @@ export function DriverListItemContent({driver}: Props) {
           </p>
         </div>
 
-        <DriverStatusBadge status={driver.status}/>
+        <StatusBadge statusDriver={driver.status}/>
       </div>
 
       <div className="mt-3 flex items-center gap-4 text-sm text-slate-500">

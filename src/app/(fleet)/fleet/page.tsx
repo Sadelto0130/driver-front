@@ -2,7 +2,7 @@
 
 import { FleetModule } from "@/types/fleet-module-type"
 import { useState } from "react"
-import { FleetModuleTabs } from "../components/fleet-tabs"
+import { FleetModuleTabs } from "../components/fleet/fleet-tabs"
 import { DriversModule } from "../components/drivers/drivers-module"
 
 export default function FleethPage() {

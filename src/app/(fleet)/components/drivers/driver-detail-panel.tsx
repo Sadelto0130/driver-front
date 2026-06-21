@@ -5,6 +5,7 @@ import { DriverProfileTab } from "@/types/driver";
 import { useState } from "react";
 import { DriverSummaryTab } from "./driver-summary-tab";
 import { DriverActivityTab } from "./driver-activity-tab";
+import { DriverDocumentsTab } from "./driver-documents-tab";
 
 interface Props {
   driver: Driver | null;
@@ -48,15 +49,15 @@ export function DriverDetailPanel({
             driver={driver}
           />
         )}
+  
+        {activeTab === "documents" && (
+          <DriverDocumentsTab
+            driver={driver}
+          />
+        )}
+
+
        {/**
-
-
-      {activeTab === "documents" && (
-        <DriverDocumentsTab
-          driver={driver}
-        />
-      )}
-
       {activeTab === "finance" && (
         <DriverFinanceTab
           driver={driver}

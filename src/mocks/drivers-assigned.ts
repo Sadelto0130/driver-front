@@ -1,4 +1,4 @@
-import { Driver, DriverStatus } from "@/types/driver";
+import { DocumentStatus, Driver, DriverDocument, DriverStatus } from "@/types/driver";
 
 const firstNames = [
   "Juan",
@@ -60,9 +60,109 @@ const randomPlate = (index: number) =>
     65 + (index % 26),
     65 + ((index + 5) % 26)
   )}`;
-
   
-  export function createMockDrivers(
+const DRIVER_DOCUMENTS = [
+  "Licencia",
+  "Antecedentes",
+  "Libreta sanitaria",
+] as const;
+
+const VEHICLE_DOCUMENTS = [
+  "Título",
+  "Cédula Verde",
+  "VTV",
+  "Seguro Remis",
+  "Tarjeta de Gas",
+  "Patentes",
+  "Habilitación",
+  "Tarjeta Única",
+] as const;
+
+const ALL_DOCUMENTS = [
+  ...DRIVER_DOCUMENTS,
+  ...VEHICLE_DOCUMENTS,
+];
+
+function createMockDocuments(
+  driverId: string
+): DriverDocument[] {
+  const now = new Date();
+
+  return ALL_DOCUMENTS.map(
+    (documentName, index) => {
+      const random =
+        Math.random();
+
+      let status: DocumentStatus;
+
+      if (random < 0.7) {
+        status = "VALID";
+      } else if (random < 0.9) {
+        status = "EXPIRING";
+      } else {
+        status = "EXPIRED";
+      }
+
+      let expiresAt: string;
+
+      switch (status) {
+        case "VALID":
+          expiresAt = addDays(
+            now,
+            Math.floor(
+              Math.random() * 365
+            ) + 60
+          ).toISOString();
+          break;
+
+        case "EXPIRING":
+          expiresAt = addDays(
+            now,
+            Math.floor(
+              Math.random() * 30
+            ) + 1
+          ).toISOString();
+          break;
+
+        case "EXPIRED":
+          expiresAt = addDays(
+            now,
+            -(
+              Math.floor(
+                Math.random() * 120
+              ) + 1
+            )
+          ).toISOString();
+          break;
+      }
+
+      return {
+        id: `${driverId}-${index}`,
+
+        name: documentName,
+
+        status,
+
+        expiresAt,
+
+        uploadedAt: addDays(
+          now,
+          -(
+            Math.floor(
+              Math.random() * 365
+            ) + 30
+          )
+        ).toISOString(),
+
+        fileUrl: `/documents/${driverId}/${documentName
+          .toLowerCase()
+          .replaceAll(" ", "-")}.pdf`,
+      };
+    }
+  );
+}
+  
+export function createMockDrivers(
     count = 10
   ): Driver[] {
     return Array.from(
@@ -155,9 +255,24 @@ const randomPlate = (index: number) =>
       ),
 
       status,
+
+      documents: createMockDocuments(String(index + 1))
     };
   }
 );
 }
 
 export const mockDrivers = createMockDrivers();
+
+function addDays(
+  date: Date,
+  days: number
+) {
+  const result = new Date(date);
+
+  result.setDate(
+    result.getDate() + days
+  );
+
+  return result;
+}

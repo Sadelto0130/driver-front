@@ -1,8 +1,6 @@
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { DriverStatus } from "@/types/driver";
 
-export const statusConfig: Record<
+export const statusDriverConfig: Record<
   DriverStatus,
   {
     label: string;

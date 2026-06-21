@@ -30,24 +30,26 @@ export interface Driver {
 
   status: DriverStatus    
 
-  //documents: DriverDocument[]
+  documents: DriverDocument[]
 }
 
 export type DriverProfileTab =
-  | "summary"
+  | "summary" 
   | "activity"
   | "documents"
   | "finance"
   | "audit";
 
+export type DocumentStatus = 
+  | "VALID"
+  | "EXPIRING"
+  | "EXPIRED"
+
 export interface DriverDocument {
-  id: string;
-
-  name: string;
-
-  expiresAt?: string;
-
-  fileUrl: string;
-
-  uploadedAt: string;
+  id: string
+  name: string
+  expiresAt?: string
+  status: DocumentStatus
+  fileUrl: string
+  uploadedAt: string
 }

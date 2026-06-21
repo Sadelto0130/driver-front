@@ -1,5 +1,5 @@
 import { Driver } from "@/types/driver";
-import { DriverStatusBadge } from "./driver-status-badge";
+import { StatusBadge } from "./status-badge";
 
 interface Props {
   driver: Driver;
@@ -22,8 +22,8 @@ export function DriverProfileHeader({
           </p>        
         </div>
 
-        <DriverStatusBadge
-          status={driver.status}
+        <StatusBadge
+          statusDriver={driver.status}
         />
       </div>
 
