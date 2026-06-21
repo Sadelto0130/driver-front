@@ -1,4 +1,6 @@
-import { DocumentStatus, Driver, DriverDocument, DriverStatus } from "@/types/driver";
+import { statusDriverConfig } from "@/app/(fleet)/config/status-driver-config";
+import { formatServiceDate } from "@/lib/date";
+import { DocumentStatus, Driver, DriverAuditEvent, DriverDocument, DriverFinance, DriverStatus } from "@/types/driver";
 
 const firstNames = [
   "Juan",
@@ -83,6 +85,40 @@ const ALL_DOCUMENTS = [
   ...VEHICLE_DOCUMENTS,
 ];
 
+const BASE_EVENTS = [
+  "Conductor creado",
+  "Vehículo asignado",
+] as const;
+
+const EXTRA_EVENTS = [
+  "Estado actualizado",
+  "Documento actualizado",
+  "Disponibilidad modificada",
+  "Datos actualizados",
+] as const;
+
+const AUDIT_USERS = [
+  "Administrador",
+  "Sistema",
+  "Juan Pérez",
+  "María Gómez",
+  "Carlos Ruiz",
+  "Fernando Díaz",
+];
+
+function addDays( 
+  date: Date,
+  days: number
+) {
+  const result = new Date(date);
+
+  result.setDate(
+    result.getDate() + days
+  );
+
+  return result;
+}
+
 function createMockDocuments(
   driverId: string
 ): DriverDocument[] {
@@ -161,6 +197,207 @@ function createMockDocuments(
     }
   );
 }
+
+function randomPastDate(
+  maxDays = 180
+): string {
+  const now = new Date();
+
+  const daysAgo =
+    Math.floor(
+      Math.random() * maxDays
+    ) + 1;
+
+  const hoursAgo =
+    Math.floor(
+      Math.random() * 24
+    );
+
+  const minutesAgo =
+    Math.floor(
+      Math.random() * 60
+    );
+
+  const date = new Date(
+    now.getTime() -
+      (
+        daysAgo * 24 * 60 +
+        hoursAgo * 60 +
+        minutesAgo
+      ) *
+        60 *
+        1000
+  );
+
+  return date.toISOString();
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+  return [...array].sort(
+    () => Math.random() - 0.5
+  );
+}
+
+function createMockAuditEvents(
+  driverId: string,
+  vehicleName: string,
+  status: DriverStatus
+): DriverAuditEvent[] {  
+  const eventNames = [
+    ...BASE_EVENTS,
+    ...shuffleArray([
+      ...EXTRA_EVENTS,
+    ]).slice(
+      0,
+      Math.floor(
+        Math.random() *
+          EXTRA_EVENTS.length
+      ) + 1
+    ),
+  ];
+
+  const totalEvents = eventNames.length;
+  
+  const events: DriverAuditEvent[] = eventNames.map(
+    (eventName, index) => {
+      let action = "";
+      let description = "";
+
+      const daysAgo = (totalEvents - index) * 2;
+
+      switch (eventName) {
+        case "Conductor creado":
+          action = eventName;
+          description =
+            "Registro inicial del conductor";
+          break;
+
+        case "Vehículo asignado":
+          action = eventName;
+          description = `Se asignó ${vehicleName}`;
+          break;
+
+        case "Estado actualizado":
+          action = eventName;
+          description = `El conductor pasó a estado ${statusDriverConfig[status].label}`;
+          break;
+
+        case "Documento actualizado":
+          action = eventName;
+          description =
+            "Se actualizó la Licencia de conducir";
+          break;
+
+        case "Disponibilidad modificada":
+          action = eventName;
+          description =
+            "Se modificó la disponibilidad operativa";
+          break;
+
+        case "Datos actualizados":
+          action = eventName;
+          description =
+            "Se actualizaron los datos del conductor";
+          break;
+      }
+
+      const createdAt = new Date()
+
+      createdAt.setDate(createdAt.getDate() - daysAgo)
+
+      return {
+        id: `${driverId}-${index}`,
+
+        createdAt: createdAt.toISOString(),
+
+        action,
+
+        description,
+
+        performedBy:
+          AUDIT_USERS[
+            Math.floor(
+              Math.random() *
+                AUDIT_USERS.length
+            )
+          ],
+      };
+    }
+  );
+
+  return events.sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  );
+}
+
+function createMockFinance(
+  earningsMonth: number
+): DriverFinance {
+  const commission = Math.floor(
+    earningsMonth *
+      (0.08 + Math.random() * 0.07)
+  );
+
+  const discounts =
+    Math.random() > 0.7
+      ? Math.floor(
+          Math.random() * 25000
+        )
+      : 0;
+
+  const bonuses =
+    Math.random() > 0.8
+      ? Math.floor(
+          Math.random() * 15000
+        )
+      : 0;
+
+  const adjustments =
+    Math.random() > 0.85
+      ? Math.floor(
+          (Math.random() - 0.5) *
+            10000
+        )
+      : 0;
+
+  const pendingSettlement =
+    commission -
+    discounts +
+    bonuses +
+    adjustments;
+
+  const hasSettlement =
+    Math.random() > 0.3;
+
+  return {
+    pendingSettlement,
+
+    commission,
+
+    discounts,
+
+    bonuses,
+
+    adjustments,
+
+    ...(hasSettlement
+      ? {
+          lastSettlementAmount:
+            Math.floor(
+              commission *
+                (0.8 +
+                  Math.random() *
+                    0.2)
+            ),
+
+          lastSettlementDate:
+            randomPastDate(30),
+        }
+      : {}),
+  };
+}
   
 export function createMockDrivers(
     count = 10
@@ -168,45 +405,28 @@ export function createMockDrivers(
     return Array.from(
       { length: count },
       (_, index) => {
+
     const averageFare = 7000 + Math.random() * 5000;
 
-    const firstName =
-      firstNames[
-        index % firstNames.length
-      ];
+    const firstName = firstNames[index % firstNames.length];
 
-    const lastName =
-      lastNames[
-        index % lastNames.length
-      ];
+    const lastName = lastNames[index % lastNames.length];
 
-    const status =
-      statuses[
-        index % statuses.length
-      ];
+    const status = statuses[index % statuses.length];
 
-    const tripsToday =
-      Math.floor(Math.random() * 15) + 1;
+    const tripsToday = Math.floor(Math.random() * 15) + 1;
 
-    const tripsWeek =
-      tripsToday +
-      Math.floor(Math.random() * 40) + 5;
+    const tripsWeek = tripsToday + Math.floor(Math.random() * 40) + 5;
 
-    const tripsMonth =
-      tripsWeek +
-      Math.floor(Math.random() * 120) + 20;
+    const tripsMonth = tripsWeek + Math.floor(Math.random() * 120) + 20;
 
-    const earningsToday = Math.floor(
-        tripsToday * averageFare
-      );
+    const earningsToday = Math.floor(tripsToday * averageFare);
 
-    const earningsWeek = Math.floor(
-        tripsWeek * averageFare
-      );
+    const earningsWeek = Math.floor(tripsWeek * averageFare);
 
-    const earningsMonth = Math.floor(
-        tripsMonth * averageFare
-      );
+    const earningsMonth = Math.floor(tripsMonth * averageFare);
+
+    const vehicleName = vehicles[index % vehicles.length]
 
     return {
       id: String(index + 1),
@@ -256,23 +476,18 @@ export function createMockDrivers(
 
       status,
 
-      documents: createMockDocuments(String(index + 1))
+      documents: createMockDocuments(String(index + 1)),
+
+      auditEvents: createMockAuditEvents(
+        String(index + 1),
+        vehicleName,
+        status
+      ),
+
+      finance: createMockFinance(earningsMonth)
     };
   }
 );
 }
 
 export const mockDrivers = createMockDrivers();
-
-function addDays(
-  date: Date,
-  days: number
-) {
-  const result = new Date(date);
-
-  result.setDate(
-    result.getDate() + days
-  );
-
-  return result;
-}

@@ -1,6 +1,6 @@
 import { Driver } from "@/types/driver";
-import { DriverPersonalInfoCard } from "./driver-personal-info-card";
-import { DriverVehicleInfoCard } from "./driver-vehicle-card";
+import { DriverPersonalInfoCard } from "./perfil/driver-personal-info-card";
+import { DriverVehicleInfoCard } from "./perfil/driver-vehicle-card";
 
 interface Props {
   driver: Driver

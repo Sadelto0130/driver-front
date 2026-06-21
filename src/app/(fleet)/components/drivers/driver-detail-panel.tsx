@@ -1,11 +1,12 @@
 import { Driver } from "@/types/driver";
-import { DriverProfileTabs } from "./driver-profile";
+import { DriverProfileTabs } from "./perfil/driver-profile";
 import { DriverProfileHeader } from "./driver-profile-header";
 import { DriverProfileTab } from "@/types/driver";
 import { useState } from "react";
 import { DriverSummaryTab } from "./driver-summary-tab";
-import { DriverActivityTab } from "./driver-activity-tab";
-import { DriverDocumentsTab } from "./driver-documents-tab";
+import { DriverActivityTab } from "./actividad/driver-activity-tab";
+import { DriverDocumentsTab } from "./documentacion/driver-documents-tab";
+import { DriverAuditTab } from "./audit/driver-audit-tab";
 
 interface Props {
   driver: Driver | null;
@@ -56,6 +57,11 @@ export function DriverDetailPanel({
           />
         )}
 
+        {activeTab === "audit" && (
+          <DriverAuditTab
+            driver={driver}
+          />
+        )}
 
        {/**
       {activeTab === "finance" && (
@@ -64,11 +70,6 @@ export function DriverDetailPanel({
         />
       )}
 
-      {activeTab === "audit" && (
-        <DriverAuditTab
-          driver={driver}
-        />
-      )}
          * 
          */}
       </div>

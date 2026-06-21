@@ -31,6 +31,10 @@ export interface Driver {
   status: DriverStatus    
 
   documents: DriverDocument[]
+
+  auditEvents: DriverAuditEvent[]
+
+  finance: DriverFinance
 }
 
 export type DriverProfileTab =
@@ -52,4 +56,22 @@ export interface DriverDocument {
   status: DocumentStatus
   fileUrl: string
   uploadedAt: string
+}
+
+export interface DriverAuditEvent {
+  id: string
+  createdAt: string
+  action: string
+  description: string
+  performedBy: string
+}
+
+export interface DriverFinance {
+  pendingSettlement: number;
+  lastSettlementDate?: string;
+  lastSettlementAmount?: number;
+  commission: number;
+  discounts: number;
+  bonuses: number;
+  adjustments: number;
 }

@@ -1,8 +1,8 @@
 import { DriverDocument } from "@/types/driver";
-import { StatusBadge } from "./status-badge";
 import { Download, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatServiceDate } from "@/lib/date";
+import { StatusBadge } from "../status-badge";
 
 interface Props {
   document: DriverDocument
