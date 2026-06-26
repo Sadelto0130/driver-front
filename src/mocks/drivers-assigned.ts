@@ -1,5 +1,4 @@
 import { statusDriverConfig } from "@/app/(fleet)/config/status-driver-config";
-import { formatServiceDate } from "@/lib/date";
 import { DocumentStatus, Driver, DriverAuditEvent, DriverDocument, DriverFinance, DriverStatus } from "@/types/driver";
 
 const firstNames = [
