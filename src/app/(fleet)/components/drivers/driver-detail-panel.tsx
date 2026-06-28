@@ -7,6 +7,7 @@ import { DriverSummaryTab } from "./driver-summary-tab";
 import { DriverActivityTab } from "./actividad/driver-activity-tab";
 import { DriverDocumentsTab } from "./documentacion/driver-documents-tab";
 import { DriverAuditTab } from "./audit/driver-audit-tab";
+import { DriverFinanceTab } from "./finance/driver-finance-tab";
 
 interface Props {
   driver: Driver | null;
@@ -63,15 +64,11 @@ export function DriverDetailPanel({
           />
         )}
 
-       {/**
-      {activeTab === "finance" && (
-        <DriverFinanceTab
-          driver={driver}
-        />
-      )}
-
-         * 
-         */}
+        {activeTab === "finance" && (
+          <DriverFinanceTab
+            driver={driver}
+          />
+        )}
       </div>
     </div>
   );

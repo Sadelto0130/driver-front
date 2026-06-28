@@ -7,7 +7,7 @@ interface Props {
   driver: Driver | null;
 }
 
-function DriverFinancialDetailSection({driver}: Props) {
+export function DriverFinancialDetailSection({driver}: Props) {
   const [expanded, setExpanded] = useState(false)
 
   return (
@@ -15,6 +15,7 @@ function DriverFinancialDetailSection({driver}: Props) {
       <Button
         variant="ghost"
         onClick={() => setExpanded(!expanded)}
+        className="bg-blue-400 rounded-2xl cursor-pointer"
       >
         ver detalle
       </Button>
@@ -38,7 +39,7 @@ function DriverFinancialDetailSection({driver}: Props) {
 
           <InfoRow
             label="Ajustes"
-            value={`$${driver?.finance.adjustments.toLocaleString}`}
+            value={`$${driver?.finance.adjustments.toLocaleString()}`}
           />
         </div>
       )}
